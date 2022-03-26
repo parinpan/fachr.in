@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fachrin
+  labels:
+    name: fachrin
+    
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: fachrin
+  labels:
+    app: fachrin-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fachrin-web
+  template:
+    metadata:
+      labels:
+        app: fachrin-web
+    spec:
+      containers:
+      - name: web
+        image: registry-intl.cn-hangzhou.aliyuncs.com/fachrin/fachrin:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+        env:
+        - name: build_date
+          value: '{{build_date}}'
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: fachrin
+spec:
+  ports:
+  - port: 9000
+    targetPort: 9000
+  selector:
+    app: fachrin-web
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  namespace: fachrin
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-universal"
+spec:
+  tls:
+  - hosts:
+    - fachr.in
+    secretName: fachrin-webpage-tls
+  rules:
+    - host: fachr.in
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: web
+                port:
+                  number: 9000
