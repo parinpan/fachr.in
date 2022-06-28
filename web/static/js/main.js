@@ -18,7 +18,7 @@ const workCardItem = `
         <div class="card is-shadowless">
             <div class="card-image">
                 <figure class="image image-no-padding">
-                <img src="{{image}}" loading="lazy" alt="{{image_alt}}">
+                <img src="{{image}}" alt="{{image_alt}}">
                 </figure>
             </div>
 
