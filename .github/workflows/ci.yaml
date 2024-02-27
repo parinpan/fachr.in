@@ -39,7 +39,7 @@ jobs:
           sed -ie "s/{{build_date}}/$(date)/g" deployment.yaml
 
       - name: Trigger Deployment
-        uses: actions-hub/kubectl@master
+        uses: actions-hub/kubectl@v1.29.2
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
