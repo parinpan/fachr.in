@@ -24,7 +24,7 @@ jobs:
           context: .
           file: ./build/Dockerfile
           push: true
-          tags: registry-intl.ap-southeast-5.aliyuncs.com/fachrin/trade
+          tags: registry-intl.cn-hangzhou.aliyuncs.com/fachrin/fachrin:latest
           
   deploy:
     name: Production Deployment
