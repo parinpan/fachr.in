@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: registry-intl.cn-hangzhou.aliyuncs.com/fachrin/fachrin:latest
+        image: registry-intl.ap-southeast-5.aliyuncs.com/fachrin/fachrin:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 9000
