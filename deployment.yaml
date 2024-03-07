@@ -74,4 +74,3 @@ spec:
                 name: web
                 port:
                   number: 9000
-
