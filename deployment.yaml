@@ -62,7 +62,7 @@ spec:
   tls:
   - hosts:
     - fachr.in
-    secretName: fachrin-webpage-tls
+    secretName: updated-fachrin-webpage-tls
   rules:
     - host: fachr.in
       http:
