@@ -14,7 +14,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
-          registry: https://registry-intl.cn-hangzhou.aliyuncs.com
+          registry: https://registry-intl.ap-southeast-5.aliyuncs.com
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
@@ -24,7 +24,7 @@ jobs:
           context: .
           file: ./build/Dockerfile
           push: true
-          tags: registry-intl.cn-hangzhou.aliyuncs.com/fachrin/fachrin:latest
+          tags: registry-intl.ap-southeast-5.aliyuncs.com/fachrin/fachrin:latest
           
   deploy:
     name: Production Deployment
