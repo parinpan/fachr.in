@@ -24,12 +24,11 @@ spec:
       labels:
         app: fachrin-web
     spec:
+      serviceAccountName: k3s-fachrin-sa
       containers:
       - name: web
         image: registry-intl.ap-southeast-5.aliyuncs.com/fachrin/fachrin
         imagePullPolicy: Always
-        imagePullSecrets:
-        - name: docker-registry-credentials
         ports:
         - containerPort: 9000
         env:
