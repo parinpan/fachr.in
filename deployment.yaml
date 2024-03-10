@@ -15,6 +15,7 @@ metadata:
   labels:
     app: fachrin-web
 spec:
+  serviceAccountName: k3s-fachrin-sa
   replicas: 1
   selector:
     matchLabels:
@@ -43,6 +44,7 @@ metadata:
   name: web
   namespace: fachrin
 spec:
+  serviceAccountName: k3s-fachrin-sa
   ports:
   - port: 9000
     targetPort: 9000
@@ -59,6 +61,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-universal"
 spec:
+  serviceAccountName: k3s-fachrin-sa
   ingressClassName: nginx
   tls:
   - hosts:
