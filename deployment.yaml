@@ -58,9 +58,9 @@ metadata:
   name: web
   namespace: fachrin
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-universal"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - fachr.in
