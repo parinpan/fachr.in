@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { siteConfig } from '@/data/content';
 
 export default function Hero() {

@@ -5,6 +5,8 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import StructuredData from '@/components/StructuredData';
 import JsonLd from '@/components/JsonLd';
 import CommandMenu from '@/components/CommandMenu';
+import { GoogleAnalytics } from '@next/third-parties/google';
+import Clarity from '@/components/Clarity';
 
 import { siteConfig } from '@/data/content';
 
@@ -36,6 +38,11 @@ export const metadata: Metadata = {
     site: siteConfig.seo.twitterHandle,
     creator: siteConfig.seo.twitterHandle,
   },
+  icons: {
+    icon: siteConfig.hero.image,
+    shortcut: siteConfig.hero.image,
+    apple: siteConfig.hero.image,
+  },
 };
 
 import { getAllPosts } from '@/lib/mdx';
@@ -58,6 +65,13 @@ export default function RootLayout({
         </ErrorBoundary>
         <StructuredData />
         <JsonLd />
+        <JsonLd />
+        {siteConfig.analytics.googleAnalyticsId && (
+          <GoogleAnalytics gaId={siteConfig.analytics.googleAnalyticsId} />
+        )}
+        {siteConfig.analytics.clarityId && (
+          <Clarity clarityId={siteConfig.analytics.clarityId} />
+        )}
       </body>
     </html>
   );

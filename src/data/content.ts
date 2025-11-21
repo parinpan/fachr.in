@@ -267,6 +267,12 @@ export const siteConfig = {
         url: 'https://fachr.in',
     },
 
+    // Analytics
+    analytics: {
+        googleAnalyticsId: 'G-47RWR2V97T',
+        clarityId: 'u9sgieou3d',
+    },
+
     // Blog Section
     blog: {
         title: 'Journal',
