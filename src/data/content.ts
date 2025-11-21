@@ -262,7 +262,7 @@ export const siteConfig = {
         title: 'Fachrin Aulia Nasution',
         description: 'A software engineer based in Berlin, Germany.',
         keywords: ['fachrin', 'aulia', 'nasution', 'software engineer', 'web developer', 'berlin'],
-        ogImage: 'https://fachr.in/static/image/media-snippet.png',
+        ogImage: 'https://fachr.in/images/og-image.png',
         twitterHandle: '@fachrinx',
         url: 'https://fachr.in',
     },
