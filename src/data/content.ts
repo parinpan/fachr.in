@@ -299,7 +299,7 @@ export const siteConfig = {
             },
             {
                 title: '⚡️ Hobbies',
-                content: 'My love language is <strong>food</strong> and <strong>travel</strong>. I literally plan trips around what I\'m going to eat. Otherwise, I\'m likely deep in a Netflix binge or reading obscure internet articles that keep me up at night.',
+                content: 'My love language is <strong>food</strong> and <strong>travel</strong>. My wife and I basically plan our trips around what we want to eat. When I\'m not doing that, I\'m probably deep into a Netflix binge or reading some random corner-of-the-internet article that keeps me up way too late.',
             },
         ],
     },
