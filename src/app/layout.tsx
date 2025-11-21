@@ -65,7 +65,6 @@ export default function RootLayout({
         </ErrorBoundary>
         <StructuredData />
         <JsonLd />
-        <JsonLd />
         {siteConfig.analytics.googleAnalyticsId && (
           <GoogleAnalytics gaId={siteConfig.analytics.googleAnalyticsId} />
         )}

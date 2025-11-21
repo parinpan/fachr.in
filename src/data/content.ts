@@ -259,9 +259,27 @@ export const siteConfig = {
 
     // SEO & Metadata
     seo: {
-        title: 'Fachrin Aulia Nasution',
-        description: 'A software engineer based in Berlin, Germany.',
-        keywords: ['fachrin', 'aulia', 'nasution', 'software engineer', 'web developer', 'berlin'],
+        title: 'Fachrin Aulia Nasution | Senior Product Engineer & Distributed Systems Specialist',
+        description: 'A Senior Product Engineer based in Berlin, specializing in high-scale distributed systems, Golang, and cloud architecture. Experienced at Upvest, Choco, Delivery Hero, and Gojek. Building the financial infrastructure of tomorrow.',
+        keywords: [
+            'Software Engineer',
+            'Product Engineer',
+            'Distributed Systems',
+            'Golang',
+            'Go',
+            'Backend Developer',
+            'Full Stack Engineer',
+            'Berlin',
+            'Germany',
+            'Upvest',
+            'Fintech',
+            'React',
+            'Next.js',
+            'TypeScript',
+            'Kafka',
+            'Microservices',
+            'System Design',
+        ],
         ogImage: 'https://fachr.in/images/og-image.png',
         twitterHandle: '@fachrinx',
         url: 'https://fachr.in',
@@ -318,7 +336,7 @@ export const siteConfig = {
         ],
         social: [
             { name: 'GitHub', icon: 'Github', url: 'https://github.com/parinpan' },
-            { name: 'LinkedIn', icon: 'Linkedin', url: 'https://www.linkedin.com/in/parinpan' },
+            { name: 'LinkedIn', icon: 'Linkedin', url: 'https://www.linkedin.com/in/fachrinfan' },
             { name: 'Twitter', icon: 'Twitter', url: 'https://x.com/fachrinx' },
         ],
         general: [
