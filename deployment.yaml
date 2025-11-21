@@ -27,7 +27,7 @@ spec:
       serviceAccountName: k3s-fachrin-sa
       containers:
       - name: web
-        image: registry-intl.ap-southeast-5.aliyuncs.com/fachrin/fachrin
+        image: ghcr.io/parinpan/fachr.in:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 9000
