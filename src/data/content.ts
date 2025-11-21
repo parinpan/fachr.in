@@ -276,7 +276,7 @@ export const siteConfig = {
     // Blog Section
     blog: {
         title: 'Journal',
-        description: 'A collection of thoughts on software engineering, system design, and my personal journey.',
+        description: 'A collection of thoughts on software engineering and my personal journey.',
     },
 
     // Now Page
