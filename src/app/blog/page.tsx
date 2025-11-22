@@ -17,23 +17,23 @@ export default function BlogIndex() {
         <PageWrapper>
             <div className="max-w-3xl mx-auto">
                 <header className="mb-8 pt-8">
-                    <div className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-100 rounded-full">
+                    <div className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-gray-500 dark:text-neutral-400 uppercase bg-gray-100 dark:bg-neutral-800 rounded-full">
                         Journal
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">{siteConfig.blog.title}</h1>
-                    <p className="text-xl md:text-2xl text-gray-500 max-w-2xl leading-normal">
+                    <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-neutral-100 mb-6 tracking-tight">{siteConfig.blog.title}</h1>
+                    <p className="text-xl md:text-2xl text-gray-500 dark:text-neutral-400 max-w-2xl leading-normal">
                         {siteConfig.blog.description}
                     </p>
                 </header>
 
                 <div className="space-y-12">
                     {posts.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-gray-50 rounded-2xl border border-gray-100 p-12">
-                            <div className="inline-flex items-center justify-center w-20 h-20 mb-6 bg-white rounded-full shadow-sm border border-gray-100">
+                        <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-gray-50 dark:bg-neutral-800/50 rounded-2xl border border-gray-100 dark:border-neutral-700 p-12">
+                            <div className="inline-flex items-center justify-center w-20 h-20 mb-6 bg-white dark:bg-neutral-800 rounded-full shadow-sm border border-gray-100 dark:border-neutral-700">
                                 <span className="text-3xl">✍️</span>
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-3">Writing in progress</h3>
-                            <p className="text-gray-500 max-w-md mx-auto text-lg leading-relaxed">
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-3">Writing in progress</h3>
+                            <p className="text-gray-500 dark:text-neutral-400 max-w-md mx-auto text-lg leading-relaxed">
                                 I'm currently crafting some thoughts on engineering, systems, and life.
                                 Check back soon!
                             </p>
@@ -42,7 +42,7 @@ export default function BlogIndex() {
                         posts.map((post) => (
                             <article key={post.slug} className="group">
                                 <Link href={`/blog/${post.slug}`} className="block">
-                                    <div className="flex items-center gap-3 text-sm text-gray-500 mb-2">
+                                    <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-neutral-400 mb-2">
                                         <time dateTime={post.date}>
                                             {new Date(post.date).toLocaleDateString('en-US', {
                                                 year: 'numeric',
@@ -53,15 +53,15 @@ export default function BlogIndex() {
                                         <span>•</span>
                                         <span>{post.readingTime}</span>
                                     </div>
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-gray-600 transition-colors">
+                                    <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-3 group-hover:text-gray-600 dark:group-hover:text-neutral-300 transition-colors">
                                         {post.title}
                                     </h2>
-                                    <p className="text-gray-600 mb-4 leading-normal">
+                                    <p className="text-gray-600 dark:text-neutral-400 mb-4 leading-normal">
                                         {post.description}
                                     </p>
                                     <div className="flex flex-wrap gap-2">
                                         {post.tags.map((tag: string) => (
-                                            <span key={tag} className="px-2 py-1 bg-gray-100 text-xs font-medium text-gray-600 rounded-md">
+                                            <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-neutral-700 text-xs font-medium text-gray-600 dark:text-neutral-300 rounded-md">
                                                 #{tag}
                                             </span>
                                         ))}

@@ -5,8 +5,8 @@ import { siteConfig } from '@/data/content';
 export default function Podcast() {
     return (
         <section className="mb-12" aria-labelledby="podcast-heading">
-            <h3 id="podcast-heading" className="text-2xl font-bold mb-6 text-gray-900">{siteConfig.podcast.title}</h3>
-            <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+            <h3 id="podcast-heading" className="text-2xl font-bold mb-6 text-gray-900 dark:text-neutral-100">{siteConfig.podcast.title}</h3>
+            <div className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-neutral-700 shadow-sm">
                 <iframe
                     style={{ borderRadius: '12px' }}
                     src={siteConfig.podcast.episodeUrl}

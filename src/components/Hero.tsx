@@ -16,10 +16,10 @@ export default function Hero() {
                 />
             </div>
             <div className="flex flex-col text-center md:text-left">
-                <h1 className="text-3xl md:text-5xl font-bold mb-2 text-gray-900">
+                <h1 className="text-3xl md:text-5xl font-bold mb-2 text-gray-900 dark:text-neutral-100">
                     {siteConfig.hero.title}
                 </h1>
-                <h2 className="text-xl md:text-2xl text-gray-600 font-medium mb-6">
+                <h2 className="text-xl md:text-2xl text-gray-600 dark:text-neutral-400 font-medium mb-6">
                     {siteConfig.hero.subtitle}
                 </h2>
                 <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
@@ -35,7 +35,7 @@ export default function Hero() {
 
 function Badge({ icon, text }: { icon: string; text: string }) {
     return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#FAFAFA] text-sm font-medium text-gray-800 border border-gray-300 hover:bg-[#F5F5F5] transition-colors cursor-default">
+        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#FAFAFA] dark:bg-neutral-800 text-sm font-medium text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-700 hover:bg-[#F5F5F5] dark:hover:bg-neutral-600 transition-colors cursor-default">
             <Image
                 src={icon}
                 alt=""

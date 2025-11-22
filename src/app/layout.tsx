@@ -49,6 +49,10 @@ import { getAllPosts } from '@/lib/mdx';
 
 // ...
 
+import Providers from '@/components/Providers';
+
+// ...
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,20 +61,22 @@ export default function RootLayout({
   const posts = getAllPosts(['slug', 'title']);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <CommandMenu posts={posts} />
-        <ErrorBoundary>
-          {children}
-        </ErrorBoundary>
-        <StructuredData />
-        <JsonLd />
-        {siteConfig.analytics.googleAnalyticsId && (
-          <GoogleAnalytics gaId={siteConfig.analytics.googleAnalyticsId} />
-        )}
-        {siteConfig.analytics.clarityId && (
-          <Clarity clarityId={siteConfig.analytics.clarityId} />
-        )}
+        <Providers>
+          <CommandMenu posts={posts} />
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+          <StructuredData />
+          <JsonLd />
+          {siteConfig.analytics.googleAnalyticsId && (
+            <GoogleAnalytics gaId={siteConfig.analytics.googleAnalyticsId} />
+          )}
+          {siteConfig.analytics.clarityId && (
+            <Clarity clarityId={siteConfig.analytics.clarityId} />
+          )}
+        </Providers>
       </body>
     </html>
   );
