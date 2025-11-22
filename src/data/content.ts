@@ -1,11 +1,3 @@
-/**
- * WEBSITE CONTENT CONFIGURATION
- * 
- * This file contains all the editable content for your website.
- * Update any text, links, or settings here to change your site content.
- * No need to touch component files!
- */
-
 export const siteConfig = {
     // Personal Information
     personal: {
@@ -252,7 +244,7 @@ export const siteConfig = {
     // Social Links (if needed elsewhere)
     social: {
         github: 'https://github.com/parinpan',
-        linkedin: 'https://www.linkedin.com/in/parinpan',
+        linkedin: 'https://www.linkedin.com/in/fachrinfan',
         twitter: 'https://x.com/fachrinx',
         email: 'mailto:hi@fachr.in',
     },
