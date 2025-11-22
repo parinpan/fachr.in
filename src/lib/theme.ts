@@ -51,47 +51,47 @@ export const theme = {
   },
   
   dark: {
-    // Base colors (soft black/grey)
-    background: '#1a1a1a', // neutral-900
-    foreground: '#e5e5e5', // neutral-200
+    // Base colors - Rich dark with subtle warmth
+    background: '#0f0f0f',
+    foreground: '#e8e8e8',
     
-    // Surface colors (cards, containers)
-    surface: '#262626', // neutral-800
-    surfaceSecondary: 'rgba(38, 38, 38, 0.5)', // neutral-800/50
+    // Surface colors - Elevated cards with depth
+    surface: '#1a1a1a',
+    surfaceSecondary: 'rgba(26, 26, 26, 0.6)',
     
-    // Border colors
-    border: '#404040', // neutral-700
-    borderLight: '#262626', // neutral-800
-    borderHover: '#525252', // neutral-600
+    // Border colors - Subtle but defined
+    border: '#2d2d2d',
+    borderLight: '#1f1f1f',
+    borderHover: '#3a3a3a',
     
-    // Text colors
-    textPrimary: '#f5f5f5', // neutral-100
-    textSecondary: '#d4d4d4', // neutral-300
-    textTertiary: '#a3a3a3', // neutral-400
-    textMuted: '#737373', // neutral-500
+    // Text colors - High contrast, easy to read
+    textPrimary: '#f0f0f0',
+    textSecondary: '#c8c8c8',
+    textTertiary: '#9a9a9a',
+    textMuted: '#6e6e6e',
     
-    // Interactive colors
-    interactive: '#f5f5f5', // neutral-100
-    interactiveHover: '#ffffff', // neutral-50
-    interactiveBg: '#404040', // neutral-700
-    interactiveBgHover: '#525252', // neutral-600
+    // Interactive colors - Subtle highlights
+    interactive: '#e8e8e8',
+    interactiveHover: '#ffffff',
+    interactiveBg: '#2a2a2a',
+    interactiveBgHover: '#353535',
     
-    // Focus colors
-    focus: '#a3a3a3', // neutral-400
+    // Focus colors - Visible but not harsh
+    focus: '#888888',
     
-    // Badge/Accent colors
-    badgeBg: '#404040', // neutral-700
-    badgeText: '#d4d4d4', // neutral-300
-    badgeBorder: '#525252', // neutral-600
+    // Badge/Accent colors - Elevated appearance
+    badgeBg: '#252525',
+    badgeText: '#d0d0d0',
+    badgeBorder: '#353535',
     
-    // Navbar
-    navbarBg: 'rgba(26, 26, 26, 0.7)', // neutral-900/70
-    navbarBorder: '#262626', // neutral-800
-    navActive: '#f5f5f5', // neutral-100
-    navActiveText: '#171717', // neutral-900
+    // Navbar - Glass morphism effect
+    navbarBg: 'rgba(15, 15, 15, 0.8)',
+    navbarBorder: '#1f1f1f',
+    navActive: '#2a2a2a',
+    navActiveText: '#f0f0f0',
     
     // Footer
-    footerText: '#a3a3a3', // neutral-400
+    footerText: '#9a9a9a',
   },
 } as const;
 

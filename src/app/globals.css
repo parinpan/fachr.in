@@ -55,47 +55,47 @@
 }
 
 :root.dark {
-  /* Base colors - Soft black/grey */
-  --color-bg: #1a1a1a;
-  --color-fg: #e5e5e5;
+  /* Base colors - Rich dark with subtle warmth */
+  --color-bg: #0f0f0f;
+  --color-fg: #e8e8e8;
   
-  /* Surface colors */
-  --color-surface: #262626;
-  --color-surface-secondary: rgba(38, 38, 38, 0.5);
+  /* Surface colors - Elevated cards with depth */
+  --color-surface: #1a1a1a;
+  --color-surface-secondary: rgba(26, 26, 26, 0.6);
   
-  /* Border colors */
-  --color-border: #404040;
-  --color-border-light: #262626;
-  --color-border-hover: #525252;
+  /* Border colors - Subtle but defined */
+  --color-border: #2d2d2d;
+  --color-border-light: #1f1f1f;
+  --color-border-hover: #3a3a3a;
   
-  /* Text colors */
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #d4d4d4;
-  --color-text-tertiary: #a3a3a3;
-  --color-text-muted: #737373;
+  /* Text colors - High contrast, easy to read */
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #c8c8c8;
+  --color-text-tertiary: #9a9a9a;
+  --color-text-muted: #6e6e6e;
   
-  /* Interactive colors */
-  --color-interactive: #f5f5f5;
+  /* Interactive colors - Subtle highlights */
+  --color-interactive: #e8e8e8;
   --color-interactive-hover: #ffffff;
-  --color-interactive-bg: #404040;
-  --color-interactive-bg-hover: #525252;
+  --color-interactive-bg: #2a2a2a;
+  --color-interactive-bg-hover: #353535;
   
-  /* Focus colors */
-  --color-focus: #a3a3a3;
+  /* Focus colors - Visible but not harsh */
+  --color-focus: #888888;
   
-  /* Badge colors */
-  --color-badge-bg: #404040;
-  --color-badge-text: #d4d4d4;
-  --color-badge-border: #525252;
+  /* Badge colors - Elevated appearance */
+  --color-badge-bg: #252525;
+  --color-badge-text: #d0d0d0;
+  --color-badge-border: #353535;
   
-  /* Navbar colors */
-  --color-navbar-bg: rgba(26, 26, 26, 0.7);
-  --color-navbar-border: #262626;
-  --color-nav-active: #f5f5f5;
-  --color-nav-active-text: #171717;
+  /* Navbar colors - Glass morphism effect */
+  --color-navbar-bg: rgba(15, 15, 15, 0.8);
+  --color-navbar-border: #1f1f1f;
+  --color-nav-active: #2a2a2a;
+  --color-nav-active-text: #f0f0f0;
   
   /* Footer colors */
-  --color-footer-text: #a3a3a3;
+  --color-footer-text: #9a9a9a;
 }
 
 @theme inline {
