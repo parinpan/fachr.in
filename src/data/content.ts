@@ -211,7 +211,7 @@ export const siteConfig = {
             {
                 name: 'LinkedIn',
                 value: 'Fachrin Aulia Nasution',
-                href: 'https://www.linkedin.com/in/parinpan',
+                href: 'https://www.linkedin.com/in/fachrinfan',
                 type: 'linkedin' as const,
             },
             {
