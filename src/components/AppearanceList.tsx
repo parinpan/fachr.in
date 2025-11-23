@@ -120,29 +120,28 @@ export default function AppearanceList() {
 
                                 {/* Content */}
                                 <div className="flex flex-col flex-grow p-6">
-                                    <div className="flex items-center justify-between mb-3">
-                                        <div className="flex items-center gap-2">
-                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium 
-                                                ${item.type === 'video' ? 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300' :
-                                                    item.type === 'talk' ? 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300' :
-                                                        'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
-                                                }`}>
-                                                {item.type === 'video' && (
-                                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" className="mr-0.5">
-                                                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                                                    </svg>
-                                                )}
-                                                {item.type === 'talk' && <Mic size={12} className="mr-0.5" />}
-                                                {item.type === 'flyer' && <FileText size={12} className="mr-0.5" />}
-                                                {item.platform}
-                                            </span>
-                                            {item.language && (
-                                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                                                    {item.language}
-                                                </span>
+                                    {/* All pills/badges in one row that wraps naturally */}
+                                    <div className="flex items-center gap-2 flex-wrap mb-4">
+                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium 
+                                            ${item.type === 'video' ? 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300' :
+                                                item.type === 'talk' ? 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300' :
+                                                    'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
+                                            }`}>
+                                            {item.type === 'video' && (
+                                                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" className="mr-0.5">
+                                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                                </svg>
                                             )}
-                                        </div>
-                                        <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-text-tertiary)]">
+                                            {item.type === 'talk' && <Mic size={12} className="mr-0.5" />}
+                                            {item.type === 'flyer' && <FileText size={12} className="mr-0.5" />}
+                                            {item.platform}
+                                        </span>
+                                        {item.language && (
+                                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                                                {item.language}
+                                            </span>
+                                        )}
+                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
                                             <Calendar size={12} />
                                             {item.date}
                                         </span>
