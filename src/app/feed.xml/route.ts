@@ -14,19 +14,36 @@ export async function GET() {
     <language>en</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml" />
-    ${posts
-      .map((post) => {
-        return `
+    ${(() => {
+      const allItems = [
+        ...posts.map((post) => ({
+          title: post.title,
+          url: `${siteUrl}/blog/${post.slug}`,
+          date: new Date(post.date),
+          description: post.description,
+          tags: post.tags,
+          type: 'post'
+        })),
+        ...siteConfig.appearances.map((appearance) => ({
+          title: `${appearance.title} (${appearance.type})`,
+          url: appearance.url,
+          date: new Date(appearance.date), // Assumes "Month Year" format works with new Date()
+          description: appearance.description,
+          tags: [appearance.platform, appearance.type],
+          type: 'appearance'
+        }))
+      ].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+      return allItems.map((item) => `
       <item>
-        <title><![CDATA[${post.title}]]></title>
-        <link>${siteUrl}/blog/${post.slug}</link>
-        <guid isPermaLink="true">${siteUrl}/blog/${post.slug}</guid>
-        <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-        <description><![CDATA[${post.description}]]></description>
-        ${post.tags ? post.tags.map((tag: string) => `<category>${tag}</category>`).join('') : ''}
-      </item>`;
-      })
-      .join('')}
+        <title><![CDATA[${item.title}]]></title>
+        <link>${item.url}</link>
+        <guid isPermaLink="${item.type === 'post'}">${item.url}</guid>
+        <pubDate>${item.date.toUTCString()}</pubDate>
+        <description><![CDATA[${item.description}]]></description>
+        ${item.tags ? item.tags.map((tag: string) => `<category>${tag}</category>`).join('') : ''}
+      </item>`).join('');
+    })()}
   </channel>
 </rss>`;
 

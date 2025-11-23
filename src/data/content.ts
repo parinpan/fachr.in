@@ -1,4 +1,8 @@
-export const siteConfig = {
+import { language } from "gray-matter";
+
+import { SiteConfig, AppearanceItem } from './types';
+
+export const siteConfig: SiteConfig = {
     // Personal Information
     personal: {
         name: 'Fachrin Aulia Nasution',
@@ -283,6 +287,63 @@ export const siteConfig = {
         clarityId: 'u9sgieou3d',
     },
 
+    // Media & Appearances Section
+    appearances: [
+        {
+            type: 'video' as const,
+            title: 'Upvest\'s Engineering Day 2025',
+            image: '/images/media/upvest-thumbnail.png',
+            url: 'https://www.youtube.com/watch?v=GvWWQf71hiE',
+            description: 'Upvest\'s Engineering team gathered in Berlin for Engineering Day 2025, a day to collaborate, strengthen personal connections, and dive deep into client needs.',
+            date: 'November 2025',
+            platform: 'YouTube',
+            duration: '2:13',
+            language: 'English'
+        },
+        {
+            type: 'video' as const,
+            title: 'Hands-On Training: Introduction to CAP Theorem on Distributed Database',
+            image: '/images/media/cap-theorem-thumbnail.jpg',
+            url: 'https://www.youtube.com/watch?v=LGl6jW7Sykg',
+            description: 'I delivered a workshop on the CAP Theorem in distributed databases for the Data Science and Artificial Intelligence master\'s program at Universitas Sumaterta Utara.',
+            date: 'March 2023',
+            platform: 'YouTube',
+            duration: '2:32:49',
+            language: 'Indonesian'
+        },
+        {
+            type: 'talk' as const,
+            title: 'Tech Roles in Indonesia\'s Start-Up Ecosystem',
+            image: '/images/media/startup-industry-thumbnail.jpg',
+            url: 'https://www.instagram.com/p/CIAuEeNhMut/',
+            description: 'Discussing career paths and tech roles in Indonesia\'s rapidly growing start-up industry, as part of the university\'s Dies Natalis celebration.',
+            date: 'November 2020',
+            platform: 'Webinar',
+            language: 'Indonesian'
+        },
+        {
+            type: 'talk' as const,
+            title: 'How to Think in Functional Programming',
+            image: '/images/media/facebook-devc-thumbnail.jpg',
+            url: 'https://www.facebook.com/events/554379655443696',
+            description: 'Exploring the paradigm shift from Object-Oriented to Functional Programming. A deep dive into thinking functionally for better code quality and maintainability.',
+            date: 'June 2020',
+            platform: 'Webinar',
+            language: 'Indonesian'
+        },
+    ] as AppearanceItem[],
+
+    // Podcast Section
+    podcasts: [
+        {
+            title: 'Life as a Product Engineer at Gojek',
+            episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator&theme=0',
+            description: 'Sharing experiences and insights from working as a Product Engineer in Indonesia\'s tech startup ecosystem.',
+            date: 'August 2021',
+            language: 'Indonesian',
+        },
+    ],
+
     // Blog Section
     blog: {
         title: 'Journal',
@@ -318,10 +379,10 @@ export const siteConfig = {
     commandMenu: {
         navigation: [
             { name: 'Home', icon: 'Home', id: 'main-content' },
-            { name: 'About', icon: 'User', id: 'about-heading' },
+            { name: 'About', icon: 'Info', id: 'about-heading' },
             { name: 'Experience', icon: 'Briefcase', id: 'experience-heading' },
             { name: 'Projects', icon: 'FolderGit2', id: 'projects-heading' },
-            { name: 'Podcast', icon: 'Headphones', id: 'podcast-heading' },
+            { name: 'Appearances', icon: 'User', path: '/appearances' },
             { name: 'Contact', icon: 'Mail', id: 'contact-heading' },
             { name: 'Blog', icon: 'PenTool', path: '/blog' },
             { name: 'Now', icon: 'Clock', path: '/now' },
@@ -343,5 +404,4 @@ export const siteConfig = {
     },
 };
 
-// Type exports for TypeScript
-export type ContactLinkType = 'email' | 'linkedin' | 'github' | 'twitter';
+

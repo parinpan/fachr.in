@@ -3,17 +3,18 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Home, Clock, PenTool } from 'lucide-react';
+import { Home, Clock, PenTool, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
     const pathname = usePathname();
 
-    const navItems = [ // Renamed 'links' to 'navItems' to match the provided code
-        { path: '/', name: 'Home', icon: Home }, // Changed 'href' to 'path' and 'label' to 'name'
+    const navItems = [
+        { path: '/', name: 'Home', icon: Home },
         { path: '/now', name: 'Now', icon: Clock },
         { path: '/blog', name: 'Blog', icon: PenTool },
+        { path: '/appearances', name: 'Appearances', icon: User },
     ];
 
     const [isCommandOpen, setIsCommandOpen] = useState(false);
