@@ -94,7 +94,7 @@ export const siteConfig: SiteConfig = {
                 'Led the technical analysis and development of Gojek Singapore\'s Cancellation Fee improvement. It resolved issues with order cancellation caused by incorrect fare calculations. Changed the mechanism for calculating cancellation fees, and greatly reduced complaint tickets raised by 3%.',
                 'Led the development of Driver Karma V2, a feature for communicating information about the driver partner\'s achievement, feedback, and vehicle hygiene to customers. They feel safer to take a ride as a consequence of knowing the driver better.',
                 'Researched and developed a machine learning model using BERT algorithm to predict the chat intent between drivers and riders. It helped Gojek in reducing the order cancellation rate by 3% and saved thousands of dollars in Singapore.',
-                'Initiated and developed an automated testing framework to verify published Kafka messages triggered by some events. It\'s widely used and attached to the CI/CD pipeline across Gojek product groups like: Transport, Gofood, and Logistic.',
+                'Initiated and developed an automated testing framework to verify published Kafka messages. It\'s widely used and attached to the CI/CD pipeline across Gojek product groups like: Transport, Gofood, and Logistic.',
                 'Developed a revamped Tipping Widget that revolutionised the user experience on giving drivers a tip. It increased the average tip amount by 100%, and increased the tip frequency by 13%.',
                 'Done various engineering initiatives. E.g: reduced Kafka consumer processing time on service deployment from 1 hour to only 5 minutes. The consumer processes roughly ~10K messages per minute.',
             ],
@@ -288,50 +288,55 @@ export const siteConfig: SiteConfig = {
     },
 
     // Media & Appearances Section
-    appearances: [
-        {
-            type: 'video' as const,
-            title: 'Upvest\'s Engineering Day 2025',
-            image: '/images/media/upvest-thumbnail.png',
-            url: 'https://www.youtube.com/watch?v=GvWWQf71hiE',
-            description: 'Upvest\'s Engineering team gathered in Berlin for Engineering Day 2025, a day to collaborate, strengthen personal connections, and dive deep into client needs.',
-            date: 'November 2025',
-            platform: 'YouTube',
-            duration: '2:13',
-            language: 'English'
-        },
-        {
-            type: 'video' as const,
-            title: 'Hands-On Training: Introduction to CAP Theorem on Distributed Database',
-            image: '/images/media/cap-theorem-thumbnail.jpg',
-            url: 'https://www.youtube.com/watch?v=LGl6jW7Sykg',
-            description: 'I delivered a workshop on the CAP Theorem in distributed databases for the Data Science and Artificial Intelligence master\'s program at Universitas Sumaterta Utara.',
-            date: 'March 2023',
-            platform: 'YouTube',
-            duration: '2:32:49',
-            language: 'Indonesian'
-        },
-        {
-            type: 'talk' as const,
-            title: 'Tech Roles in Indonesia\'s Start-Up Ecosystem',
-            image: '/images/media/startup-industry-thumbnail.jpg',
-            url: 'https://www.instagram.com/p/CIAuEeNhMut/',
-            description: 'Discussing career paths and tech roles in Indonesia\'s rapidly growing start-up industry, as part of the university\'s Dies Natalis celebration.',
-            date: 'November 2020',
-            platform: 'Webinar',
-            language: 'Indonesian'
-        },
-        {
-            type: 'talk' as const,
-            title: 'How to Think in Functional Programming',
-            image: '/images/media/facebook-devc-thumbnail.jpg',
-            url: 'https://www.facebook.com/events/554379655443696',
-            description: 'Exploring the paradigm shift from Object-Oriented to Functional Programming. A deep dive into thinking functionally for better code quality and maintainability.',
-            date: 'June 2020',
-            platform: 'Webinar',
-            language: 'Indonesian'
-        },
-    ] as AppearanceItem[],
+    appearances: {
+        title: 'Appearances',
+        subtitle: 'Talks & Podcasts',
+        description: 'A collection of talks, interviews, and features on software engineering and technology.',
+        items: [
+            {
+                type: 'video' as const,
+                title: 'Upvest\'s Engineering Day 2025',
+                image: '/images/media/upvest-thumbnail.png',
+                url: 'https://www.youtube.com/watch?v=GvWWQf71hiE',
+                description: 'Upvest\'s Engineering team gathered in Berlin for Engineering Day 2025, a day to collaborate, strengthen personal connections, and dive deep into client needs.',
+                date: 'November 2025',
+                platform: 'YouTube',
+                duration: '2:13',
+                language: 'English'
+            },
+            {
+                type: 'video' as const,
+                title: 'Hands-On Training: Introduction to CAP Theorem on Distributed Database',
+                image: '/images/media/cap-theorem-thumbnail.jpg',
+                url: 'https://www.youtube.com/watch?v=LGl6jW7Sykg',
+                description: 'I delivered a workshop on the CAP Theorem in distributed databases for the Data Science and Artificial Intelligence master\'s program at Universitas Sumaterta Utara.',
+                date: 'March 2023',
+                platform: 'YouTube',
+                duration: '2:32:49',
+                language: 'Indonesian'
+            },
+            {
+                type: 'talk' as const,
+                title: 'Tech Roles in Indonesia\'s Start-Up Ecosystem',
+                image: '/images/media/startup-industry-thumbnail.jpg',
+                url: 'https://www.instagram.com/p/CIAuEeNhMut/',
+                description: 'Discussing career paths and tech roles in Indonesia\'s rapidly growing start-up industry, as part of the university\'s Dies Natalis celebration.',
+                date: 'November 2020',
+                platform: 'Webinar',
+                language: 'Indonesian'
+            },
+            {
+                type: 'talk' as const,
+                title: 'How to Think in Functional Programming',
+                image: '/images/media/facebook-devc-thumbnail.jpg',
+                url: 'https://www.facebook.com/events/554379655443696',
+                description: 'Exploring the paradigm shift from Object-Oriented to Functional Programming. A deep dive into thinking functionally for better code quality and maintainability.',
+                date: 'June 2020',
+                platform: 'Webinar',
+                language: 'Indonesian'
+            },
+        ],
+    },
 
     // Podcast Section
     podcasts: [
@@ -348,6 +353,10 @@ export const siteConfig: SiteConfig = {
     blog: {
         title: 'Journal',
         description: 'A collection of thoughts on software engineering and my personal journey.',
+        emptyState: {
+            title: 'Writing in progress',
+            description: "I'm currently crafting some thoughts on engineering, systems, and life. Check back soon!",
+        },
     },
 
     // Now Page
@@ -378,7 +387,7 @@ export const siteConfig: SiteConfig = {
     // Command Menu
     commandMenu: {
         navigation: [
-            { name: 'Home', icon: 'Home', id: 'main-content' },
+            { name: 'Home', icon: 'Home', id: 'main-content', path: '/' },
             { name: 'About', icon: 'Info', id: 'about-heading' },
             { name: 'Experience', icon: 'Briefcase', id: 'experience-heading' },
             { name: 'Projects', icon: 'FolderGit2', id: 'projects-heading' },
@@ -401,6 +410,76 @@ export const siteConfig: SiteConfig = {
     // Footer
     footer: {
         copyrightText: 'Fachrin Aulia Nasution. All rights reserved.',
+    },
+
+    // UI Strings
+    ui: {
+        themeToggle: 'Toggle theme',
+        languageToggle: 'Toggle language',
+        backToTop: 'Back to top',
+        commandMenu: {
+            open: 'Open Command Menu',
+            placeholder: 'Type a command or search...',
+            noResults: 'No results found.',
+            esc: 'ESC',
+            headings: {
+                navigation: 'Navigation',
+                journal: 'Journal',
+                social: 'Social',
+                general: 'General',
+            },
+            actions: {
+                copyEmail: 'Copy Email',
+                sourceCode: 'View Source Code',
+            },
+        },
+        githubRepos: 'Github Repositories',
+        githubActions: {
+            viewAllRepos: 'View all repositories',
+            viewRepoOnGithub: 'View {name} on GitHub',
+        },
+        workList: {
+            featuredProjects: 'Featured Projects',
+            partOfWork: 'Part of my work at',
+            closeDetails: 'Close project details',
+            labels: {
+                project: 'Project',
+                description: 'Description',
+                role: 'My Role',
+                stack: 'Tech Stack',
+            },
+        },
+        appearanceList: {
+            scrollLeft: 'Scroll left',
+            scrollRight: 'Scroll right',
+            types: {
+                video: 'Video',
+                talk: 'Talk',
+                article: 'Article',
+            },
+            actions: {
+                watchVideo: 'Watch Video',
+                viewTalk: 'View Talk',
+                viewDetails: 'View Details',
+            },
+        },
+        experience: {
+            title: 'Professional Experience',
+            expand: 'Expand',
+            collapse: 'Collapse',
+            technologies: 'Technologies',
+            more: 'more',
+        },
+        now: {
+            update: 'Update',
+        },
+        notFound: {
+            title: '404',
+            subtitle: 'Not Found',
+            description: "The requested resource could not be found on this server.",
+            backButton: 'cd /home',
+            buttonText: 'Return Home',
+        },
     },
 };
 

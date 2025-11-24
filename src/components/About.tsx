@@ -1,7 +1,10 @@
-import { siteConfig } from '@/data/content';
+'use client';
+
+import { useContent } from '@/hooks/useContent';
 import { Hand, ArrowRight } from 'lucide-react';
 
 export default function About() {
+    const siteConfig = useContent();
     return (
         <section className="mb-12" aria-labelledby="about-heading">
             <h3 id="about-heading" className="text-2xl font-bold mb-4 text-gray-900 dark:text-neutral-100">{siteConfig.about.title}</h3>

@@ -71,10 +71,7 @@ export type PodcastItem = {
     language?: string;
 };
 
-export type BlogSection = {
-    title: string;
-    description: string;
-};
+
 
 export type NowSectionItem = {
     title: string;
@@ -153,6 +150,91 @@ export type FooterConfig = {
     copyrightText: string;
 };
 
+export type AppearancesSection = {
+    title: string;
+    subtitle: string;
+    description: string;
+    items: AppearanceItem[];
+};
+
+export type BlogSection = {
+    title: string;
+    description: string;
+    emptyState: {
+        title: string;
+        description: string;
+    };
+};
+
+export type UIConfig = {
+    themeToggle: string;
+    languageToggle: string;
+    backToTop: string;
+    commandMenu: {
+        open: string;
+        placeholder: string;
+        noResults: string;
+        esc: string;
+        headings: {
+            navigation: string;
+            journal: string;
+            social: string;
+            general: string;
+        };
+        actions: {
+            copyEmail: string;
+            sourceCode: string;
+        };
+    };
+    githubRepos: string;
+    githubActions: {
+        viewAllRepos: string;
+        viewRepoOnGithub: string;
+    };
+    workList: {
+        featuredProjects: string;
+        partOfWork: string;
+        closeDetails: string;
+        labels: {
+            project: string;
+            description: string;
+            role: string;
+            stack: string;
+        };
+    };
+    appearanceList: {
+        scrollLeft: string;
+        scrollRight: string;
+        types: {
+            video: string;
+            talk: string;
+            article: string;
+        };
+        actions: {
+            watchVideo: string;
+            viewTalk: string;
+            viewDetails: string;
+        };
+    };
+    experience: {
+        title: string;
+        expand: string;
+        collapse: string;
+        technologies: string;
+        more: string;
+    };
+    now: {
+        update: string;
+    };
+    notFound: {
+        title: string;
+        subtitle: string;
+        description: string;
+        backButton: string;
+        buttonText: string;
+    };
+};
+
 export type SiteConfig = {
     personal: PersonalInfo;
     hero: HeroSection;
@@ -161,7 +243,7 @@ export type SiteConfig = {
     works: ProjectItem[];
     podcast: { title: string; episodeUrl: string };
     podcasts: PodcastItem[];
-    appearances: AppearanceItem[];
+    appearances: AppearancesSection;
     blog: BlogSection;
     now: NowSection;
     contact: ContactSection;
@@ -171,4 +253,5 @@ export type SiteConfig = {
     analytics: AnalyticsConfig;
     commandMenu: CommandMenuConfig;
     footer: FooterConfig;
+    ui: UIConfig;
 };

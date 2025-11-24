@@ -1,11 +1,14 @@
 'use client';
 
-import { siteConfig } from '@/data/content';
-
+import { useContent } from '@/hooks/useContent';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { buildSpotifyThemeUrl } from '@/lib/formatters';
+import { Globe } from 'lucide-react';
+import Badge from '@/components/ui/Badge';
 
 export default function Podcast() {
+    const siteConfig = useContent();
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -16,20 +19,20 @@ export default function Podcast() {
     return (
         <section className="mb-12" aria-labelledby="podcast-heading">
             <h3 id="podcast-heading" className="text-2xl font-bold mb-8 text-gray-900 dark:text-neutral-100">
-                Podcasts
+                {siteConfig.podcast.title}
             </h3>
-            <div className="grid grid-cols-1 gap-8">
-                {siteConfig.podcasts.map((podcast, index) => (
-                    <div key={index} className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-neutral-700 shadow-sm">
-                        <div className="p-6 border-b border-gray-100 dark:border-neutral-700">
+            <div className="grid grid-cols-1 gap-6">
+                {siteConfig.podcasts.map((podcast: any, index: number) => (
+                    <div key={index} className="group relative bg-gray-50 dark:bg-neutral-900 rounded-2xl p-6 border border-gray-200 dark:border-neutral-800 shadow-sm hover:shadow-md transition-all">
+                        <div className="border-b border-gray-200 dark:border-neutral-800 pb-6 mb-6">
                             <div className="flex items-center justify-between mb-2">
                                 <h4 className="text-lg font-bold text-gray-900 dark:text-neutral-100">
                                     {podcast.title}
                                 </h4>
                                 {podcast.language && (
-                                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                                    <Badge variant="language" icon={<Globe size={12} />}>
                                         {podcast.language}
-                                    </span>
+                                    </Badge>
                                 )}
                             </div>
                             <p className="text-sm text-gray-600 dark:text-neutral-400">
@@ -39,7 +42,7 @@ export default function Podcast() {
                         <div className="bg-gray-50 dark:bg-black rounded-b-2xl overflow-hidden">
                             {mounted ? (
                                 <iframe
-                                    src={`${podcast.episodeUrl}&theme=${resolvedTheme === 'dark' ? '1' : '0'}`}
+                                    src={buildSpotifyThemeUrl(podcast.episodeUrl, resolvedTheme === 'dark')}
                                     width="100%"
                                     height="352"
                                     frameBorder="0"

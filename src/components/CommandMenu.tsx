@@ -4,7 +4,8 @@ import * as React from 'react';
 import { Command } from 'cmdk';
 import { useRouter } from 'next/navigation';
 import * as Icons from 'lucide-react';
-import { siteConfig } from '@/data/content';
+import { useContent } from '@/hooks/useContent';
+import { handleNavigationAction, handleGeneralAction } from '@/lib/command-helpers';
 
 const getIcon = (iconName: string) => {
     const Icon = (Icons as any)[iconName];
@@ -19,6 +20,7 @@ interface CommandMenuProps {
 }
 
 export default function CommandMenu({ posts = [] }: CommandMenuProps) {
+    const siteConfig = useContent();
     const [open, setOpen] = React.useState(false);
     const router = useRouter();
 
@@ -42,27 +44,6 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
         command();
     }, []);
 
-    const handleNavigation = (item: any) => {
-        if (item.path) {
-            runCommand(() => router.push(item.path));
-        } else if (item.id) {
-            runCommand(() => {
-                // If we're not on home page, go there first
-                if (window.location.pathname !== '/') {
-                    router.push('/');
-                    // Wait for navigation then scroll
-                    setTimeout(() => {
-                        const el = document.getElementById(item.id);
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }, 500);
-                } else {
-                    const el = document.getElementById(item.id);
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        }
-    };
-
     if (!open) return null;
 
     return (
@@ -73,15 +54,14 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
             />
             <div className="relative w-full max-w-[640px] bg-white dark:bg-neutral-800 rounded-xl shadow-2xl border border-gray-200 dark:border-neutral-700 overflow-hidden animate-in zoom-in-95 duration-200 z-10">
                 <Command
-                    label="Global Command Menu"
+                    label={siteConfig.ui.commandMenu.open}
                     className="w-full"
                     loop
                 >
-                    {/* ... (Command.Input remains the same) */}
                     <div className="flex items-center border-b border-gray-100 dark:border-neutral-700 px-4">
                         <Icons.Search className="w-5 h-5 text-gray-400 dark:text-neutral-500 mr-2" />
                         <Command.Input
-                            placeholder="Type a command or search..."
+                            placeholder={siteConfig.ui.commandMenu.placeholder}
                             className="w-full h-14 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none ring-0 text-lg text-gray-900 dark:text-neutral-100 placeholder:text-gray-400 dark:placeholder:text-neutral-500 bg-transparent shadow-none appearance-none"
                             style={{ boxShadow: 'none', outline: 'none' }}
                         />
@@ -89,20 +69,20 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
                             className="text-xs font-medium text-gray-400 dark:text-neutral-500 border border-gray-200 dark:border-neutral-700 rounded px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700"
                             onClick={() => setOpen(false)}
                         >
-                            ESC
+                            {siteConfig.ui.commandMenu.esc}
                         </div>
                     </div>
 
                     <Command.List className="max-h-[300px] overflow-y-auto overflow-x-hidden p-2 scroll-py-2">
                         <Command.Empty className="py-6 text-center text-sm text-gray-500 dark:text-neutral-400">
-                            No results found.
+                            {siteConfig.ui.commandMenu.noResults}
                         </Command.Empty>
 
-                        <Command.Group heading="Navigation" className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
+                        <Command.Group heading={siteConfig.ui.commandMenu.headings.navigation} className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
                             {siteConfig.commandMenu.navigation.map((item) => (
                                 <Command.Item
                                     key={item.name}
-                                    onSelect={() => handleNavigation(item)}
+                                    onSelect={() => runCommand(() => handleNavigationAction(item, router, () => { }))}
                                     className="flex items-center gap-3 px-3 py-3 text-sm text-gray-700 dark:text-neutral-300 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 hover:text-gray-900 dark:hover:text-neutral-100 aria-selected:bg-gray-100 dark:aria-selected:bg-neutral-700 aria-selected:text-gray-900 dark:aria-selected:text-neutral-100 transition-colors"
                                 >
                                     {getIcon(item.icon)}
@@ -115,8 +95,8 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
 
                         {posts.length > 0 && (
                             <>
-                                <Command.Group heading="Journal" className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
-                                    {posts.map((post) => (
+                                <Command.Group heading={siteConfig.ui.commandMenu.headings.journal} className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
+                                    {posts.map((post: { slug: string; title: string }) => (
                                         <Command.Item
                                             key={post.slug}
                                             onSelect={() => runCommand(() => router.push(`/blog/${post.slug}`))}
@@ -131,8 +111,7 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
                             </>
                         )}
 
-                        <Command.Group heading="Social" className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
-                            {/* ... (social items remain the same) */}
+                        <Command.Group heading={siteConfig.ui.commandMenu.headings.social} className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
                             {siteConfig.commandMenu.social.map((item) => (
                                 <Command.Item
                                     key={item.name}
@@ -147,8 +126,7 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
 
                         <Command.Separator className="h-px bg-gray-100 dark:bg-neutral-700 my-3 mx-2" />
 
-                        <Command.Group heading="General" className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
-                            {/* ... (general items remain the same) */}
+                        <Command.Group heading={siteConfig.ui.commandMenu.headings.general} className="text-xs font-medium text-gray-400 dark:text-neutral-500 px-2 py-2 mb-2">
                             {siteConfig.commandMenu.general.map((item) => (
                                 <Command.Item
                                     key={item.name}
@@ -163,7 +141,7 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
                                     className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-neutral-300 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 hover:text-gray-900 dark:hover:text-neutral-100 aria-selected:bg-gray-100 dark:aria-selected:bg-neutral-700 aria-selected:text-gray-900 dark:aria-selected:text-neutral-100 transition-colors"
                                 >
                                     {getIcon(item.icon)}
-                                    <span>{item.name}</span>
+                                    <span>{item.action === 'copy_email' ? siteConfig.ui.commandMenu.actions.copyEmail : item.name === 'View Source Code' ? siteConfig.ui.commandMenu.actions.sourceCode : item.name}</span>
                                 </Command.Item>
                             ))}
                         </Command.Group>

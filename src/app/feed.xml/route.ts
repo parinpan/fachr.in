@@ -24,7 +24,7 @@ export async function GET() {
           tags: post.tags,
           type: 'post'
         })),
-        ...siteConfig.appearances.map((appearance) => ({
+        ...siteConfig.appearances.items.map((appearance: any) => ({
           title: `${appearance.title} (${appearance.type})`,
           url: appearance.url,
           date: new Date(appearance.date), // Assumes "Month Year" format works with new Date()

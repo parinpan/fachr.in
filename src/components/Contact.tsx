@@ -1,28 +1,20 @@
 'use client';
 
-import { Mail, Linkedin, Github, Twitter, Phone } from 'lucide-react';
-import { siteConfig } from '@/data/content';
-
-const contactLinks = [
-    {
-        icon: Mail,
-        ...siteConfig.contact.links.find(l => l.type === 'email')!
-    },
-    {
-        icon: Linkedin,
-        ...siteConfig.contact.links.find(l => l.type === 'linkedin')!
-    },
-    {
-        icon: Github,
-        ...siteConfig.contact.links.find(l => l.type === 'github')!
-    },
-    {
-        icon: Twitter,
-        ...siteConfig.contact.links.find(l => l.type === 'twitter')!
-    }
-];
+import { Phone } from 'lucide-react';
+import { useContent } from '@/hooks/useContent';
+import { CONTACT_ICONS, ContactType } from '@/lib/icon-maps';
 
 export default function Contact() {
+    const siteConfig = useContent();
+
+    const contactLinks = siteConfig.contact.links.map((link: any) => {
+        const IconComponent = CONTACT_ICONS[link.type as ContactType];
+        return {
+            ...link,
+            icon: IconComponent,
+        };
+    });
+
     return (
         <section className="mb-12" aria-labelledby="contact-heading">
             <h3 id="contact-heading" className="text-2xl font-bold mb-6 text-gray-900 dark:text-neutral-100">{siteConfig.contact.title}</h3>

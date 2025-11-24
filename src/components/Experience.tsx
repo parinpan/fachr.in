@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Building2, MapPin, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
-import { siteConfig } from '@/data/content';
+import Image from 'next/image';
+import { ChevronDown, ChevronUp, MapPin, Calendar, Building2 } from 'lucide-react';
+import { useContent } from '@/hooks/useContent';
+import Badge from '@/components/ui/Badge';
 
 export default function Experience() {
+    const siteConfig = useContent();
     const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set([0])); // First item expanded by default
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -23,12 +26,12 @@ export default function Experience() {
     return (
         <section className="mb-12" aria-labelledby="experience-heading">
             <h3 id="experience-heading" className="text-2xl font-bold mb-6 text-[var(--color-text-primary)]">
-                Professional Experience
+                {siteConfig.ui.experience.title}
             </h3>
 
             <div className="relative">
                 <div className="space-y-6">
-                    {siteConfig.experience.map((exp, index) => {
+                    {siteConfig.experience.map((exp: any, index: number) => {
                         const expanded = isExpanded(index);
 
                         return (
@@ -70,7 +73,7 @@ export default function Experience() {
                                                     hover:text-[var(--color-text-primary)]
                                                     hover:bg-[var(--color-interactive-bg)]
                                                 `}
-                                                aria-label={expanded ? 'Collapse' : 'Expand'}
+                                                aria-label={expanded ? siteConfig.ui.experience.collapse : siteConfig.ui.experience.expand}
                                             >
                                                 {expanded ? (
                                                     <ChevronUp size={20} />
@@ -98,7 +101,7 @@ export default function Experience() {
                                         <div className="p-6 pt-5 animate-in fade-in slide-in-from-top-2 duration-300">
                                             {/* Description list with improved typography */}
                                             <ul className="space-y-3.5 mb-6">
-                                                {exp.description.map((desc, i) => (
+                                                {exp.description.map((desc: string, i: number) => (
                                                     <li
                                                         key={i}
                                                         className="flex items-start gap-3 text-[var(--color-text-secondary)] text-[15px] leading-relaxed"
@@ -112,16 +115,13 @@ export default function Experience() {
                                             {/* Technologies section */}
                                             <div className="pt-4 border-t border-[var(--color-border-light)]">
                                                 <p className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-3">
-                                                    Technologies
+                                                    {siteConfig.ui.experience.technologies}
                                                 </p>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {exp.techStack.map((tech) => (
-                                                        <span
-                                                            key={tech}
-                                                            className="px-3 py-1.5 text-xs font-medium bg-[var(--color-badge-bg)] text-[var(--color-badge-text)] rounded-lg border border-[var(--color-badge-border)] transition-colors hover:bg-[var(--color-interactive-bg-hover)]"
-                                                        >
+                                                    {exp.techStack.map((tech: string) => (
+                                                        <Badge key={tech} variant="tech">
                                                             {tech}
-                                                        </span>
+                                                        </Badge>
                                                     ))}
                                                 </div>
                                             </div>
@@ -136,17 +136,14 @@ export default function Experience() {
                                             </p>
                                             <div className="mt-4 pt-4 border-t border-[var(--color-border-light)]">
                                                 <div className="flex flex-wrap gap-2">
-                                                    {exp.techStack.slice(0, 4).map((tech) => (
-                                                        <span
-                                                            key={tech}
-                                                            className="px-2.5 py-1 text-xs font-medium bg-[var(--color-badge-bg)] text-[var(--color-badge-text)] rounded-md"
-                                                        >
+                                                    {exp.techStack.slice(0, 4).map((tech: string) => (
+                                                        <Badge key={tech} variant="tech">
                                                             {tech}
-                                                        </span>
+                                                        </Badge>
                                                     ))}
                                                     {exp.techStack.length > 4 && (
                                                         <span className="px-2.5 py-1 text-xs font-medium text-[var(--color-text-tertiary)]">
-                                                            +{exp.techStack.length - 4} more
+                                                            +{exp.techStack.length - 4} {siteConfig.ui.experience.more}
                                                         </span>
                                                     )}
                                                 </div>
