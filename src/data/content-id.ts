@@ -4,7 +4,7 @@ export const siteConfigId: SiteConfig = {
     // Personal Information
     personal: {
         name: 'Fachrin Aulia Nasution',
-        tagline: 'Perekayasa Perangkat Lunak • Pembelajar Sepanjang Hayat',
+        tagline: 'Insinyur Perangkat Lunak • Pembelajar Sepanjang Hayat',
         email: 'hi@fachr.in',
         location: 'Berlin, Jerman',
         profileImage: '/images/fachrin-memoji.jpg',
@@ -13,7 +13,7 @@ export const siteConfigId: SiteConfig = {
     // Hero Section - Current Positions & Past Roles
     hero: {
         title: 'Fachrin Aulia Nasution',
-        subtitle: 'Perekayasa Perangkat Lunak dan Pembelajar Sepanjang Hayat',
+        subtitle: 'Insinyur Perangkat Lunak dan Pembelajar Sepanjang Hayat',
         image: '/images/fachrin-memoji.jpg',
         badges: [
             {
@@ -22,11 +22,11 @@ export const siteConfigId: SiteConfig = {
             },
             {
                 icon: 'https://choco.com/static/images/favicon-32x32.png',
-                text: 'Mantan Perekayasa Perangkat Lunak Senior @ Choco',
+                text: 'Mantan Insinyur Perangkat Lunak Senior @ Choco',
             },
             {
                 icon: 'https://www.deliveryhero.com/wp-content/themes/DeliveryHero/assets/img/icons/dh-favicon.ico',
-                text: 'Mantan Perekayasa Perangkat Lunak @ Delivery Hero',
+                text: 'Mantan Insinyur Perangkat Lunak @ Delivery Hero',
             },
             {
                 icon: 'https://www.gotocompany.com/favicon.png',
@@ -39,7 +39,7 @@ export const siteConfigId: SiteConfig = {
     about: {
         title: 'Tentang',
         greeting: "Hai, saya Fachrin",
-        description: "Saya seorang perekayasa perangkat lunak yang tinggal di Berlin, Jerman. Kesehariannya berkutat dengan teknologi mutakhir dan membangun sistem perangkat lunak yang dapat berkembang pesat untuk perusahaan rintisan hingga korporasi besar. Jika ingin mengobrol atau bekerja sama,",
+        description: "Saya seorang insinyur perangkat lunak yang tinggal di Berlin, Jerman. Kesehariannya berkutat dengan teknologi mutakhir dan membangun sistem perangkat lunak yang dapat berkembang pesat untuk perusahaan rintisan hingga korporasi besar. Jika ingin mengobrol atau bekerja sama,",
         cta: {
             text: "mari terhubung",
             link: '#contact-heading',
@@ -63,7 +63,7 @@ export const siteConfigId: SiteConfig = {
         },
         {
             company: 'Choco',
-            role: 'Perekayasa Perangkat Lunak Senior',
+            role: 'Insinyur Perangkat Lunak Senior',
             location: 'Berlin, Jerman',
             period: 'Mei 2023 – Okt 2023',
             description: [
@@ -74,7 +74,7 @@ export const siteConfigId: SiteConfig = {
         },
         {
             company: 'Delivery Hero',
-            role: 'Perekayasa Perangkat Lunak II',
+            role: 'Insinyur Perangkat Lunak II',
             location: 'Berlin, Jerman',
             period: 'Mei 2022 – Mei 2023',
             description: [
@@ -113,7 +113,7 @@ export const siteConfigId: SiteConfig = {
         },
         {
             company: 'Tokopedia',
-            role: 'Perekayasa Perangkat Lunak L3',
+            role: 'Insinyur Perangkat Lunak L3',
             location: 'Jakarta, Indonesia',
             period: 'Apr 2019 – Mar 2020',
             description: [
