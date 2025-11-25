@@ -15,7 +15,7 @@ export default function WorkList() {
     return (
         <section className="mb-12" aria-labelledby="projects-heading">
             <h3 id="projects-heading" className="text-2xl font-bold mb-6 text-gray-900 dark:text-neutral-100">{siteConfig.ui.workList.featuredProjects}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {siteConfigContent.works.map((work: any, index: number) => (
                     <div
                         key={index}
