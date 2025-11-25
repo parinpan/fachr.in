@@ -39,7 +39,7 @@ export const siteConfigId: SiteConfig = {
     about: {
         title: 'Tentang',
         greeting: "Hai, saya Fachrin",
-        description: "Saya seorang perekayasa perangkat lunak yang tinggal di Berlin, Jerman. Kesehariannya berkutat dengan teknologi mutakhir dan membangun sistem perangkat lunak yang dapat berkembang pesat untuk perusahaan rintisan hingga korporasi besar. Jika ingin mengobrol atau bekerja sama,",
+        description: "Saya seorang insinyur perangkat lunak yang tinggal di Berlin, Jerman. Kesehariannya berkutat dengan teknologi mutakhir dan membangun sistem perangkat lunak yang dapat berkembang pesat untuk perusahaan rintisan hingga korporasi besar. Jika ingin mengobrol atau bekerja sama,",
         cta: {
             text: "mari terhubung",
             link: '#contact-heading',
