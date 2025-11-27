@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, ReactNode, useCallback, useState, useMemo } from 'react';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, type Locale, isValidLocale } from '@/lib/i18n';
 
@@ -47,16 +47,31 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const localeFromPath = pathname?.split('/')[1];
 
   // Determine current language from URL
-  let language: Locale = defaultLocale;
+  let derivedLanguage: Locale = defaultLocale;
   if (localeFromParams && isValidLocale(localeFromParams)) {
-    language = localeFromParams;
+    derivedLanguage = localeFromParams;
   } else if (localeFromPath && isValidLocale(localeFromPath)) {
-    language = localeFromPath;
+    derivedLanguage = localeFromPath;
   }
+
+  // Optimistic state for immediate UI updates
+  const [optimisticLanguage, setOptimisticLanguage] = useState<Locale | null>(null);
+
+  // Use optimistic language if set and different from derived, otherwise use derived
+  // This auto-syncs when derivedLanguage catches up without needing useEffect
+  const language = useMemo(() => {
+    if (optimisticLanguage && optimisticLanguage !== derivedLanguage) {
+      return optimisticLanguage;
+    }
+    return derivedLanguage;
+  }, [optimisticLanguage, derivedLanguage]);
 
   const setLanguage = useCallback(
     (lang: Locale) => {
       const currentPath = pathname || '/';
+
+      // Immediately update UI with optimistic state
+      setOptimisticLanguage(lang);
 
       // Persist language preference in cookie
       document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;

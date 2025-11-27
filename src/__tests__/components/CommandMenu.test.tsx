@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import CommandMenu from '@/components/CommandMenu';
 import { useRouter } from 'next/navigation';
 import { useContent } from '@/hooks/useContent';

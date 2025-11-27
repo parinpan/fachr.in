@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { LanguageProvider, useLanguage } from '@/context/LanguageContext';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
