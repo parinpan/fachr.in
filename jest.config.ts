@@ -17,10 +17,10 @@ const config: Config = {
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   coverageThreshold: {
     global: {
-      statements: 50,
-      branches: 50,
-      functions: 50,
-      lines: 50,
+      statements: 90,
+      branches: 85,
+      functions: 80,
+      lines: 90,
     },
   },
   collectCoverageFrom: [
@@ -30,6 +30,9 @@ const config: Config = {
     '!src/**/__tests__/**',
     '!src/app/**/layout.tsx',
     '!src/app/**/page.tsx',
+    // Type definition files don't need coverage
+    '!src/data/types.ts',
+    '!src/types/**',
   ],
   coverageReporters: ['text', 'lcov', 'html', 'json-summary'],
 };
