@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useContent } from '@/hooks/useContent';
+import type { Badge as BadgeType } from '@/data/types';
 
 export default function Hero() {
     const siteConfig = useContent();
@@ -24,7 +25,7 @@ export default function Hero() {
                     {siteConfig.hero.subtitle}
                 </h2>
                 <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
-                    {siteConfig.hero.badges.map((badge: any, index: number) => (
+                    {siteConfig.hero.badges.map((badge: BadgeType, index: number) => (
                         <div key={index} className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700">
                             <Image
                                 src={badge.icon}
@@ -40,21 +41,5 @@ export default function Hero() {
 
             </div>
         </div>
-    );
-}
-
-function Badge({ icon, text }: { icon: string; text: string }) {
-    return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#FAFAFA] dark:bg-neutral-800 text-sm font-medium text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-700 hover:bg-[#F5F5F5] dark:hover:bg-neutral-600 transition-colors cursor-default">
-            <Image
-                src={icon}
-                alt=""
-                width={16}
-                height={16}
-                className="mr-2"
-                unoptimized={icon.endsWith('.ico')}
-            />
-            {text}
-        </span>
     );
 }

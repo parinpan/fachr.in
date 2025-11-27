@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import StructuredData from '@/components/StructuredData';
@@ -9,11 +8,6 @@ import Clarity from '@/components/Clarity';
 import BackToTop from '@/components/BackToTop';
 
 import { siteConfig } from '@/data/content';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fachr.in'),
@@ -93,7 +87,7 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="id" href="https://fachr.in/id" />
         <link rel="alternate" hrefLang="x-default" href="https://fachr.in" />
       </head>
-      <body className={inter.className}>
+      <body className="font-sans">
         <Providers>
           <CommandMenu posts={posts} />
           <ErrorBoundary>

@@ -5,9 +5,16 @@ import { useRef } from 'react';
 import { ChevronLeft, ChevronRight, ExternalLink, Calendar, Globe } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 import { useScroll } from '@/hooks/useScroll';
-import { getAppearanceIcon } from '@/lib/icon-maps';
 import { SCROLL_THRESHOLDS } from '@/lib/constants';
 import Badge from '@/components/ui/Badge';
+import type { AppearanceItem } from '@/data/types';
+
+/** Get the action label for an appearance type */
+function getActionLabel(type: AppearanceItem['type'], labels: { watchVideo: string; viewTalk: string; viewDetails: string }): string {
+    if (type === 'video') return labels.watchVideo;
+    if (type === 'talk') return labels.viewTalk;
+    return labels.viewDetails;
+}
 
 export default function AppearanceList() {
     const siteConfig = useContent();
@@ -46,15 +53,8 @@ export default function AppearanceList() {
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 onScroll={checkScroll}
             >
-                {siteConfig.appearances.items.map((appearance: any, index: number) => {
-                    const Icon = getAppearanceIcon(appearance.type);
-
-                    // Get translatable type label
-                    const typeLabel = appearance.type === 'video'
-                        ? siteConfig.ui.appearanceList.types.video
-                        : appearance.type === 'talk'
-                            ? siteConfig.ui.appearanceList.types.talk
-                            : siteConfig.ui.appearanceList.types.article;
+                {siteConfig.appearances.items.map((appearance: AppearanceItem, index: number) => {
+                    const actionLabel = getActionLabel(appearance.type, siteConfig.ui.appearanceList.actions);
 
                     return (
                         <a
@@ -63,7 +63,7 @@ export default function AppearanceList() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group flex-shrink-0 w-[350px] snap-start"
-                            aria-label={`${appearance.type === 'video' ? siteConfig.ui.appearanceList.actions.watchVideo : appearance.type === 'talk' ? siteConfig.ui.appearanceList.actions.viewTalk : siteConfig.ui.appearanceList.actions.viewDetails}: ${appearance.title}`}
+                            aria-label={`${actionLabel}: ${appearance.title}`}
                         >
                             <div className="flex flex-col h-full bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-neutral-700 transition-all overflow-hidden">
                                 {/* Thumbnail Section */}
@@ -112,7 +112,7 @@ export default function AppearanceList() {
 
                                     {/* View Link */}
                                     <div className="mt-auto flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-neutral-400 group-hover:text-gray-900 dark:group-hover:text-neutral-100 transition-colors">
-                                        <span>{appearance.type === 'video' ? siteConfig.ui.appearanceList.actions.watchVideo : appearance.type === 'talk' ? siteConfig.ui.appearanceList.actions.viewTalk : siteConfig.ui.appearanceList.actions.viewDetails}</span>
+                                        <span>{actionLabel}</span>
                                         <ExternalLink size={14} />
                                     </div>
                                 </div>

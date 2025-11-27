@@ -1,5 +1,15 @@
 import { getAllPosts } from '@/lib/mdx';
 import { siteConfig } from '@/data/content';
+import type { AppearanceItem } from '@/data/types';
+
+interface FeedItem {
+  title: string;
+  url: string;
+  date: Date;
+  description: string;
+  tags: string[];
+  type: 'post' | 'appearance';
+}
 
 export async function GET() {
   const posts = getAllPosts(['slug', 'title', 'description', 'date', 'tags']);
@@ -15,24 +25,25 @@ export async function GET() {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml" />
     ${(() => {
-      const allItems = [
-        ...posts.map((post) => ({
-          title: post.title,
-          url: `${siteUrl}/blog/${post.slug}`,
-          date: new Date(post.date),
-          description: post.description,
-          tags: post.tags,
-          type: 'post'
-        })),
-        ...siteConfig.appearances.items.map((appearance: any) => ({
-          title: `${appearance.title} (${appearance.type})`,
-          url: appearance.url,
-          date: new Date(appearance.date), // Assumes "Month Year" format works with new Date()
-          description: appearance.description,
-          tags: [appearance.platform, appearance.type],
-          type: 'appearance'
-        }))
-      ].sort((a, b) => b.date.getTime() - a.date.getTime());
+      const postItems: FeedItem[] = posts.map((post) => ({
+        title: post.title as string,
+        url: `${siteUrl}/blog/${post.slug}`,
+        date: new Date(post.date as string),
+        description: post.description as string,
+        tags: post.tags as string[],
+        type: 'post' as const
+      }));
+
+      const appearanceItems: FeedItem[] = siteConfig.appearances.items.map((appearance: AppearanceItem) => ({
+        title: `${appearance.title} (${appearance.type})`,
+        url: appearance.url,
+        date: new Date(appearance.date),
+        description: appearance.description,
+        tags: [appearance.platform, appearance.type],
+        type: 'appearance' as const
+      }));
+
+      const allItems = [...postItems, ...appearanceItems].sort((a, b) => b.date.getTime() - a.date.getTime());
 
       return allItems.map((item) => `
       <item>

@@ -1,4 +1,4 @@
-import { SiteConfig, AppearanceItem } from './types';
+import { SiteConfig } from './types';
 
 export const siteConfigId: SiteConfig = {
     // Personal Information

@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import LanguageToggle from './LanguageToggle';
 import { useContent } from '@/hooks/useContent';
 import ThemeToggle from './ThemeToggle';
 import { NAV_ITEMS, getNavItemActiveState } from '@/lib/navigation';
+import type { CommandMenuItem } from '@/data/types';
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -15,16 +16,13 @@ export default function Navbar() {
 
     const navItems = NAV_ITEMS.map(item => ({
         ...item,
-        name: siteConfig.commandMenu.navigation.find((n: any) => n.path === item.path)?.name || item.path
+        name: siteConfig.commandMenu.navigation.find((n: CommandMenuItem) => n.path === item.path)?.name || item.path
     }));
-
-    const [isCommandOpen, setIsCommandOpen] = useState(false);
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
             if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
-                setIsCommandOpen((open) => !open);
             }
         };
         document.addEventListener('keydown', down);

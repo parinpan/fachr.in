@@ -5,10 +5,14 @@ import { Command } from 'cmdk';
 import { useRouter } from 'next/navigation';
 import * as Icons from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
-import { handleNavigationAction, handleGeneralAction } from '@/lib/command-helpers';
+import { handleNavigationAction } from '@/lib/command-helpers';
+import type { LucideIcon } from 'lucide-react';
 
-const getIcon = (iconName: string) => {
-    const Icon = (Icons as any)[iconName];
+type IconComponent = LucideIcon;
+
+const getIcon = (iconName: string): React.ReactElement => {
+    const IconMap = Icons as unknown as Record<string, IconComponent>;
+    const Icon = IconMap[iconName];
     return Icon ? <Icon className="w-4 h-4" /> : <Icons.Circle className="w-4 h-4" />;
 };
 

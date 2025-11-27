@@ -2,19 +2,27 @@
 
 import { useContent } from '@/hooks/useContent';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { buildSpotifyThemeUrl } from '@/lib/formatters';
 import { Globe } from 'lucide-react';
 import Badge from '@/components/ui/Badge';
+import type { PodcastItem } from '@/data/types';
+
+/** Subscribe function for useSyncExternalStore - always returns noop since we only need initial mount state */
+const subscribeNoop = () => () => {};
+
+/** Get server snapshot - always false on server */
+const getServerSnapshot = () => false;
+
+/** Get client snapshot - always true on client */
+const getClientSnapshot = () => true;
 
 export default function Podcast() {
     const siteConfig = useContent();
     const { resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    
+    // Use useSyncExternalStore for hydration-safe mounting detection
+    const mounted = useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
     return (
         <section className="mb-12" aria-labelledby="podcast-heading">
@@ -22,7 +30,7 @@ export default function Podcast() {
                 {siteConfig.podcast.title}
             </h3>
             <div className="grid grid-cols-1 gap-6">
-                {siteConfig.podcasts.map((podcast: any, index: number) => (
+                {siteConfig.podcasts.map((podcast: PodcastItem, index: number) => (
                     <div key={index} className="group relative bg-gray-50 dark:bg-neutral-900 rounded-2xl p-6 border border-gray-200 dark:border-neutral-800 shadow-sm hover:shadow-md transition-all">
                         <div className="border-b border-gray-200 dark:border-neutral-800 pb-6 mb-6">
                             <div className="flex items-center justify-between mb-2">

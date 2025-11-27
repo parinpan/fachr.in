@@ -1,19 +1,26 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 import { useContent } from '@/hooks/useContent';
 
+/** Subscribe function for useSyncExternalStore - always returns noop since we only need initial mount state */
+const subscribeNoop = () => () => {};
+
+/** Get server snapshot - always false on server */
+const getServerSnapshot = () => false;
+
+/** Get client snapshot - always true on client */
+const getClientSnapshot = () => true;
+
 export default function ThemeToggle() {
-    const { theme, setTheme, resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
+    const { setTheme, resolvedTheme } = useTheme();
     const siteConfig = useContent();
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    // Use useSyncExternalStore for hydration-safe mounting detection
+    const mounted = useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
     if (!mounted) {
         return <div className="w-9 h-9" />; // Placeholder to avoid layout shift
