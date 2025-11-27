@@ -2,6 +2,18 @@ import { getAllPosts } from '@/lib/mdx';
 import { siteConfig } from '@/data/content';
 
 /**
+ * Escape special XML characters to prevent XML injection
+ */
+function escapeXml(unsafe: string): string {
+    return unsafe
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+
+/**
  * Enhanced Sitemap Generator
  * SEO Best Practice - helps search engines discover and index pages
  * Includes language alternates for multilingual content (EN/ID)
@@ -9,11 +21,11 @@ import { siteConfig } from '@/data/content';
  */
 export async function GET() {
     const posts = getAllPosts(['slug', 'date']);
-    const siteUrl = siteConfig.seo.url;
+    const siteUrl = escapeXml(siteConfig.seo.url);
 
     // Generate blog post URLs with hreflang alternates
     const blogPostsXml = posts.map((post) => {
-        const postUrl = `${siteUrl}/blog/${post.slug}`;
+        const postUrl = escapeXml(`${siteConfig.seo.url}/blog/${post.slug}`);
         const lastMod = new Date(post.date).toISOString();
         return `
     <url>
