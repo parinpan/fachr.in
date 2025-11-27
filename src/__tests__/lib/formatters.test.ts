@@ -20,14 +20,14 @@ describe('formatDate', () => {
 describe('buildSpotifyThemeUrl', () => {
   const baseUrl = 'https://open.spotify.com/embed/episode/12345';
 
-  it('appends theme=1 for dark mode', () => {
+  it('appends theme=0 for dark mode', () => {
     const result = buildSpotifyThemeUrl(baseUrl, true);
-    expect(result).toBe(`${baseUrl}&theme=1`);
+    expect(result).toBe(`${baseUrl}&theme=0`);
   });
 
-  it('appends theme=0 for light mode', () => {
+  it('appends theme=1 for light mode', () => {
     const result = buildSpotifyThemeUrl(baseUrl, false);
-    expect(result).toBe(`${baseUrl}&theme=0`);
+    expect(result).toBe(`${baseUrl}&theme=1`);
   });
 });
 
