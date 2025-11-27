@@ -1,8 +1,18 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode, useCallback, useState, useMemo } from 'react';
+import React, {
+  createContext,
+  useContext,
+  ReactNode,
+  useCallback,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, type Locale, isValidLocale } from '@/lib/i18n';
+
+const LANGUAGE_STORAGE_KEY = 'preferred-language';
 
 interface LanguageContextType {
   language: Locale;
@@ -73,8 +83,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       // Immediately update UI with optimistic state
       setOptimisticLanguage(lang);
 
-      // Persist language preference in cookie
-      document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+      // Persist language preference in localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+      }
 
       // Derive current language from pathname to avoid stale closure issue
       const currentLanguage = getLocaleFromPathname(currentPath);
@@ -96,6 +108,31 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     },
     [pathname, router]
   );
+
+  // On initial mount, check localStorage for saved language preference and redirect if needed
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (savedLanguage && isValidLocale(savedLanguage)) {
+      const currentPath = pathname || '/';
+      const urlLanguage = getLocaleFromPathname(currentPath);
+
+      // Only redirect if saved language differs from URL language
+      if (savedLanguage !== urlLanguage) {
+        const pathWithoutLocale = removeLocalePrefix(currentPath, urlLanguage);
+
+        let newPath: string;
+        if (savedLanguage === defaultLocale) {
+          newPath = pathWithoutLocale;
+        } else {
+          newPath = `/${savedLanguage}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+        }
+
+        router.replace(newPath);
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>

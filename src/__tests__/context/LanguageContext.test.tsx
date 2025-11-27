@@ -13,7 +13,8 @@ jest.mock('next/navigation', () => ({
 describe('LanguageContext', () => {
   const mockPush = jest.fn();
   const mockRefresh = jest.fn();
-  let documentCookieSpy: jest.SpyInstance;
+  const mockReplace = jest.fn();
+  let localStorageMock: { [key: string]: string };
 
   const createWrapper = ({ children }: { children: ReactNode }) => {
     return <LanguageProvider>{children}</LanguageProvider>;
@@ -24,12 +25,26 @@ describe('LanguageContext', () => {
     (useRouter as jest.Mock).mockReturnValue({
       push: mockPush,
       refresh: mockRefresh,
+      replace: mockReplace,
     });
-    documentCookieSpy = jest.spyOn(document, 'cookie', 'set');
-  });
 
-  afterEach(() => {
-    documentCookieSpy.mockRestore();
+    // Mock localStorage
+    localStorageMock = {};
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn((key: string) => localStorageMock[key] || null),
+        setItem: jest.fn((key: string, value: string) => {
+          localStorageMock[key] = value;
+        }),
+        removeItem: jest.fn((key: string) => {
+          delete localStorageMock[key];
+        }),
+        clear: jest.fn(() => {
+          localStorageMock = {};
+        }),
+      },
+      writable: true,
+    });
   });
 
   describe('language detection', () => {
@@ -104,7 +119,7 @@ describe('LanguageContext', () => {
 
       expect(mockPush).toHaveBeenCalledWith('/id');
       expect(mockRefresh).toHaveBeenCalled();
-      expect(document.cookie).toContain('NEXT_LOCALE=id');
+      expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'id');
     });
 
     it('switches from ID to EN on /id path', () => {
@@ -121,7 +136,7 @@ describe('LanguageContext', () => {
 
       expect(mockPush).toHaveBeenCalledWith('/');
       expect(mockRefresh).toHaveBeenCalled();
-      expect(document.cookie).toContain('NEXT_LOCALE=en');
+      expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'en');
     });
 
     it('switches from EN to ID on /about path', () => {
@@ -200,7 +215,7 @@ describe('LanguageContext', () => {
       expect(mockPush).toHaveBeenNthCalledWith(3, '/id');
     });
 
-    it('sets cookie with correct attributes', () => {
+    it('saves language preference to localStorage', () => {
       (useParams as jest.Mock).mockReturnValue({ locale: undefined });
       (usePathname as jest.Mock).mockReturnValue('/');
 
@@ -212,9 +227,8 @@ describe('LanguageContext', () => {
         result.current.setLanguage('id');
       });
 
-      // Verify cookie is set with the correct value and attributes
-      const cookieValue = document.cookie;
-      expect(cookieValue).toContain('NEXT_LOCALE=id');
+      // Verify localStorage is set with the correct value
+      expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'id');
     });
 
     it('preserves deep paths when switching languages', () => {
@@ -247,6 +261,112 @@ describe('LanguageContext', () => {
       // Should still navigate (could be a refresh behavior)
       expect(mockPush).toHaveBeenCalledWith('/id');
       expect(mockRefresh).toHaveBeenCalled();
+    });
+  });
+
+  describe('language persistence', () => {
+    it('redirects to saved language on initial mount when visiting root path', () => {
+      // Simulate user visiting root path with Indonesian saved in localStorage
+      localStorageMock['preferred-language'] = 'id';
+      (useParams as jest.Mock).mockReturnValue({ locale: undefined });
+      (usePathname as jest.Mock).mockReturnValue('/');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Should redirect to Indonesian version
+      expect(mockReplace).toHaveBeenCalledWith('/id');
+    });
+
+    it('redirects to saved language on initial mount when visiting deep path', () => {
+      // Simulate user visiting /about with Indonesian saved in localStorage
+      localStorageMock['preferred-language'] = 'id';
+      (useParams as jest.Mock).mockReturnValue({ locale: undefined });
+      (usePathname as jest.Mock).mockReturnValue('/about');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Should redirect to Indonesian version of the page
+      expect(mockReplace).toHaveBeenCalledWith('/id/about');
+    });
+
+    it('redirects to English when saved and currently on Indonesian path', () => {
+      // Simulate user on Indonesian page with English saved in localStorage
+      localStorageMock['preferred-language'] = 'en';
+      (useParams as jest.Mock).mockReturnValue({ locale: 'id' });
+      (usePathname as jest.Mock).mockReturnValue('/id');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Should redirect to English version
+      expect(mockReplace).toHaveBeenCalledWith('/');
+    });
+
+    it('does not redirect when URL language matches saved language', () => {
+      // Simulate user on correct language page
+      localStorageMock['preferred-language'] = 'id';
+      (useParams as jest.Mock).mockReturnValue({ locale: 'id' });
+      (usePathname as jest.Mock).mockReturnValue('/id');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Should not redirect since already on correct language
+      expect(mockReplace).not.toHaveBeenCalled();
+    });
+
+    it('does not redirect when no saved language preference exists', () => {
+      // Simulate user with no saved preference
+      (useParams as jest.Mock).mockReturnValue({ locale: undefined });
+      (usePathname as jest.Mock).mockReturnValue('/');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Should not redirect since no preference saved
+      expect(mockReplace).not.toHaveBeenCalled();
+    });
+
+    it('ignores invalid saved language values', () => {
+      // Simulate invalid language value in localStorage
+      localStorageMock['preferred-language'] = 'invalid';
+      (useParams as jest.Mock).mockReturnValue({ locale: undefined });
+      (usePathname as jest.Mock).mockReturnValue('/');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Should not redirect since saved value is invalid
+      expect(mockReplace).not.toHaveBeenCalled();
+    });
+
+    it('persists language across setLanguage calls', () => {
+      (useParams as jest.Mock).mockReturnValue({ locale: undefined });
+      (usePathname as jest.Mock).mockReturnValue('/');
+
+      const { result } = renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Set Indonesian
+      act(() => {
+        result.current.setLanguage('id');
+      });
+      expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'id');
+
+      // Set English
+      act(() => {
+        result.current.setLanguage('en');
+      });
+      expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'en');
     });
   });
 
