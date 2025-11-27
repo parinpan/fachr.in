@@ -3,11 +3,17 @@
 import { Phone } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 import { CONTACT_ICONS, ContactType } from '@/lib/icon-maps';
+import type { ContactLink } from '@/data/types';
+import type { LucideIcon } from 'lucide-react';
+
+interface ContactLinkWithIcon extends ContactLink {
+    icon: LucideIcon;
+}
 
 export default function Contact() {
     const siteConfig = useContent();
 
-    const contactLinks = siteConfig.contact.links.map((link: any) => {
+    const contactLinks: ContactLinkWithIcon[] = siteConfig.contact.links.map((link: ContactLink) => {
         const IconComponent = CONTACT_ICONS[link.type as ContactType];
         return {
             ...link,

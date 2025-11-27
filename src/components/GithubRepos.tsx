@@ -1,7 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import { Star, GitFork, ExternalLink, Loader2 } from 'lucide-react';
+import { Star, GitFork, ExternalLink } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 import { GITHUB_CONFIG } from '@/lib/constants';
 import { Repository } from '@/types/components';
@@ -11,7 +11,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function GithubRepos() {
     const siteConfig = useContent();
-    const { data, error, isLoading } = useSWR<Repository[]>(
+    const { data } = useSWR<Repository[]>(
         `${GITHUB_CONFIG.API_URL}/users/${GITHUB_CONFIG.USERNAME}/repos?per_page=${GITHUB_CONFIG.PER_PAGE}&sort=stars&direction=desc`,
         fetcher
     );

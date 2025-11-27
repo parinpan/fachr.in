@@ -1,6 +1,4 @@
-import { language } from "gray-matter";
-
-import { SiteConfig, AppearanceItem } from './types';
+import { SiteConfig } from './types';
 
 export const siteConfig: SiteConfig = {
     // Personal Information

@@ -1,4 +1,4 @@
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useState, RefObject, useCallback } from 'react';
 
 /**
  * useScroll Hook
@@ -9,19 +9,19 @@ export function useScroll(containerRef: RefObject<HTMLElement | null>) {
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
 
-    const checkScroll = () => {
+    const checkScroll = useCallback(() => {
         if (containerRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
             setCanScrollLeft(scrollLeft > 0);
             setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
         }
-    };
+    }, [containerRef]);
 
     useEffect(() => {
         checkScroll();
         window.addEventListener('resize', checkScroll);
         return () => window.removeEventListener('resize', checkScroll);
-    }, []);
+    }, [checkScroll]);
 
     const scroll = (direction: 'left' | 'right', amount: number = 400) => {
         if (containerRef.current) {

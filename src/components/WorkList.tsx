@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 import { siteConfig } from '@/data/content';
+import type { ProjectItem } from '@/data/types';
 
 type WorkItem = typeof siteConfig.works[0];
 
@@ -16,7 +17,7 @@ export default function WorkList() {
         <section className="mb-12" aria-labelledby="projects-heading">
             <h3 id="projects-heading" className="text-2xl font-bold mb-6 text-gray-900 dark:text-neutral-100">{siteConfig.ui.workList.featuredProjects}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {siteConfigContent.works.map((work: any, index: number) => (
+                {siteConfigContent.works.map((work: ProjectItem, index: number) => (
                     <div
                         key={index}
                         className="group relative bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all cursor-pointer"

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { ChevronDown, ChevronUp, MapPin, Calendar, Building2 } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 import Badge from '@/components/ui/Badge';
+import type { ExperienceItem } from '@/data/types';
 
 export default function Experience() {
     const siteConfig = useContent();
@@ -31,7 +31,7 @@ export default function Experience() {
 
             <div className="relative">
                 <div className="space-y-6">
-                    {siteConfig.experience.map((exp: any, index: number) => {
+                    {siteConfig.experience.map((exp: ExperienceItem, index: number) => {
                         const expanded = isExpanded(index);
 
                         return (

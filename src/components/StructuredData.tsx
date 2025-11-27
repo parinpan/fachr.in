@@ -3,7 +3,6 @@
 import Script from 'next/script';
 import { useContent } from '@/hooks/useContent';
 import { useLanguage } from '@/context/LanguageContext';
-import { siteConfig as englishConfig } from '@/data/content';
 
 /**
  * Enhanced Structured Data (JSON-LD) Component
@@ -13,7 +12,6 @@ import { siteConfig as englishConfig } from '@/data/content';
 export default function StructuredData() {
     const siteConfig = useContent();
     const { language } = useLanguage();
-    const isEnglish = language === 'en';
 
     // Person Schema - Professional Profile
     const personSchema = {
@@ -148,7 +146,7 @@ export default function StructuredData() {
         <Script
             id="structured-data"
             type="application/ld+json"
-            strategy="beforeInteractive"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
     );
