@@ -67,7 +67,6 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
                         <Command.Input
                             placeholder={siteConfig.ui.commandMenu.placeholder}
                             className="w-full h-14 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none ring-0 text-lg text-gray-900 dark:text-neutral-100 placeholder:text-gray-400 dark:placeholder:text-neutral-500 bg-transparent shadow-none appearance-none"
-                            style={{ boxShadow: 'none', outline: 'none' }}
                         />
                         <div
                             className="text-xs font-medium text-gray-400 dark:text-neutral-500 border border-gray-200 dark:border-neutral-700 rounded px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700"

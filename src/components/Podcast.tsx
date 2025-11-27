@@ -9,7 +9,7 @@ import Badge from '@/components/ui/Badge';
 import type { PodcastItem } from '@/data/types';
 
 /** Subscribe function for useSyncExternalStore - always returns noop since we only need initial mount state */
-const subscribeNoop = () => () => {};
+const subscribeNoop = () => () => { };
 
 /** Get server snapshot - always false on server */
 const getServerSnapshot = () => false;
@@ -20,13 +20,13 @@ const getClientSnapshot = () => true;
 export default function Podcast() {
     const siteConfig = useContent();
     const { resolvedTheme } = useTheme();
-    
+
     // Use useSyncExternalStore for hydration-safe mounting detection
     const mounted = useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
     return (
         <section className="mb-12" aria-labelledby="podcast-heading">
-            <h3 id="podcast-heading" className="text-2xl font-bold mb-8 text-gray-900 dark:text-neutral-100">
+            <h3 id="podcast-heading" className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">
                 {siteConfig.podcast.title}
             </h3>
             <div className="grid grid-cols-1 gap-6">
@@ -34,7 +34,7 @@ export default function Podcast() {
                     <div key={index} className="group relative bg-gray-50 dark:bg-neutral-900 rounded-2xl p-6 border border-gray-200 dark:border-neutral-800 shadow-sm hover:shadow-md transition-all">
                         <div className="border-b border-gray-200 dark:border-neutral-800 pb-6 mb-6">
                             <div className="flex items-center justify-between mb-2">
-                                <h4 className="text-lg font-bold text-gray-900 dark:text-neutral-100">
+                                <h4 className="text-lg font-bold text-gray-900 dark:text-white">
                                     {podcast.title}
                                 </h4>
                                 {podcast.language && (
@@ -43,7 +43,7 @@ export default function Podcast() {
                                     </Badge>
                                 )}
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-neutral-400">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {podcast.description}
                             </p>
                         </div>

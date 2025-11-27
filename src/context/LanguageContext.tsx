@@ -33,7 +33,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // Get locale from URL params or pathname
     const localeFromParams = params?.locale as string | undefined;
     const localeFromPath = pathname?.split('/')[1];
-    
+
     // Determine current language from URL
     let language: Locale = defaultLocale;
     if (localeFromParams && isValidLocale(localeFromParams)) {
@@ -44,7 +44,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
     const setLanguage = useCallback((lang: Locale) => {
         const currentPath = pathname || '/';
-        
+
+        // Persist language preference in cookie
+        document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+
         // Remove current locale prefix if present
         const pathWithoutLocale = removeLocalePrefix(currentPath, language);
 
@@ -58,6 +61,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
         // Use Next.js router for client-side navigation
         router.push(newPath);
+        router.refresh();
     }, [pathname, language, router]);
 
     return (

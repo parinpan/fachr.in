@@ -197,7 +197,7 @@ export const siteConfigId: SiteConfig = {
     // Podcast Section
     podcast: {
         title: 'Siniar',
-        episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator&theme=0',
+        episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator',
     },
 
     // Contact Section
@@ -340,7 +340,7 @@ export const siteConfigId: SiteConfig = {
     podcasts: [
         {
             title: 'Kehidupan sebagai Insinyur Produk di Gojek',
-            episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator&theme=0',
+            episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator',
             description: 'Berbagi pengalaman dan wawasan bekerja sebagai Insinyur Produk di ekosistem perusahaan rintisan teknologi Indonesia.',
             date: 'Agustus 2021',
             language: 'Indonesia',

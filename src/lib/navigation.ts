@@ -23,5 +23,9 @@ export const NAV_ITEMS: Omit<NavItem, 'name'>[] = [
  * Determines if a nav item is active based on current pathname
  */
 export function getNavItemActiveState(pathname: string, itemPath: string): boolean {
-    return pathname === itemPath || (itemPath !== '/' && pathname.startsWith(itemPath));
+    // Strip locale prefix (e.g. /id or /en) to get the canonical path
+    // This regex matches /id or /en at the start, followed by either / or end of string
+    const normalizedPath = pathname.replace(/^\/(?:id|en)(?:\/|$)/, '/') || '/';
+
+    return normalizedPath === itemPath || (itemPath !== '/' && normalizedPath.startsWith(itemPath));
 }

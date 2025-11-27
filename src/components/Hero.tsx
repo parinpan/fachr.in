@@ -18,7 +18,7 @@ export default function Hero() {
                 />
             </div>
             <div className="flex flex-col text-center md:text-left">
-                <h1 className="text-3xl md:text-5xl font-bold mb-2 text-gray-900 dark:text-neutral-100">
+                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-2 text-gray-900 dark:text-neutral-100">
                     {siteConfig.hero.title}
                 </h1>
                 <h2 className="text-xl md:text-2xl text-gray-600 dark:text-neutral-400 font-medium mb-6">
@@ -26,7 +26,7 @@ export default function Hero() {
                 </h2>
                 <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
                     {siteConfig.hero.badges.map((badge: BadgeType, index: number) => (
-                        <div key={index} className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700">
+                        <div key={index} className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 whitespace-nowrap">
                             <Image
                                 src={badge.icon}
                                 alt=""

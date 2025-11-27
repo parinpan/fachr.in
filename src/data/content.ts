@@ -197,7 +197,7 @@ export const siteConfig: SiteConfig = {
     // Podcast Section
     podcast: {
         title: 'Podcasts',
-        episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator&theme=0',
+        episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator',
     },
 
     // Contact Section
@@ -340,7 +340,7 @@ export const siteConfig: SiteConfig = {
     podcasts: [
         {
             title: 'Life as a Product Engineer at Gojek',
-            episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator&theme=0',
+            episodeUrl: 'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator',
             description: 'Sharing experiences and insights from working as a Product Engineer in Indonesia\'s tech startup ecosystem.',
             date: 'August 2021',
             language: 'Indonesian',

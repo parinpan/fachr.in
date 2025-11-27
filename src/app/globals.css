@@ -13,43 +13,43 @@
 :root {
   /* Base colors */
   --color-bg: #ffffff;
-  --color-fg: #262626;
-  
+  --color-fg: #0a0a0a;
+
   /* Surface colors */
   --color-surface: #ffffff;
   --color-surface-secondary: #f9fafb;
-  
+
   /* Border colors */
   --color-border: #e5e7eb;
   --color-border-light: #f3f4f6;
   --color-border-hover: #d1d5db;
-  
+
   /* Text colors */
-  --color-text-primary: #111827;
-  --color-text-secondary: #4b5563;
+  --color-text-primary: #000000;
+  --color-text-secondary: #404040;
   --color-text-tertiary: #6b7280;
   --color-text-muted: #9ca3af;
-  
+
   /* Interactive colors */
-  --color-interactive: #262626;
-  --color-interactive-hover: #111827;
+  --color-interactive: #0a0a0a;
+  --color-interactive-hover: #000000;
   --color-interactive-bg: #f3f4f6;
   --color-interactive-bg-hover: #e5e7eb;
-  
+
   /* Focus colors */
   --color-focus: #737373;
-  
+
   /* Badge colors */
   --color-badge-bg: #f3f4f6;
-  --color-badge-text: #4b5563;
+  --color-badge-text: #404040;
   --color-badge-border: #d1d5db;
-  
+
   /* Navbar colors */
   --color-navbar-bg: rgba(255, 255, 255, 0.7);
   --color-navbar-border: #f3f4f6;
-  --color-nav-active: #262626;
+  --color-nav-active: #0a0a0a;
   --color-nav-active-text: #ffffff;
-  
+
   /* Footer colors */
   --color-footer-text: #6b7280;
 }
@@ -57,43 +57,43 @@
 :root.dark {
   /* Base colors - Rich dark with subtle warmth */
   --color-bg: #0f0f0f;
-  --color-fg: #e8e8e8;
-  
+  --color-fg: #f5f5f5;
+
   /* Surface colors - Elevated cards with depth */
   --color-surface: #1a1a1a;
   --color-surface-secondary: rgba(26, 26, 26, 0.6);
-  
+
   /* Border colors - Subtle but defined */
   --color-border: #2d2d2d;
   --color-border-light: #1f1f1f;
   --color-border-hover: #3a3a3a;
-  
+
   /* Text colors - High contrast, easy to read */
-  --color-text-primary: #f0f0f0;
-  --color-text-secondary: #c8c8c8;
-  --color-text-tertiary: #9a9a9a;
-  --color-text-muted: #6e6e6e;
-  
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d4d4d4;
+  --color-text-tertiary: #d4d4d4;
+  --color-text-muted: #a3a3a3;
+
   /* Interactive colors - Subtle highlights */
-  --color-interactive: #e8e8e8;
+  --color-interactive: #f5f5f5;
   --color-interactive-hover: #ffffff;
   --color-interactive-bg: #2a2a2a;
   --color-interactive-bg-hover: #353535;
-  
+
   /* Focus colors - Visible but not harsh */
   --color-focus: #888888;
-  
+
   /* Badge colors - Elevated appearance */
   --color-badge-bg: #252525;
   --color-badge-text: #d0d0d0;
   --color-badge-border: #353535;
-  
+
   /* Navbar colors - Glass morphism effect */
   --color-navbar-bg: rgba(15, 15, 15, 0.8);
   --color-navbar-border: #1f1f1f;
   --color-nav-active: #2a2a2a;
   --color-nav-active-text: #f0f0f0;
-  
+
   /* Footer colors */
   --color-footer-text: #9a9a9a;
 }
@@ -102,7 +102,7 @@
   /* Base colors */
   --color-background: var(--color-bg);
   --color-foreground: var(--color-fg);
-  
+
   /* Semantic color utilities - Use these in components */
   --color-surface: var(--color-surface);
   --color-surface-secondary: var(--color-surface-secondary);
@@ -126,16 +126,15 @@
   --color-nav-active: var(--color-nav-active);
   --color-nav-active-text: var(--color-nav-active-text);
   --color-footer-text: var(--color-footer-text);
-  
+
   /* Fonts */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
+
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-fg);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Accessibility - Screen reader only content */
@@ -261,4 +260,16 @@ body {
   background-color: var(--color-badge-bg);
   color: var(--color-badge-text);
   border-color: var(--color-badge-border);
+}
+
+/* Scrollbar utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

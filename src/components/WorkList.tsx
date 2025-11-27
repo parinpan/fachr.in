@@ -20,6 +20,7 @@ export default function WorkList() {
                 {siteConfigContent.works.map((work: ProjectItem, index: number) => (
                     <div
                         key={index}
+                        data-testid={`work-item-${index}`}
                         className="group relative bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all cursor-pointer"
                         onClick={() => setSelectedWork(work)}
                     >

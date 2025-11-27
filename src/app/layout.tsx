@@ -1,3 +1,4 @@
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import type { Metadata } from 'next';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -8,6 +9,12 @@ import Clarity from '@/components/Clarity';
 import BackToTop from '@/components/BackToTop';
 
 import { siteConfig } from '@/data/content';
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fachr.in'),
@@ -81,13 +88,13 @@ export default function RootLayout({
   const posts = getAllPosts(['slug', 'title']);
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={jakarta.variable}>
       <head>
         <link rel="alternate" hrefLang="en" href="https://fachr.in" />
         <link rel="alternate" hrefLang="id" href="https://fachr.in/id" />
         <link rel="alternate" hrefLang="x-default" href="https://fachr.in" />
       </head>
-      <body className="font-sans">
+      <body className="font-sans antialiased font-medium">
         <Providers>
           <CommandMenu posts={posts} />
           <ErrorBoundary>

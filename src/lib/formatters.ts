@@ -15,7 +15,7 @@ export function formatDate(date: string, locale: 'en-US' | 'id-ID' = 'en-US'): s
  * Builds Spotify embed URL with appropriate theme parameter
  */
 export function buildSpotifyThemeUrl(baseUrl: string, isDark: boolean): string {
-    return `${baseUrl}&theme=${isDark ? '1' : '0'}`;
+    return `${baseUrl}&theme=${isDark ? '0' : '1'}`;
 }
 
 /**

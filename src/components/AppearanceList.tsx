@@ -49,8 +49,7 @@ export default function AppearanceList() {
 
             <div
                 ref={scrollContainerRef}
-                className="flex gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                className="flex gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory scrollbar-hide"
                 onScroll={checkScroll}
             >
                 {siteConfig.appearances.items.map((appearance: AppearanceItem, index: number) => {
@@ -122,12 +121,7 @@ export default function AppearanceList() {
                 })}
             </div>
 
-            {/* CSS to hide scrollbar */}
-            <style jsx>{`
-                div::-webkit-scrollbar {
-                    display: none;
-                }
-            `}</style>
+
         </section>
     );
 }

@@ -36,7 +36,7 @@ function isPublicPath(pathname: string): boolean {
  */
 function getPreferredLocaleFromHeader(acceptLanguage: string): Locale {
     if (!acceptLanguage) return defaultLocale;
-    
+
     // Parse language tags with optional quality values
     const languages = acceptLanguage.split(',').map(lang => {
         const [code, quality] = lang.trim().split(';');
@@ -45,13 +45,13 @@ function getPreferredLocaleFromHeader(acceptLanguage: string): Locale {
         const primaryCode = code.split('-')[0].toLowerCase();
         return { code: primaryCode, quality: q };
     }).sort((a, b) => b.quality - a.quality);
-    
+
     // Find first matching locale
     for (const lang of languages) {
         if (lang.code === 'id') return 'id';
         if (lang.code === 'en') return 'en';
     }
-    
+
     return defaultLocale;
 }
 
@@ -65,22 +65,33 @@ export function middleware(request: NextRequest) {
 
     // Check if locale is already in the URL
     const localeFromPath = getLocaleFromPath(pathname);
-    
+
     if (localeFromPath) {
-        // Locale is in URL, proceed normally
-        return NextResponse.next();
+        // Locale is in URL, set cookie and proceed
+        const response = NextResponse.next();
+        response.cookies.set('NEXT_LOCALE', localeFromPath, { path: '/', maxAge: 60 * 60 * 24 * 365 }); // 1 year
+        return response;
     }
 
-    // No locale in URL - check Accept-Language header for preference
-    const acceptLanguage = request.headers.get('accept-language') || '';
-    const preferredLocale = getPreferredLocaleFromHeader(acceptLanguage);
-    
-    // If preferred locale is Indonesian, redirect to /id prefix
-    // For English (default), we keep URLs clean (no /en prefix)
-    if (preferredLocale === 'id') {
+    // No locale in URL - check cookie first, then header
+    const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value as Locale | undefined;
+
+    if (cookieLocale === 'id') {
         const url = request.nextUrl.clone();
         url.pathname = `/id${pathname}`;
         return NextResponse.redirect(url);
+    }
+
+    // If no cookie or cookie is 'en', check header
+    if (!cookieLocale) {
+        const acceptLanguage = request.headers.get('accept-language') || '';
+        const preferredLocale = getPreferredLocaleFromHeader(acceptLanguage);
+
+        if (preferredLocale === 'id') {
+            const url = request.nextUrl.clone();
+            url.pathname = `/id${pathname}`;
+            return NextResponse.redirect(url);
+        }
     }
 
     // Default English locale - no redirect needed
