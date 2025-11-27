@@ -1,44 +1,100 @@
-name: ci
+name: CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches: [master, main, develop]
+  pull_request:
+    branches: [master, main]
 
 jobs:
-  build:
-    name: Build
+  test-and-lint:
+    name: Test & Lint
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/master' }}
     steps:
-      - name: Checkout Branch
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linter
+        run: npm run lint
+      
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+      
+      - name: Check coverage threshold
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            echo "Coverage report found, checking thresholds..."
+            node -e "
+              const coverage = require('./coverage/coverage-summary.json');
+              const pct = coverage.total.statements.pct;
+              console.log(\`Coverage: \${pct}%\`);
+              if (pct < 50) {
+                console.error('Coverage below 50% threshold');
+                process.exit(1);
+              }
+            "
+          fi
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [test-and-lint]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
         
       - name: Login to GHCR
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Build and Push
-        uses: docker/build-push-action@v2
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/fachr.in:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           
   deploy:
     name: Production Deployment
     runs-on: ubuntu-latest
     needs: [build]
+    if: github.ref == 'refs/heads/master'
     steps:
-      - name: Checkout Branch
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
         
-      - name: Prepare Deployment Source  
+      - name: Prepare deployment manifest
         run: |
           sed -ie "s/{{build_date}}/$(date)/g" deployment.yaml
 
-      - name: Trigger Deployment
+      - name: Deploy to Kubernetes
         uses: actions-hub/kubectl@v1.29.0
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
