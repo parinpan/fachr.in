@@ -27,7 +27,7 @@ Element.prototype.scrollIntoView = jest.fn();
 
 // Polyfill Response and Headers for Node.js environment (used by Next.js route handlers)
 if (typeof Response === 'undefined') {
-  class MockHeaders implements HeadersInit {
+  class MockHeaders {
     private headers: Map<string, string> = new Map();
 
     constructor(init?: Record<string, string>) {
