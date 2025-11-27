@@ -30,6 +30,31 @@ function isPublicPath(pathname: string): boolean {
     return publicPaths.some(path => pathname.startsWith(path));
 }
 
+/**
+ * Parse Accept-Language header and return preferred locale
+ * Properly parses language tags like "id-ID,id;q=0.9,en-US;q=0.8"
+ */
+function getPreferredLocaleFromHeader(acceptLanguage: string): Locale {
+    if (!acceptLanguage) return defaultLocale;
+    
+    // Parse language tags with optional quality values
+    const languages = acceptLanguage.split(',').map(lang => {
+        const [code, quality] = lang.trim().split(';');
+        const q = quality ? parseFloat(quality.replace('q=', '')) : 1;
+        // Extract primary language code (e.g., "id" from "id-ID")
+        const primaryCode = code.split('-')[0].toLowerCase();
+        return { code: primaryCode, quality: q };
+    }).sort((a, b) => b.quality - a.quality);
+    
+    // Find first matching locale
+    for (const lang of languages) {
+        if (lang.code === 'id') return 'id';
+        if (lang.code === 'en') return 'en';
+    }
+    
+    return defaultLocale;
+}
+
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
@@ -46,30 +71,25 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    // No locale in URL - redirect to default locale
-    // For English (default), we keep the URL clean (no /en prefix)
-    // For other locales, we require the prefix
-    
-    // Check if user wants Indonesian via Accept-Language header (optional enhancement)
+    // No locale in URL - check Accept-Language header for preference
     const acceptLanguage = request.headers.get('accept-language') || '';
-    const preferredLocale = acceptLanguage.toLowerCase().includes('id') ? 'id' : 'en';
+    const preferredLocale = getPreferredLocaleFromHeader(acceptLanguage);
     
-    // If preferred locale is not default, redirect to that locale
-    // But for the default locale (en), we don't add a prefix
+    // If preferred locale is Indonesian, redirect to /id prefix
+    // For English (default), we keep URLs clean (no /en prefix)
     if (preferredLocale === 'id') {
-        // Only redirect if the user hasn't explicitly visited the English version
         const url = request.nextUrl.clone();
         url.pathname = `/id${pathname}`;
         return NextResponse.redirect(url);
     }
 
-    // Default English locale - no redirect needed, just continue
+    // Default English locale - no redirect needed
     return NextResponse.next();
 }
 
 export const config = {
     matcher: [
-        // Match all paths except static files and API
-        '/((?!_next/static|_next/image|favicon.ico|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)).*)',
+        // Match all paths except static files, API routes, and Next.js internals
+        '/((?!_next/static|_next/image|api|favicon.ico|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)).*)',
     ],
 };

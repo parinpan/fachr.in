@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode } from 'react';
-import { useParams, usePathname } from 'next/navigation';
+import React, { createContext, useContext, ReactNode, useCallback } from 'react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { locales, defaultLocale, type Locale, isValidLocale } from '@/lib/i18n';
 
 interface LanguageContextType {
@@ -11,9 +11,24 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+/**
+ * Remove locale prefix from a pathname
+ */
+function removeLocalePrefix(pathname: string, currentLocale: Locale): string {
+    // Only remove the prefix if it matches the current locale
+    if (pathname.startsWith(`/${currentLocale}/`)) {
+        return pathname.slice(currentLocale.length + 1);
+    }
+    if (pathname === `/${currentLocale}`) {
+        return '/';
+    }
+    return pathname;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
     const params = useParams();
     const pathname = usePathname();
+    const router = useRouter();
 
     // Get locale from URL params or pathname
     const localeFromParams = params?.locale as string | undefined;
@@ -27,32 +42,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         language = localeFromPath;
     }
 
-    const setLanguage = (lang: Locale) => {
-        // Navigate to the new locale URL
+    const setLanguage = useCallback((lang: Locale) => {
         const currentPath = pathname || '/';
-        let newPath: string;
-
+        
         // Remove current locale prefix if present
-        const pathWithoutLocale = locales.reduce((path, loc) => {
-            if (path.startsWith(`/${loc}/`)) {
-                return path.slice(loc.length + 1);
-            }
-            if (path === `/${loc}`) {
-                return '/';
-            }
-            return path;
-        }, currentPath);
+        const pathWithoutLocale = removeLocalePrefix(currentPath, language);
 
-        // Add new locale prefix (skip for default locale 'en')
+        // Build new path with target locale prefix (skip prefix for default locale 'en')
+        let newPath: string;
         if (lang === defaultLocale) {
             newPath = pathWithoutLocale;
         } else {
             newPath = `/${lang}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
         }
 
-        // Use window.location for navigation to ensure full page load with correct locale
-        window.location.href = newPath;
-    };
+        // Use Next.js router for client-side navigation
+        router.push(newPath);
+    }, [pathname, language, router]);
 
     return (
         <LanguageContext.Provider value={{ language, setLanguage }}>

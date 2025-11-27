@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import PageWrapper from '@/components/PageWrapper';
-import { isValidLocale, locales } from '@/lib/i18n';
+import { isValidLocale, locales, getDateLocale, localeStrings } from '@/lib/i18n';
 import { notFound } from 'next/navigation';
 
 interface Props {
@@ -57,13 +57,13 @@ export default async function BlogPost({ params }: Props) {
                     className="inline-flex items-center gap-2 text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-200 mb-8 transition-colors"
                 >
                     <ArrowLeft size={20} />
-                    {locale === 'id' ? 'Kembali ke Jurnal' : 'Back to Journal'}
+                    {localeStrings.backToJournal[locale]}
                 </Link>
 
                 <header className="mb-12">
                     <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-neutral-400 mb-4">
                         <time dateTime={post.date}>
-                            {new Date(post.date).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
+                            {new Date(post.date).toLocaleDateString(getDateLocale(locale), {
                                 year: 'numeric',
                                 month: 'long',
                                 day: 'numeric',
