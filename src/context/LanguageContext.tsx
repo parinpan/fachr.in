@@ -1,33 +1,67 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-type Language = 'en' | 'id';
+import React, { createContext, useContext, ReactNode, useCallback } from 'react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import { locales, defaultLocale, type Locale, isValidLocale } from '@/lib/i18n';
 
 interface LanguageContextType {
-    language: Language;
-    setLanguage: (lang: Language) => void;
+    language: Locale;
+    setLanguage: (lang: Locale) => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+/**
+ * Remove locale prefix from a pathname
+ */
+function removeLocalePrefix(pathname: string, currentLocale: Locale): string {
+    // Only remove the prefix if it matches the current locale
+    if (pathname.startsWith(`/${currentLocale}/`)) {
+        return pathname.slice(currentLocale.length + 1);
+    }
+    if (pathname === `/${currentLocale}`) {
+        return '/';
+    }
+    return pathname;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-    const [language, setLanguage] = useState<Language>('en');
+    const params = useParams();
+    const pathname = usePathname();
+    const router = useRouter();
 
-    useEffect(() => {
-        const savedLanguage = localStorage.getItem('language') as Language;
-        if (savedLanguage) {
-            setLanguage(savedLanguage);
+    // Get locale from URL params or pathname
+    const localeFromParams = params?.locale as string | undefined;
+    const localeFromPath = pathname?.split('/')[1];
+    
+    // Determine current language from URL
+    let language: Locale = defaultLocale;
+    if (localeFromParams && isValidLocale(localeFromParams)) {
+        language = localeFromParams;
+    } else if (localeFromPath && isValidLocale(localeFromPath)) {
+        language = localeFromPath;
+    }
+
+    const setLanguage = useCallback((lang: Locale) => {
+        const currentPath = pathname || '/';
+        
+        // Remove current locale prefix if present
+        const pathWithoutLocale = removeLocalePrefix(currentPath, language);
+
+        // Build new path with target locale prefix (skip prefix for default locale 'en')
+        let newPath: string;
+        if (lang === defaultLocale) {
+            newPath = pathWithoutLocale;
+        } else {
+            newPath = `/${lang}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
         }
-    }, []);
 
-    const handleSetLanguage = (lang: Language) => {
-        setLanguage(lang);
-        localStorage.setItem('language', lang);
-    };
+        // Use Next.js router for client-side navigation
+        router.push(newPath);
+    }, [pathname, language, router]);
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>
+        <LanguageContext.Provider value={{ language, setLanguage }}>
             {children}
         </LanguageContext.Provider>
     );
