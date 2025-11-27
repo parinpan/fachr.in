@@ -7,10 +7,17 @@ jest.mock('@/hooks/useContent', () => ({
     useContent: jest.fn(),
 }));
 
-// Mock next/image
+// Mock next/image - filters out Next.js-specific props that shouldn't be on <img>
 jest.mock('next/image', () => ({
     __esModule: true,
-    default: (props: any) => <img {...props} />,
+    default: function MockImage({ fill, priority, unoptimized, ...props }: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean; priority?: boolean; unoptimized?: boolean }) {
+        // Suppress unused variable warnings
+        void fill;
+        void priority;
+        void unoptimized;
+        // eslint-disable-next-line @next/next/no-img-element
+        return <img {...props} alt={props.alt || ''} />;
+    },
 }));
 
 describe('Hero', () => {

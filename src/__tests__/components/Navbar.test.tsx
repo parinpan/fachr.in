@@ -25,14 +25,14 @@ jest.mock('@/lib/navigation', () => ({
 
 // Mock next/link
 jest.mock('next/link', () => {
-    return ({ children, href, className }: { children: React.ReactNode; href: string; className?: string }) => {
+    return function MockLink({ children, href, className }: { children: React.ReactNode; href: string; className?: string }) {
         return <a href={href} className={className}>{children}</a>;
     };
 });
 
 // Mock sub-components
-jest.mock('@/components/LanguageToggle', () => () => <div data-testid="language-toggle">LanguageToggle</div>);
-jest.mock('@/components/ThemeToggle', () => () => <div data-testid="theme-toggle">ThemeToggle</div>);
+jest.mock('@/components/LanguageToggle', () => function MockLanguageToggle() { return <div data-testid="language-toggle">LanguageToggle</div>; });
+jest.mock('@/components/ThemeToggle', () => function MockThemeToggle() { return <div data-testid="theme-toggle">ThemeToggle</div>; });
 
 // Mock icons
 jest.mock('lucide-react', () => ({

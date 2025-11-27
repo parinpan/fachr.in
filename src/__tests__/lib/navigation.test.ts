@@ -29,9 +29,10 @@ describe('getNavItemActiveState', () => {
   });
 
   describe('edge cases', () => {
-    it('handles empty paths', () => {
+    it('handles empty paths by normalizing to root', () => {
       expect(getNavItemActiveState('', '')).toBe(true);
-      expect(getNavItemActiveState('', '/')).toBe(false);
+      // Empty pathname normalizes to '/' which matches '/'
+      expect(getNavItemActiveState('', '/')).toBe(true);
     });
 
     it('handles paths with special characters', () => {

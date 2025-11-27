@@ -7,10 +7,17 @@ jest.mock('@/hooks/useContent', () => ({
     useContent: jest.fn(),
 }));
 
-// Mock next/image
+// Mock next/image - filters out Next.js-specific props that shouldn't be on <img>
 jest.mock('next/image', () => ({
     __esModule: true,
-    default: (props: any) => <img {...props} />,
+    default: function MockImage({ fill, priority, unoptimized, ...props }: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean; priority?: boolean; unoptimized?: boolean }) {
+        // Suppress unused variable warnings
+        void fill;
+        void priority;
+        void unoptimized;
+        // eslint-disable-next-line @next/next/no-img-element
+        return <img {...props} alt={props.alt || ''} />;
+    },
 }));
 
 // Mock icons
@@ -23,13 +30,13 @@ describe('WorkList', () => {
         ui: {
             workList: {
                 featuredProjects: 'Featured Projects',
-                partOfWork: 'Part of work at',
-                closeDetails: 'Close details',
+                partOfWork: 'Part of my work at',
+                closeDetails: 'Close project details',
                 labels: {
                     project: 'Project',
                     description: 'Description',
-                    role: 'Role',
-                    stack: 'Stack',
+                    role: 'My Role',
+                    stack: 'Tech Stack',
                 },
             },
         },
@@ -71,8 +78,8 @@ describe('WorkList', () => {
         const projectCard = screen.getByTestId('work-item-0');
         fireEvent.click(projectCard);
 
-        expect(await screen.findByText('Part of work at Company A')).toBeInTheDocument();
-        expect(screen.getByText('Role')).toBeInTheDocument();
+        expect(await screen.findByText('Part of my work at Company A')).toBeInTheDocument();
+        expect(screen.getByText('My Role')).toBeInTheDocument();
         expect(screen.getByText('Lead')).toBeInTheDocument();
     });
 
@@ -84,9 +91,9 @@ describe('WorkList', () => {
         fireEvent.click(projectCard);
 
         // Close modal
-        const closeButton = await screen.findByLabelText('Close details', {}, { timeout: 3000 });
+        const closeButton = await screen.findByLabelText('Close project details', {}, { timeout: 3000 });
         fireEvent.click(closeButton);
 
-        expect(screen.queryByText('Part of work at Company A')).not.toBeInTheDocument();
+        expect(screen.queryByText('Part of my work at Company A')).not.toBeInTheDocument();
     });
 });

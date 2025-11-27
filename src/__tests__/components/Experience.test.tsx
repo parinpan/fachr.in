@@ -8,7 +8,7 @@ jest.mock('@/hooks/useContent', () => ({
 }));
 
 // Mock sub-components
-jest.mock('@/components/ui/Badge', () => ({ children }: { children: React.ReactNode }) => <span data-testid="badge">{children}</span>);
+jest.mock('@/components/ui/Badge', () => function MockBadge({ children }: { children: React.ReactNode }) { return <span data-testid="badge">{children}</span>; });
 
 // Mock icons
 jest.mock('lucide-react', () => ({
@@ -74,10 +74,7 @@ describe('Experience', () => {
 
         expect(screen.queryByText('Led a team')).not.toBeInTheDocument();
 
-        // Click to expand second item
-        const expandButton = screen.getAllByLabelText('Expand')[0]; // It's the only one now, or find by index
-        // Actually, since first is collapsed, both might have 'Expand' label if logic is correct
-        // Let's re-query buttons
+        // Click to expand second item - since first is collapsed, both have 'Expand' label
         const expandButtons = screen.getAllByLabelText('Expand');
         fireEvent.click(expandButtons[1]); // Second item
 
