@@ -17,46 +17,85 @@ function escapeXml(unsafe: string): string {
  * Enhanced Sitemap Generator
  * SEO Best Practice - helps search engines discover and index pages
  * Includes language alternates for multilingual content (EN/ID)
+ * Uses industry-standard URL-based locale routing (/id/ prefix for Indonesian)
  * Includes XSL stylesheet for proper browser XML rendering
  */
 export async function GET() {
     const posts = getAllPosts(['slug', 'date']);
     const siteUrl = escapeXml(siteConfig.seo.url);
 
-    // Generate blog post URLs with hreflang alternates
-    const blogPostsXml = posts.map((post) => {
-        const postUrl = escapeXml(`${siteConfig.seo.url}/blog/${post.slug}`);
+    // Generate blog post URLs with hreflang alternates for both languages
+    const blogPostsXml = posts.flatMap((post) => {
+        const enPostUrl = escapeXml(`${siteConfig.seo.url}/blog/${post.slug}`);
+        const idPostUrl = escapeXml(`${siteConfig.seo.url}/id/blog/${post.slug}`);
         const lastMod = new Date(post.date).toISOString();
-        return `
+        
+        // English version
+        const enEntry = `
     <url>
-        <loc>${postUrl}</loc>
+        <loc>${enPostUrl}</loc>
         <lastmod>${lastMod}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="${postUrl}" />
-        <xhtml:link rel="alternate" hreflang="id" href="${postUrl}?lang=id" />
-        <xhtml:link rel="alternate" hreflang="x-default" href="${postUrl}" />
+        <xhtml:link rel="alternate" hreflang="en" href="${enPostUrl}" />
+        <xhtml:link rel="alternate" hreflang="id" href="${idPostUrl}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="${enPostUrl}" />
     </url>`;
+        
+        // Indonesian version
+        const idEntry = `
+    <url>
+        <loc>${idPostUrl}</loc>
+        <lastmod>${lastMod}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="${enPostUrl}" />
+        <xhtml:link rel="alternate" hreflang="id" href="${idPostUrl}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="${enPostUrl}" />
+    </url>`;
+        
+        return [enEntry, idEntry];
     }).join('');
 
-    // Static pages
+    // Static pages with both English and Indonesian versions
     const staticPages = [
-        { url: siteUrl, changefreq: 'monthly', priority: '1.0' },
-        { url: `${siteUrl}/blog`, changefreq: 'weekly', priority: '0.8' },
-        { url: `${siteUrl}/now`, changefreq: 'monthly', priority: '0.8' },
-        { url: `${siteUrl}/appearances`, changefreq: 'monthly', priority: '0.8' },
+        { path: '', changefreq: 'monthly', priority: '1.0' },
+        { path: '/blog', changefreq: 'weekly', priority: '0.8' },
+        { path: '/now', changefreq: 'monthly', priority: '0.8' },
+        { path: '/appearances', changefreq: 'monthly', priority: '0.8' },
     ];
 
-    const staticPagesXml = staticPages.map((page) => `
+    const staticPagesXml = staticPages.flatMap((page) => {
+        const enUrl = `${siteUrl}${page.path}`;
+        const idUrl = `${siteUrl}/id${page.path}`;
+        const lastMod = new Date().toISOString();
+        
+        // English version
+        const enEntry = `
     <url>
-        <loc>${page.url}</loc>
-        <lastmod>${new Date().toISOString()}</lastmod>
+        <loc>${enUrl}</loc>
+        <lastmod>${lastMod}</lastmod>
         <changefreq>${page.changefreq}</changefreq>
         <priority>${page.priority}</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="${page.url}" />
-        <xhtml:link rel="alternate" hreflang="id" href="${page.url}?lang=id" />
-        <xhtml:link rel="alternate" hreflang="x-default" href="${page.url}" />
-    </url>`).join('');
+        <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
+        <xhtml:link rel="alternate" hreflang="id" href="${idUrl}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />
+    </url>`;
+        
+        // Indonesian version
+        const idEntry = `
+    <url>
+        <loc>${idUrl}</loc>
+        <lastmod>${lastMod}</lastmod>
+        <changefreq>${page.changefreq}</changefreq>
+        <priority>${page.priority}</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
+        <xhtml:link rel="alternate" hreflang="id" href="${idUrl}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />
+    </url>`;
+        
+        return [enEntry, idEntry];
+    }).join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>

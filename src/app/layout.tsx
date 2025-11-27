@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     canonical: 'https://fachr.in',
     languages: {
       'en': 'https://fachr.in',
-      'id': 'https://fachr.in?lang=id',
+      'id': 'https://fachr.in/id',
       'x-default': 'https://fachr.in',
     },
   },
@@ -90,7 +90,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="alternate" hrefLang="en" href="https://fachr.in" />
-        <link rel="alternate" hrefLang="id" href="https://fachr.in?lang=id" />
+        <link rel="alternate" hrefLang="id" href="https://fachr.in/id" />
         <link rel="alternate" hrefLang="x-default" href="https://fachr.in" />
       </head>
       <body className={inter.className}>

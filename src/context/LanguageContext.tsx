@@ -1,33 +1,61 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-type Language = 'en' | 'id';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { useParams, usePathname } from 'next/navigation';
+import { locales, defaultLocale, type Locale, isValidLocale } from '@/lib/i18n';
 
 interface LanguageContextType {
-    language: Language;
-    setLanguage: (lang: Language) => void;
+    language: Locale;
+    setLanguage: (lang: Locale) => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-    const [language, setLanguage] = useState<Language>('en');
+    const params = useParams();
+    const pathname = usePathname();
 
-    useEffect(() => {
-        const savedLanguage = localStorage.getItem('language') as Language;
-        if (savedLanguage) {
-            setLanguage(savedLanguage);
+    // Get locale from URL params or pathname
+    const localeFromParams = params?.locale as string | undefined;
+    const localeFromPath = pathname?.split('/')[1];
+    
+    // Determine current language from URL
+    let language: Locale = defaultLocale;
+    if (localeFromParams && isValidLocale(localeFromParams)) {
+        language = localeFromParams;
+    } else if (localeFromPath && isValidLocale(localeFromPath)) {
+        language = localeFromPath;
+    }
+
+    const setLanguage = (lang: Locale) => {
+        // Navigate to the new locale URL
+        const currentPath = pathname || '/';
+        let newPath: string;
+
+        // Remove current locale prefix if present
+        const pathWithoutLocale = locales.reduce((path, loc) => {
+            if (path.startsWith(`/${loc}/`)) {
+                return path.slice(loc.length + 1);
+            }
+            if (path === `/${loc}`) {
+                return '/';
+            }
+            return path;
+        }, currentPath);
+
+        // Add new locale prefix (skip for default locale 'en')
+        if (lang === defaultLocale) {
+            newPath = pathWithoutLocale;
+        } else {
+            newPath = `/${lang}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
         }
-    }, []);
 
-    const handleSetLanguage = (lang: Language) => {
-        setLanguage(lang);
-        localStorage.setItem('language', lang);
+        // Use window.location for navigation to ensure full page load with correct locale
+        window.location.href = newPath;
     };
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>
+        <LanguageContext.Provider value={{ language, setLanguage }}>
             {children}
         </LanguageContext.Provider>
     );
