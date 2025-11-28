@@ -15,6 +15,7 @@ describe('LanguageContext', () => {
   const mockRefresh = jest.fn();
   const mockReplace = jest.fn();
   let localStorageMock: { [key: string]: string };
+  let documentCookieValue: string;
 
   const createWrapper = ({ children }: { children: ReactNode }) => {
     return <LanguageProvider>{children}</LanguageProvider>;
@@ -44,6 +45,20 @@ describe('LanguageContext', () => {
         }),
       },
       writable: true,
+    });
+
+    // Mock document.cookie
+    documentCookieValue = '';
+    Object.defineProperty(document, 'cookie', {
+      get: jest.fn(() => documentCookieValue),
+      set: jest.fn((value: string) => {
+        // Parse the cookie value and extract name=value
+        const match = value.match(/^([^=]+)=([^;]*)/);
+        if (match) {
+          documentCookieValue = `${match[1]}=${match[2]}`;
+        }
+      }),
+      configurable: true,
     });
   });
 
@@ -231,6 +246,22 @@ describe('LanguageContext', () => {
       expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'id');
     });
 
+    it('sets cookie when language is changed', () => {
+      (useParams as jest.Mock).mockReturnValue({ locale: undefined });
+      (usePathname as jest.Mock).mockReturnValue('/');
+
+      const { result } = renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      act(() => {
+        result.current.setLanguage('id');
+      });
+
+      // Verify cookie is set with the correct value
+      expect(document.cookie).toContain('NEXT_LOCALE=id');
+    });
+
     it('preserves deep paths when switching languages', () => {
       (useParams as jest.Mock).mockReturnValue({ locale: undefined });
       (usePathname as jest.Mock).mockReturnValue('/work/projects/something');
@@ -367,6 +398,20 @@ describe('LanguageContext', () => {
         result.current.setLanguage('en');
       });
       expect(localStorage.setItem).toHaveBeenCalledWith('preferred-language', 'en');
+    });
+
+    it('syncs cookie with localStorage on initial mount', () => {
+      // Simulate user with saved preference in localStorage
+      localStorageMock['preferred-language'] = 'id';
+      (useParams as jest.Mock).mockReturnValue({ locale: 'id' });
+      (usePathname as jest.Mock).mockReturnValue('/id');
+
+      renderHook(() => useLanguage(), {
+        wrapper: createWrapper,
+      });
+
+      // Cookie should be synced with localStorage value
+      expect(document.cookie).toContain('NEXT_LOCALE=id');
     });
   });
 
