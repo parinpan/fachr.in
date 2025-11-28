@@ -13,6 +13,26 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, type Locale, isValidLocale } from '@/lib/i18n';
 
 const LANGUAGE_STORAGE_KEY = 'preferred-language';
+const COOKIE_NAME = 'NEXT_LOCALE';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year in seconds
+
+/**
+ * Get the value of a cookie by name
+ */
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  return match ? match[2] : null;
+}
+
+/**
+ * Set a cookie with the given name and value
+ */
+function setCookie(name: string, value: string, maxAge: number): void {
+  if (typeof document !== 'undefined') {
+    document.cookie = `${name}=${value}; path=/; max-age=${maxAge}; SameSite=Lax`;
+  }
+}
 
 interface LanguageContextType {
   language: Locale;
@@ -83,9 +103,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       // Immediately update UI with optimistic state
       setOptimisticLanguage(lang);
 
-      // Persist language preference in localStorage
+      // Persist language preference in localStorage and cookie
       if (typeof window !== 'undefined') {
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+        setCookie(COOKIE_NAME, lang, COOKIE_MAX_AGE);
       }
 
       // Derive current language from pathname to avoid stale closure issue
@@ -117,6 +138,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (savedLanguage && isValidLocale(savedLanguage)) {
       const currentPath = pathname || '/';
       const urlLanguage = getLocaleFromPathname(currentPath);
+
+      // Sync the cookie with localStorage only if it differs (avoid unnecessary writes)
+      const currentCookie = getCookie(COOKIE_NAME);
+      if (currentCookie !== savedLanguage) {
+        setCookie(COOKIE_NAME, savedLanguage, COOKIE_MAX_AGE);
+      }
 
       // Only redirect if saved language differs from URL language
       if (savedLanguage !== urlLanguage) {
