@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Build & Deploy
 
 on:
   push:
@@ -71,8 +71,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: parinpan
+          password: ${{ secrets.GH_TOKEN }}
           
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -80,7 +80,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/fachr.in:latest
+          tags: ghcr.io/parinpan/fachr.in:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
