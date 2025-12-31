@@ -93,6 +93,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Cloudflare Tunnel Proxy
+        uses: cloudflare/cloudflare-tunnel-action@v1
+        with:
+          tunnel-token: ${{ secrets.CF_TUNNEL_TOKEN }}
+          port: 6443
+          hostname: k8s.fachr.in
+      
       - name: Prepare deployment manifest
         run: |
           sed -ie "s/{{build_date}}/$(date)/g" deployment.yaml
