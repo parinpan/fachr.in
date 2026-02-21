@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import PageWrapper from '@/components/PageWrapper';
 import { siteConfig } from '@/data/content';
+import { safeIsoDate } from '@/lib/utils';
 
 interface Props {
   params: Promise<{
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: postUrl,
       title: post.title,
       description: post.description,
-      publishedTime: post.date ? new Date(post.date).toISOString() : undefined,
+      publishedTime: safeIsoDate(post.date),
       authors: [siteConfig.personal.name],
       images: [
         {
@@ -77,8 +78,8 @@ export default async function BlogPost({ params }: Props) {
     headline: post.title,
     description: post.description,
     url: postUrl,
-    datePublished: post.date ? new Date(post.date).toISOString() : undefined,
-    dateModified: post.date ? new Date(post.date).toISOString() : undefined,
+    datePublished: safeIsoDate(post.date),
+    dateModified: safeIsoDate(post.date),
     inLanguage: 'en-US',
     author: {
       '@type': 'Person',

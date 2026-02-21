@@ -1,16 +1,12 @@
-'use client';
-
-import Script from 'next/script';
-import { useContent } from '@/hooks/useContent';
+import { siteConfig } from '@/data/content';
+import { safeIsoDate } from '@/lib/utils';
 
 /**
- * Enhanced Structured Data (JSON-LD) Component
- * Provides comprehensive schema.org markup for SEO optimization
- * Supports multilingual content and multiple schema types
+ * Enhanced Structured Data (JSON-LD) Component (Server Component)
+ * Provides comprehensive schema.org markup for SEO optimization.
+ * Rendered on server to avoid client-side date parsing issues (Safari).
  */
 export default function StructuredData() {
-  const siteConfig = useContent();
-
   // Person Schema - Professional Profile
   const personSchema = {
     '@context': 'https://schema.org',
@@ -50,7 +46,7 @@ export default function StructuredData() {
       'Backend Development',
       'System Architecture',
       'Golang',
-      'Python',
+      'Go',
       'Kafka',
       'PostgreSQL',
       'gRPC',
@@ -65,7 +61,7 @@ export default function StructuredData() {
     ],
   };
 
-  // WebSite Schema - Site Information
+  // WebSite Schema
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -87,35 +83,20 @@ export default function StructuredData() {
     },
   };
 
-  // BreadcrumbList Schema - Navigation Structure
+  // BreadcrumbList Schema
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://fachr.in',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Blog',
-        item: 'https://fachr.in/blog',
-      },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fachr.in' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://fachr.in/blog' },
       {
         '@type': 'ListItem',
         position: 3,
         name: 'Appearances',
         item: 'https://fachr.in/appearances',
       },
-      {
-        '@type': 'ListItem',
-        position: 4,
-        name: 'Now',
-        item: 'https://fachr.in/now',
-      },
+      { '@type': 'ListItem', position: 4, name: 'Now', item: 'https://fachr.in/now' },
     ],
   };
 
@@ -124,16 +105,14 @@ export default function StructuredData() {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
     '@id': 'https://fachr.in/#profilepage',
-    mainEntity: {
-      '@id': 'https://fachr.in/#person',
-    },
+    mainEntity: { '@id': 'https://fachr.in/#person' },
     inLanguage: 'en-US',
     url: 'https://fachr.in',
     name: `${siteConfig.personal.name} - ${siteConfig.hero.title}`,
     description: siteConfig.seo.description,
   };
 
-  // Appearances - ItemList of VideoObject and Event schemas
+  // Appearances List Schema
   const appearancesSchema =
     siteConfig.appearances?.items?.length > 0
       ? {
@@ -144,52 +123,46 @@ export default function StructuredData() {
           url: 'https://fachr.in/appearances',
           numberOfItems: siteConfig.appearances.items.length,
           itemListElement: siteConfig.appearances.items.map((item, index) => {
+            const baseItem = {
+              '@type': item.type === 'video' ? 'VideoObject' : 'Event',
+              name: item.title,
+              description: item.description,
+              url: item.url,
+              image: item.image.startsWith('http') ? item.image : `https://fachr.in${item.image}`,
+              author: { '@id': 'https://fachr.in/#person' },
+            };
+
             if (item.type === 'video') {
               return {
                 '@type': 'ListItem',
                 position: index + 1,
                 item: {
+                  ...baseItem,
                   '@type': 'VideoObject',
-                  name: item.title,
-                  description: item.description,
-                  url: item.url,
-                  thumbnailUrl: item.image.startsWith('http')
-                    ? item.image
-                    : `https://fachr.in${item.image}`,
-                  uploadDate: new Date(item.date).toISOString(),
+                  thumbnailUrl: baseItem.image,
+                  uploadDate: safeIsoDate(item.date),
                   inLanguage: item.language ?? 'en',
-                  ...(item.duration && {
-                    duration: `PT${item.duration.replace(':', 'H').replace(':', 'M')}S`,
-                  }),
-                  author: { '@id': 'https://fachr.in/#person' },
                 },
               };
             }
-            // talk / flyer → Event
+
             return {
               '@type': 'ListItem',
               position: index + 1,
               item: {
+                ...baseItem,
                 '@type': 'Event',
-                name: item.title,
-                description: item.description,
-                url: item.url,
-                image: item.image.startsWith('http') ? item.image : `https://fachr.in${item.image}`,
-                startDate: new Date(item.date).toISOString(),
+                startDate: safeIsoDate(item.date),
                 eventStatus: 'https://schema.org/EventScheduled',
                 eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-                organizer: { '@id': 'https://fachr.in/#person' },
-                location: {
-                  '@type': 'VirtualLocation',
-                  url: item.url,
-                },
+                location: { '@type': 'VirtualLocation', url: item.url },
               },
             };
           }),
         }
       : null;
 
-  // Blog section schema
+  // Blog Schema
   const blogSchema = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
@@ -201,7 +174,6 @@ export default function StructuredData() {
     inLanguage: 'en-US',
   };
 
-  // Combine all schemas (cast to unknown[] to allow heterogeneous schema objects)
   const graphs: unknown[] = [
     personSchema,
     websiteSchema,
@@ -217,10 +189,9 @@ export default function StructuredData() {
   };
 
   return (
-    <Script
+    <script
       id="structured-data"
       type="application/ld+json"
-      strategy="beforeInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
     />
   );

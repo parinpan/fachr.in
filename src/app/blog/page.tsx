@@ -1,6 +1,7 @@
 import { getAllPosts } from '@/lib/mdx';
 import { Metadata } from 'next';
 import { siteConfig } from '@/data/content';
+import { safeIsoDate } from '@/lib/utils';
 import BlogContent from '@/components/BlogContent';
 
 export const metadata: Metadata = {
@@ -36,7 +37,6 @@ export const metadata: Metadata = {
 export default function BlogIndex() {
   const posts = getAllPosts(['slug', 'title', 'date', 'description', 'readingTime', 'tags']);
 
-  // CollectionPage + Blog structured data
   const blogJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
@@ -63,7 +63,7 @@ export default function BlogIndex() {
         headline: post.title,
         description: post.description,
         url: `https://fachr.in/blog/${post.slug}`,
-        datePublished: post.date ? new Date(post.date).toISOString() : undefined,
+        datePublished: safeIsoDate(post.date),
         author: {
           '@type': 'Person',
           name: siteConfig.personal.name,

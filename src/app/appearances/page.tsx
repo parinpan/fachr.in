@@ -1,6 +1,7 @@
 import { siteConfig } from '@/data/content';
 import AppearancesContent from '@/components/AppearancesContent';
 import type { Metadata } from 'next';
+import { safeIsoDate } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: `Appearances | ${siteConfig.personal.name}`,
@@ -32,7 +33,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Structured data for the appearances page (server-rendered in <head>)
 const appearancesJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -41,48 +41,34 @@ const appearancesJsonLd = {
   url: 'https://fachr.in/appearances',
   numberOfItems: siteConfig.appearances.items.length,
   itemListElement: siteConfig.appearances.items.map((item, index) => {
-    if (item.type === 'video') {
-      return {
-        '@type': 'ListItem',
-        position: index + 1,
-        item: {
-          '@type': 'VideoObject',
-          name: item.title,
-          description: item.description,
-          url: item.url,
-          thumbnailUrl: item.image.startsWith('http')
-            ? item.image
-            : `https://fachr.in${item.image}`,
-          uploadDate: new Date(item.date).toISOString(),
-          inLanguage: item.language ?? 'en',
-          author: {
-            '@type': 'Person',
-            name: siteConfig.personal.name,
-            url: 'https://fachr.in',
-          },
-        },
-      };
-    }
+    const isVideo = item.type === 'video';
     return {
       '@type': 'ListItem',
       position: index + 1,
       item: {
-        '@type': 'Event',
+        '@type': isVideo ? 'VideoObject' : 'Event',
         name: item.title,
         description: item.description,
         url: item.url,
         image: item.image.startsWith('http') ? item.image : `https://fachr.in${item.image}`,
-        startDate: new Date(item.date).toISOString(),
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-        organizer: {
+        ...(isVideo
+          ? {
+              thumbnailUrl: item.image.startsWith('http')
+                ? item.image
+                : `https://fachr.in${item.image}`,
+              uploadDate: safeIsoDate(item.date),
+              inLanguage: item.language ?? 'en',
+            }
+          : {
+              startDate: safeIsoDate(item.date),
+              eventStatus: 'https://schema.org/EventScheduled',
+              eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+              location: { '@type': 'VirtualLocation', url: item.url },
+            }),
+        author: {
           '@type': 'Person',
           name: siteConfig.personal.name,
           url: 'https://fachr.in',
-        },
-        location: {
-          '@type': 'VirtualLocation',
-          url: item.url,
         },
       },
     };

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from '@/data/content';
+import { safeIsoDate } from '@/lib/utils';
 import NowContent from '@/components/NowContent';
 
 const nowDescription = `${siteConfig.now.subtitle} Currently based in Berlin as a Senior Product Engineer at Upvest. ${siteConfig.now.sections.map((s) => s.title).join(' · ')}.`;
@@ -34,7 +35,6 @@ export const metadata: Metadata = {
   },
 };
 
-// WebPage structured data for the /now page
 const nowJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
@@ -43,7 +43,7 @@ const nowJsonLd = {
   name: `Now – ${siteConfig.personal.name}`,
   description: nowDescription,
   inLanguage: 'en-US',
-  dateModified: new Date().toISOString(),
+  dateModified: safeIsoDate(siteConfig.now.updatedAt),
   author: {
     '@type': 'Person',
     name: siteConfig.personal.name,
