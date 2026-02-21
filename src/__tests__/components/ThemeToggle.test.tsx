@@ -7,11 +7,6 @@ jest.mock('next-themes', () => ({
   useTheme: jest.fn(),
 }));
 
-// Mock LanguageContext
-jest.mock('@/context/LanguageContext', () => ({
-  useLanguage: jest.fn().mockReturnValue({ language: 'en', setLanguage: jest.fn() }),
-}));
-
 describe('ThemeToggle', () => {
   const mockSetTheme = jest.fn();
 

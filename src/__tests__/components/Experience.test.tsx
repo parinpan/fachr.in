@@ -4,87 +4,136 @@ import { useContent } from '@/hooks/useContent';
 
 // Mock hooks
 jest.mock('@/hooks/useContent', () => ({
-    useContent: jest.fn(),
+  useContent: jest.fn(),
 }));
 
-// Mock sub-components
-jest.mock('@/components/ui/Badge', () => function MockBadge({ children }: { children: React.ReactNode }) { return <span data-testid="badge">{children}</span>; });
+jest.mock('@/hooks/useScroll', () => ({
+  useScroll: () => ({
+    canScrollLeft: true,
+    canScrollRight: true,
+    scroll: jest.fn(),
+    checkScroll: jest.fn(),
+  }),
+}));
+
+import React from 'react';
+
+// Mock framer-motion
+jest.mock('framer-motion', () => {
+  const ActualFramerMotion = jest.requireActual('framer-motion');
+  return {
+    ...ActualFramerMotion,
+    motion: {
+      div: ({
+        children,
+        onClick,
+        className,
+      }: {
+        children: React.ReactNode;
+        onClick?: () => void;
+        className?: string;
+      }) => (
+        <div onClick={onClick} className={className} data-testid="motion-div">
+          {children}
+        </div>
+      ),
+    },
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  };
+});
 
 // Mock icons
 jest.mock('lucide-react', () => ({
-    ChevronDown: () => <svg data-testid="icon-chevron-down" />,
-    ChevronUp: () => <svg data-testid="icon-chevron-up" />,
-    MapPin: () => <svg data-testid="icon-map-pin" />,
-    Calendar: () => <svg data-testid="icon-calendar" />,
-    Building2: () => <svg data-testid="icon-building" />,
+  ChevronLeft: () => <svg data-testid="icon-chevron-left" />,
+  ChevronRight: () => <svg data-testid="icon-chevron-right" />,
+  MapPin: () => <svg data-testid="icon-map-pin" />,
+  Calendar: () => <svg data-testid="icon-calendar" />,
+  Building2: () => <svg data-testid="icon-building" />,
+  X: () => <span data-testid="icon-x">Close</span>,
 }));
 
-describe('Experience', () => {
-    const mockSiteConfig = {
-        ui: {
-            experience: {
-                title: 'Experience',
-                expand: 'Expand',
-                collapse: 'Collapse',
-                technologies: 'Technologies',
-                more: 'more',
-            },
-        },
-        experience: [
-            {
-                role: 'Senior Engineer',
-                company: 'Tech Corp',
-                location: 'Berlin',
-                period: '2020 - Present',
-                description: ['Built amazing things', 'Led a team'],
-                techStack: ['React', 'TypeScript', 'Node.js', 'Go', 'AWS'],
-            },
-            {
-                role: 'Junior Engineer',
-                company: 'Startup Inc',
-                location: 'Remote',
-                period: '2018 - 2020',
-                description: ['Fixed bugs', 'Learned a lot'],
-                techStack: ['JavaScript', 'HTML', 'CSS'],
-            },
-        ],
-    };
+describe('Experience Carousel', () => {
+  const mockSiteConfig = {
+    ui: {
+      appearanceList: {
+        scrollLeft: 'Scroll left',
+        scrollRight: 'Scroll right',
+      },
+      experience: {
+        title: 'Experience',
+        technologies: 'Technologies',
+      },
+    },
+    experience: [
+      {
+        role: 'Senior Engineer',
+        company: 'Tech Corp',
+        location: 'Berlin',
+        period: '2020 - Present',
+        description: ['Built amazing things', 'Led a team'],
+        techStack: ['React', 'TypeScript', 'Node.js', 'Go', 'AWS'],
+        image: '/techcorp.png',
+      },
+      {
+        role: 'Junior Engineer',
+        company: 'Startup Inc',
+        location: 'Remote',
+        period: '2018 - 2020',
+        description: ['Fixed bugs', 'Learned a lot'],
+        techStack: ['JavaScript', 'HTML', 'CSS'],
+        image: '/startup.png',
+      },
+    ],
+  };
 
-    beforeEach(() => {
-        (useContent as jest.Mock).mockReturnValue(mockSiteConfig);
-    });
+  beforeEach(() => {
+    (useContent as jest.Mock).mockReturnValue(mockSiteConfig);
+  });
 
-    it('renders experience items', () => {
-        render(<Experience />);
+  it('renders the experience heading', () => {
+    render(<Experience />);
+    expect(screen.getByText('Experience')).toBeInTheDocument();
+  });
 
-        expect(screen.getByText('Senior Engineer')).toBeInTheDocument();
-        expect(screen.getByText('Tech Corp')).toBeInTheDocument();
-        expect(screen.getByText('Junior Engineer')).toBeInTheDocument();
-    });
+  it('renders experience cards with basic information', () => {
+    render(<Experience />);
 
-    it('expands and collapses items', () => {
-        render(<Experience />);
+    expect(screen.getByText('Senior Engineer')).toBeInTheDocument();
+    expect(screen.getByText('Tech Corp')).toBeInTheDocument();
+    expect(screen.getByText('Junior Engineer')).toBeInTheDocument();
 
-        // First item is expanded by default
-        expect(screen.getByText('Built amazing things')).toBeInTheDocument();
+    // Ensure some pills are rendered
+    expect(screen.getByText('React')).toBeInTheDocument();
 
-        // Click to collapse first item
-        const collapseButton = screen.getAllByLabelText('Collapse')[0];
-        fireEvent.click(collapseButton);
+    // Ensure +N overflow indicator is rendered
+    expect(screen.getByText('+2')).toBeInTheDocument();
+  });
 
-        expect(screen.queryByText('Led a team')).not.toBeInTheDocument();
+  it('opens modal correctly when "View details" is clicked', () => {
+    render(<Experience />);
 
-        // Click to expand second item - since first is collapsed, both have 'Expand' label
-        const expandButtons = screen.getAllByLabelText('Expand');
-        fireEvent.click(expandButtons[1]); // Second item
+    // The modal should not be open, therefore only the preview versions of the role exist.
+    // Wait, the roles are identical in preview and modal. Let's just click the first role card.
+    const cardPreviews = screen.getAllByText('Senior Engineer');
+    fireEvent.click(cardPreviews[0]); // Click the first matching card
 
-        expect(screen.getByText('Fixed bugs')).toBeInTheDocument();
-    });
+    // The modal should open. We check if the Close (X) icon appears.
+    expect(screen.getByTestId('icon-x')).toBeInTheDocument();
+  });
 
-    it('renders tech stack', () => {
-        render(<Experience />);
+  it('closes modal correctly when X icon is clicked', () => {
+    render(<Experience />);
 
-        expect(screen.getByText('React')).toBeInTheDocument();
-        expect(screen.getByText('TypeScript')).toBeInTheDocument();
-    });
+    // Open the modal
+    const cardPreviews = screen.getAllByText('Senior Engineer');
+    fireEvent.click(cardPreviews[0]);
+
+    expect(screen.getByTestId('icon-x')).toBeInTheDocument();
+
+    // Close the modal
+    const closeButton = screen.getByTestId('icon-x').parentElement;
+    fireEvent.click(closeButton!);
+
+    expect(screen.queryByTestId('icon-x')).not.toBeInTheDocument();
+  });
 });

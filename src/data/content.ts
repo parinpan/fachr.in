@@ -51,6 +51,7 @@ export const siteConfig: SiteConfig = {
   experience: [
     {
       company: 'Upvest',
+      image: '/images/companies/upvest.webp',
       role: 'Senior Product Engineer',
       location: 'Berlin, Germany',
       period: 'Oct 2023 – Present',
@@ -73,6 +74,7 @@ export const siteConfig: SiteConfig = {
     },
     {
       company: 'Choco',
+      image: '/images/companies/choco.webp',
       role: 'Senior Software Engineer',
       location: 'Berlin, Germany',
       period: 'May 2023 – Oct 2023',
@@ -84,6 +86,7 @@ export const siteConfig: SiteConfig = {
     },
     {
       company: 'Delivery Hero',
+      image: '/images/companies/deliveryhero.svg',
       role: 'Software Engineer II',
       location: 'Berlin, Germany',
       period: 'May 2022 – May 2023',
@@ -94,6 +97,7 @@ export const siteConfig: SiteConfig = {
     },
     {
       company: 'Gojek',
+      image: '/images/companies/gojek.svg',
       role: 'Lead Product Engineer',
       location: 'Jakarta, Indonesia',
       period: 'Apr 2020 – May 2022',
@@ -123,6 +127,7 @@ export const siteConfig: SiteConfig = {
     },
     {
       company: 'Tokopedia',
+      image: '/images/companies/tokopedia.svg',
       role: 'Software Engineer L3',
       location: 'Jakarta, Indonesia',
       period: 'Apr 2019 – Mar 2020',
@@ -387,12 +392,12 @@ export const siteConfig: SiteConfig = {
   now: {
     title: 'Now',
     subtitle: "What I'm focused on at the moment.",
-    updatedAt: 'Updated November 21, 2025',
+    updatedAt: 'Updated February 21, 2026',
     sections: [
       {
         title: '📍 Location',
         content:
-          "Living in <strong>Berlin, Germany</strong> 🇩🇪. It's a long way from Indonesia, but I'm finding a home in the contrast. I am romanticizing the gritty beauty of this city while holding onto my roots. Currently in the process of applying for my <strong>Permanent Residence</strong> permit.",
+          "Living in <strong>Berlin, Germany</strong> 🇩🇪. It's a long way from Indonesia, but I'm finding a home in the contrast. I am romanticizing the gritty beauty of this city while holding onto my roots. I am now officially a <strong>Permanent Resident</strong> of Germany.",
       },
       {
         title: '💼 Work',

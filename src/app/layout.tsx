@@ -23,16 +23,10 @@ export const metadata: Metadata = {
   keywords: siteConfig.seo.keywords,
   alternates: {
     canonical: 'https://fachr.in',
-    languages: {
-      'en': 'https://fachr.in',
-      'id': 'https://fachr.in/id',
-      'x-default': 'https://fachr.in',
-    },
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    alternateLocale: ['id_ID'],
     url: siteConfig.seo.url,
     siteName: siteConfig.personal.name,
     title: siteConfig.seo.title,
@@ -89,17 +83,10 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className={jakarta.variable}>
-      <head>
-        <link rel="alternate" hrefLang="en" href="https://fachr.in" />
-        <link rel="alternate" hrefLang="id" href="https://fachr.in/id" />
-        <link rel="alternate" hrefLang="x-default" href="https://fachr.in" />
-      </head>
       <body className="font-sans antialiased font-medium">
         <Providers>
           <CommandMenu posts={posts} />
-          <ErrorBoundary>
-            {children}
-          </ErrorBoundary>
+          <ErrorBoundary>{children}</ErrorBoundary>
           <StructuredData />
           {process.env.NODE_ENV === 'production' && siteConfig.analytics.googleAnalyticsId && (
             <GoogleAnalytics gaId={siteConfig.analytics.googleAnalyticsId} />

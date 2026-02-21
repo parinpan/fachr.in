@@ -15,13 +15,6 @@ jest.mock('@/hooks/useContent', () => ({
   }),
 }));
 
-jest.mock('@/context/LanguageContext', () => ({
-  useLanguage: () => ({
-    language: 'en',
-    setLanguage: jest.fn(),
-  }),
-}));
-
 jest.mock('@/lib/formatters', () => ({
   formatDate: (date: string, locale: string) => {
     const d = new Date(date);
@@ -133,28 +126,5 @@ describe('BlogContent', () => {
 
     const articles = screen.getAllByRole('article');
     expect(articles.length).toBe(2);
-  });
-});
-
-describe('BlogContent with Indonesian locale', () => {
-  beforeEach(() => {
-    jest.resetModules();
-  });
-
-  it('uses correct locale for date formatting', () => {
-    // This is covered by the mock - the component passes locale to formatDate
-    const mockPosts = [
-      {
-        slug: 'test-post',
-        title: 'Test Post',
-        date: '2024-01-15',
-        description: 'Description',
-        readingTime: '5 min read',
-        tags: ['tag'],
-      },
-    ];
-
-    render(<BlogContent posts={mockPosts} />);
-    expect(screen.getByRole('article')).toBeInTheDocument();
   });
 });

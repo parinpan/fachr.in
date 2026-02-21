@@ -3,8 +3,9 @@
  * Centralized scroll-related constants
  */
 export const SCROLL_THRESHOLDS = {
-    BACK_TO_TOP: 300,
-    APPEARANCE_SCROLL_AMOUNT: 400,
+  BACK_TO_TOP: 300,
+  APPEARANCE_SCROLL_AMOUNT: 400,
+  EXPERIENCE_SCROLL_AMOUNT: 450,
 } as const;
 
 /**
@@ -12,10 +13,10 @@ export const SCROLL_THRESHOLDS = {
  * Centralized GitHub-related constants
  */
 export const GITHUB_CONFIG = {
-    USERNAME: 'parinpan',
-    REPOS_LIMIT: 6,
-    API_URL: 'https://api.github.com',
-    PER_PAGE: 100,
+  USERNAME: 'parinpan',
+  REPOS_LIMIT: 6,
+  API_URL: 'https://api.github.com',
+  PER_PAGE: 100,
 } as const;
 
 /**
@@ -23,7 +24,7 @@ export const GITHUB_CONFIG = {
  * Standardized margin-bottom values for sections
  */
 export const SPACING = {
-    SECTION_SMALL: 'mb-8',
-    SECTION_MEDIUM: 'mb-12',
-    SECTION_LARGE: 'mb-16',
+  SECTION_SMALL: 'mb-8',
+  SECTION_MEDIUM: 'mb-12',
+  SECTION_LARGE: 'mb-16',
 } as const;

@@ -23,13 +23,6 @@ jest.mock('@/hooks/useContent', () => ({
   }),
 }));
 
-jest.mock('@/context/LanguageContext', () => ({
-  useLanguage: () => ({
-    language: 'en',
-    setLanguage: jest.fn(),
-  }),
-}));
-
 describe('StructuredData', () => {
   it('renders without crashing', () => {
     const { container } = render(<StructuredData />);
@@ -39,24 +32,6 @@ describe('StructuredData', () => {
   it('renders Script element', () => {
     // Next.js Script component renders differently in test environment
     // We mainly test that it doesn't crash
-    const { container } = render(<StructuredData />);
-    expect(container).toBeInTheDocument();
-  });
-});
-
-describe('StructuredData with Indonesian locale', () => {
-  beforeEach(() => {
-    jest.resetModules();
-  });
-
-  it('handles Indonesian language correctly', () => {
-    jest.doMock('@/context/LanguageContext', () => ({
-      useLanguage: () => ({
-        language: 'id',
-        setLanguage: jest.fn(),
-      }),
-    }));
-
     const { container } = render(<StructuredData />);
     expect(container).toBeInTheDocument();
   });
