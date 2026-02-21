@@ -23,6 +23,10 @@ export default function StructuredData() {
     url: 'https://fachr.in',
     image: `https://fachr.in${siteConfig.personal.profileImage}`,
     email: siteConfig.personal.email,
+    nationality: {
+      '@type': 'Country',
+      name: 'Indonesia',
+    },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Berlin',
@@ -52,8 +56,13 @@ export default function StructuredData() {
       'gRPC',
       'Microservices',
       'Product Engineering',
+      'Distributed Systems',
+      'Financial Technology',
     ],
-    knowsLanguage: [{ '@type': 'Language', name: 'English', alternateName: 'en' }],
+    knowsLanguage: [
+      { '@type': 'Language', name: 'English', alternateName: 'en' },
+      { '@type': 'Language', name: 'Indonesian', alternateName: 'id' },
+    ],
   };
 
   // WebSite Schema - Site Information
@@ -124,17 +133,94 @@ export default function StructuredData() {
     description: siteConfig.seo.description,
   };
 
-  // Combine all schemas
+  // Appearances - ItemList of VideoObject and Event schemas
+  const appearancesSchema =
+    siteConfig.appearances?.items?.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Talks & Appearances',
+          description: siteConfig.appearances.description,
+          url: 'https://fachr.in/appearances',
+          numberOfItems: siteConfig.appearances.items.length,
+          itemListElement: siteConfig.appearances.items.map((item, index) => {
+            if (item.type === 'video') {
+              return {
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                  '@type': 'VideoObject',
+                  name: item.title,
+                  description: item.description,
+                  url: item.url,
+                  thumbnailUrl: item.image.startsWith('http')
+                    ? item.image
+                    : `https://fachr.in${item.image}`,
+                  uploadDate: new Date(item.date).toISOString(),
+                  inLanguage: item.language ?? 'en',
+                  ...(item.duration && {
+                    duration: `PT${item.duration.replace(':', 'H').replace(':', 'M')}S`,
+                  }),
+                  author: { '@id': 'https://fachr.in/#person' },
+                },
+              };
+            }
+            // talk / flyer → Event
+            return {
+              '@type': 'ListItem',
+              position: index + 1,
+              item: {
+                '@type': 'Event',
+                name: item.title,
+                description: item.description,
+                url: item.url,
+                image: item.image.startsWith('http') ? item.image : `https://fachr.in${item.image}`,
+                startDate: new Date(item.date).toISOString(),
+                eventStatus: 'https://schema.org/EventScheduled',
+                eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+                organizer: { '@id': 'https://fachr.in/#person' },
+                location: {
+                  '@type': 'VirtualLocation',
+                  url: item.url,
+                },
+              },
+            };
+          }),
+        }
+      : null;
+
+  // Blog section schema
+  const blogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': 'https://fachr.in/blog#blog',
+    name: `${siteConfig.personal.name}'s Journal`,
+    description: siteConfig.blog.description,
+    url: 'https://fachr.in/blog',
+    author: { '@id': 'https://fachr.in/#person' },
+    inLanguage: 'en-US',
+  };
+
+  // Combine all schemas (cast to unknown[] to allow heterogeneous schema objects)
+  const graphs: unknown[] = [
+    personSchema,
+    websiteSchema,
+    breadcrumbSchema,
+    profilePageSchema,
+    blogSchema,
+  ];
+  if (appearancesSchema) graphs.push(appearancesSchema);
+
   const structuredData = {
     '@context': 'https://schema.org',
-    '@graph': [personSchema, websiteSchema, breadcrumbSchema, profilePageSchema],
+    '@graph': graphs,
   };
 
   return (
     <Script
       id="structured-data"
       type="application/ld+json"
-      strategy="afterInteractive"
+      strategy="beforeInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
     />
   );

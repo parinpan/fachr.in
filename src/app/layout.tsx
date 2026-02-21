@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   title: siteConfig.seo.title,
   description: siteConfig.seo.description,
   keywords: siteConfig.seo.keywords,
+  authors: [{ name: siteConfig.personal.name, url: siteConfig.seo.url }],
+  creator: siteConfig.personal.name,
   alternates: {
     canonical: 'https://fachr.in',
   },

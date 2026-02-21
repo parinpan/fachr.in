@@ -11,6 +11,8 @@ jest.mock('@/hooks/useContent', () => ({
     },
     seo: {
       description: 'Test SEO description',
+      url: 'https://fachr.in',
+      ogImage: 'https://fachr.in/images/og-image.png',
     },
     social: {
       github: 'https://github.com/testuser',
@@ -19,6 +21,40 @@ jest.mock('@/hooks/useContent', () => ({
     },
     hero: {
       title: 'Test Hero Title',
+    },
+    appearances: {
+      title: 'Appearances',
+      subtitle: 'Talks & Podcasts',
+      description: 'Test appearances description',
+      items: [
+        {
+          type: 'video',
+          title: 'Test Video',
+          image: '/images/test.jpg',
+          url: 'https://youtube.com/watch?v=test',
+          description: 'Test video description',
+          date: 'January 2024',
+          platform: 'YouTube',
+          language: 'English',
+        },
+        {
+          type: 'talk',
+          title: 'Test Talk',
+          image: '/images/test-talk.jpg',
+          url: 'https://example.com/talk',
+          description: 'Test talk description',
+          date: 'March 2023',
+          platform: 'Webinar',
+        },
+      ],
+    },
+    blog: {
+      title: 'Journal',
+      description: 'Test blog description',
+      emptyState: {
+        title: 'Writing in progress',
+        description: 'Check back soon!',
+      },
     },
   }),
 }));

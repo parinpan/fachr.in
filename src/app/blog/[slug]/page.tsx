@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import PageWrapper from '@/components/PageWrapper';
+import { siteConfig } from '@/data/content';
 
 interface Props {
   params: Promise<{
@@ -13,10 +14,40 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug, ['title', 'description']);
+  const post = getPostBySlug(slug, ['title', 'description', 'date']);
+  const postUrl = `https://fachr.in/blog/${slug}`;
+
   return {
-    title: `${post.title} | Fachrin Aulia Nasution`,
+    title: `${post.title} | ${siteConfig.personal.name}`,
     description: post.description,
+    authors: [{ name: siteConfig.personal.name, url: siteConfig.seo.url }],
+    alternates: {
+      canonical: postUrl,
+    },
+    openGraph: {
+      type: 'article',
+      url: postUrl,
+      title: post.title,
+      description: post.description,
+      publishedTime: post.date ? new Date(post.date).toISOString() : undefined,
+      authors: [siteConfig.personal.name],
+      images: [
+        {
+          url: siteConfig.seo.ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: siteConfig.seo.twitterHandle,
+      creator: siteConfig.seo.twitterHandle,
+      title: post.title,
+      description: post.description,
+      images: [siteConfig.seo.ogImage],
+    },
   };
 }
 
@@ -29,10 +60,62 @@ export async function generateStaticParams() {
 
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug, ['title', 'date', 'content', 'readingTime', 'tags']);
+  const post = getPostBySlug(slug, [
+    'title',
+    'date',
+    'content',
+    'readingTime',
+    'tags',
+    'description',
+  ]);
+  const postUrl = `https://fachr.in/blog/${slug}`;
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${postUrl}#article`,
+    headline: post.title,
+    description: post.description,
+    url: postUrl,
+    datePublished: post.date ? new Date(post.date).toISOString() : undefined,
+    dateModified: post.date ? new Date(post.date).toISOString() : undefined,
+    inLanguage: 'en-US',
+    author: {
+      '@type': 'Person',
+      name: siteConfig.personal.name,
+      url: 'https://fachr.in',
+      '@id': 'https://fachr.in/#person',
+    },
+    publisher: {
+      '@type': 'Person',
+      name: siteConfig.personal.name,
+      url: 'https://fachr.in',
+    },
+    image: siteConfig.seo.ogImage,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
+    isPartOf: {
+      '@type': 'Blog',
+      '@id': 'https://fachr.in/blog#blog',
+    },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fachr.in' },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://fachr.in/blog' },
+        { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+      ],
+    },
+  };
 
   return (
     <PageWrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <article className="max-w-3xl mx-auto">
         <Link
           href="/blog"

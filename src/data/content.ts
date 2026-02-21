@@ -397,7 +397,7 @@ export const siteConfig: SiteConfig = {
       {
         title: '📍 Location',
         content:
-          "Living in <strong>Berlin, Germany</strong> 🇩🇪. It's a long way from Indonesia, but I'm finding a home in the contrast. I am romanticizing the gritty beauty of this city while holding onto my roots. I am now officially a <strong>Permanent Resident</strong> of Germany.",
+          'Living in <strong>Berlin, Germany</strong> 🇩🇪. It is far from Indonesia, but it has slowly started to feel like home. I am learning to appreciate the city’s rough edges and quiet beauty while staying grounded in where I come from. Somewhere between those two worlds, I have built something lasting, and I am now officially a <strong>Permanent Resident</strong> of Germany.',
       },
       {
         title: '💼 Work',
