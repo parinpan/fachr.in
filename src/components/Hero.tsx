@@ -26,13 +26,13 @@ export default function Hero() {
           {siteConfig.hero.badges.map((badge: BadgeType, index: number) => (
             <div
               key={index}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-[var(--color-surface-secondary)] border border-[var(--color-border)] whitespace-nowrap"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-[var(--color-surface-secondary)] border border-[var(--color-border)] text-sm"
             >
               <Image
                 src={badge.icon}
                 alt=""
-                width={15}
-                height={15}
+                width={18}
+                height={18}
                 unoptimized={badge.icon.endsWith('.ico')}
               />
               {badge.text}

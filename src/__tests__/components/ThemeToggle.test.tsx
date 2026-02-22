@@ -75,7 +75,9 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />);
 
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('p-2');
+    expect(button).toHaveClass('p-2.5');
+    expect(button).toHaveClass('min-h-[44px]');
+    expect(button).toHaveClass('min-w-[44px]');
     expect(button).toHaveClass('rounded-full');
   });
 

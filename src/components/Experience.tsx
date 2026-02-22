@@ -40,7 +40,7 @@ export default function Experience() {
           <button
             onClick={() => scroll('left', SCROLL_THRESHOLDS.EXPERIENCE_SCROLL_AMOUNT)}
             disabled={!canScrollLeft}
-            className="p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={siteConfig.ui.experience.scrollLeft}
           >
             <ChevronLeft size={20} />
@@ -48,7 +48,7 @@ export default function Experience() {
           <button
             onClick={() => scroll('right', SCROLL_THRESHOLDS.EXPERIENCE_SCROLL_AMOUNT)}
             disabled={!canScrollRight}
-            className="p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={siteConfig.ui.experience.scrollRight}
           >
             <ChevronRight size={20} />
@@ -105,26 +105,20 @@ export default function Experience() {
 
             {/* Content section */}
             <div className="flex-1 relative overflow-hidden bg-[var(--color-surface)]">
-              {/* Full height background text container */}
-              <div className="p-5 h-full">
-                <ul className="space-y-3">
-                  {exp.description.map((desc: string, i: number) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-3.5 text-[var(--color-text-secondary)] text-[14.5px] leading-[1.6]"
-                    >
-                      <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[var(--color-text-primary)] mt-[8px]" />
-                      <span className="flex-1">{desc}</span>
-                    </li>
-                  ))}
-                </ul>
+              {/* Description text (no bullet markers in preview) */}
+              <div className="px-6 pt-4 space-y-2">
+                {exp.description.map((desc: string, i: number) => (
+                  <p
+                    key={i}
+                    className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-2"
+                  >
+                    {desc}
+                  </p>
+                ))}
               </div>
 
-              {/* Translucent bottom area overlaid on text */}
+              {/* Translucent bottom area */}
               <div className="absolute inset-x-0 bottom-0 bg-[var(--color-overlay-solid)] backdrop-blur-xl flex flex-col pt-3 pb-5 px-5 z-10 rounded-b-2xl">
-                {/* Gradient seam */}
-                <div className="absolute top-0 left-0 right-0 h-16 -translate-y-full bg-gradient-to-t from-[var(--color-overlay-gradient-from)] to-transparent pointer-events-none" />
-
                 <div className="flex-shrink-0 pb-3">
                   {exp.description.length > 0 && (
                     <span className="text-[13.5px] font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-interactive)] group-hover:underline flex items-center gap-1 transition-colors">
@@ -136,19 +130,19 @@ export default function Experience() {
                 {/* Technologies section */}
                 <div className="pt-3 border-t border-[var(--color-border)]/60">
                   <div className="flex flex-wrap items-center gap-2 w-full">
-                    <p className="text-[11px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider mr-1 flex-shrink-0">
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mr-1 flex-shrink-0">
                       {siteConfig.ui.experience.technologies}
                     </p>
                     {exp.techStack.slice(0, 3).map((tech: string) => (
                       <span
                         key={tech}
-                        className="flex-shrink-0 px-3 py-1 bg-[var(--color-interactive-bg)] text-[var(--color-text-secondary)] text-[11px] rounded-full font-medium border border-[var(--color-border)]/50 shadow-sm"
+                        className="flex-shrink-0 px-3 py-1 bg-[var(--color-interactive-bg)] text-[var(--color-text-secondary)] text-xs rounded-full font-medium border border-[var(--color-border)]/50 shadow-sm"
                       >
                         {tech}
                       </span>
                     ))}
                     {exp.techStack.length > 3 && (
-                      <span className="flex-shrink-0 px-3 py-1 bg-[var(--color-interactive-bg)] text-[var(--color-text-muted)] text-[11px] rounded-full font-medium border border-[var(--color-border)]/50 shadow-sm">
+                      <span className="flex-shrink-0 px-3 py-1 bg-[var(--color-interactive-bg)] text-[var(--color-text-muted)] text-xs rounded-full font-medium border border-[var(--color-border)]/50 shadow-sm">
                         +{exp.techStack.length - 3}
                       </span>
                     )}
@@ -185,7 +179,7 @@ export default function Experience() {
                 <div className="p-6 pb-5 border-b border-[var(--color-border-light)] flex gap-4 items-center relative">
                   <button
                     onClick={closeModal}
-                    className="absolute top-5 right-5 p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-interactive-bg)] transition-colors"
+                    className="absolute top-4 right-4 p-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-interactive-bg)] transition-colors"
                   >
                     <X size={20} />
                   </button>
@@ -227,17 +221,22 @@ export default function Experience() {
 
                 {/* Modal Content */}
                 <div className="p-6 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-                  <ul className="space-y-4 mb-8">
-                    {selectedExp.description.map((desc: string, i: number) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-4 text-[var(--color-text-secondary)] text-[15.5px] leading-relaxed"
-                      >
-                        <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[var(--color-text-primary)] mt-[10px]" />
-                        <span className="flex-1">{desc}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="mb-8">
+                    <h4 className="text-sm font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">
+                      {siteConfig.ui.experience.accomplishments}
+                    </h4>
+                    <ul className="space-y-4">
+                      {selectedExp.description.map((desc: string, i: number) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-4 text-[var(--color-text-secondary)] text-[15.5px] leading-relaxed"
+                        >
+                          <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[var(--color-text-primary)] mt-[10px]" />
+                          <span className="flex-1">{desc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
                   <div>
                     <h4 className="text-sm font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">

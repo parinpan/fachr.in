@@ -79,7 +79,7 @@ export default function GithubRepos() {
           href={`https://github.com/${GITHUB_CONFIG.USERNAME}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] font-medium transition-colors"
+          className="inline-flex items-center gap-2 py-2 px-4 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] font-medium transition-colors"
         >
           {siteConfig.ui.githubActions.viewAllRepos}
           <ExternalLink size={16} />

@@ -11,6 +11,9 @@ This is a **Next.js 16** personal portfolio website with:
 - **Tailwind CSS 4** for styling
 - **React 19** with Server and Client Components
 - **MDX** for blog content
+- **Performance-optimized** (dynamic imports, throttled/debounced handlers)
+- **SEO-optimized** (structured data, RSS feed, llms.txt, sitemap, manifest)
+- **Mobile-first** (responsive sizing, 44px touch targets, safe-area insets)
 
 ## Directory Structure
 
@@ -20,15 +23,20 @@ src/
 │   ├── appearances/       # Appearances page
 │   ├── blog/              # Blog pages
 │   │   └── [slug]/        # Dynamic blog post pages
+│   ├── feed.xml/          # RSS feed route
+│   ├── llms.txt/          # LLM-readable content route
+│   ├── manifest.webmanifest/ # Web App Manifest route
 │   ├── now/               # Now page
+│   ├── robots.txt/        # Robots.txt route
 │   ├── sitemap.xml/       # Dynamic sitemap route
 │   ├── globals.css        # Global styles & CSS variables
-│   ├── layout.tsx         # Root layout
+│   ├── layout.tsx         # Root layout (viewport export, RSS autodiscovery)
 │   ├── not-found.tsx      # 404 page
 │   └── page.tsx           # Home page
 │
 ├── components/            # React components
-│   ├── ui/               # Reusable UI primitives (Badge)
+│   ├── ui/               # Reusable UI primitives (Badge, EmptyState, IconWithText)
+│   ├── ClientShell.tsx   # Dynamic import wrapper for CommandMenu + BackToTop
 │   └── *.tsx             # Feature components (Hero, Contact, etc.)
 │
 ├── data/                 # Static content data
@@ -37,11 +45,11 @@ src/
 │
 ├── hooks/                # Custom React hooks
 │   ├── useContent.ts     # Content hook (API boundary for future i18n)
-│   ├── useScroll.ts      # Scroll management
-│   └── useVisibility.ts  # Visibility detection
+│   ├── useScroll.ts      # Scroll management (debounced resize handler)
+│   └── useVisibility.ts  # Visibility detection (rAF-throttled scroll)
 │
 ├── lib/                  # Utility functions & helpers
-│   ├── utils.ts          # cn() helper (clsx + tailwind-merge)
+│   ├── utils.ts          # cn() helper + safeIsoDate() (Safari-safe date parsing)
 │   ├── constants.ts      # App constants (GitHub config, scroll thresholds)
 │   ├── formatters.ts     # Date formatter, Spotify theme URL builder
 │   ├── navigation.ts     # Navigation utilities
@@ -55,6 +63,7 @@ src/
 │   └── components.ts     # Component prop types (BlogContentProps, Repository)
 │
 └── __tests__/            # Test files (mirrors src structure)
+    ├── app/              # Route handler tests
     ├── components/
     │   └── ui/
     ├── hooks/
@@ -79,7 +88,12 @@ npm run test:watch  # Watch mode testing
 
 - Default to Server Components unless client-side interactivity is needed
 - Use `'use client'` directive only when required (hooks, event handlers, browser APIs)
-- Client components: `Hero.tsx`, `Experience.tsx`, `Navbar.tsx`, etc.
+- Server components: `About.tsx`, `Contact.tsx`, `StructuredData.tsx`, `BlogContent.tsx`, `NowContent.tsx`, `AppearancesContent.tsx`
+- Client components: `Hero.tsx`, `Experience.tsx`, `Navbar.tsx`, `CommandMenu.tsx`, `BackToTop.tsx`, `ThemeToggle.tsx`, `WorkList.tsx`, `GithubRepos.tsx`, `AppearanceList.tsx`, `Podcast.tsx`
+
+**Dynamic Imports via ClientShell:**
+
+`ClientShell.tsx` uses `next/dynamic` with `{ ssr: false }` to lazily load `CommandMenu` and `BackToTop`, reducing initial bundle size.
 
 **Component Structure:**
 
@@ -119,11 +133,24 @@ import { cn } from '@/lib/utils';
 />;
 ```
 
+**Mobile-first responsive sizing:**
+
+```tsx
+// Use responsive breakpoints: base (mobile) → sm → md → lg
+<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+<div className="w-[85vw] sm:w-[350px]">
+```
+
+**Touch target minimums (44px):**
+
+All interactive elements must have `min-h-[44px] min-w-[44px]` for mobile accessibility.
+
 **Avoid:**
 
-- Inline styles
+- Inline styles (except `scrollbarWidth: 'thin'` which has no Tailwind equivalent)
 - Hardcoded color values (use CSS variables)
 - `dark:` Tailwind classes (use CSS variables instead, except for `@tailwindcss/typography` prose classes which don't support CSS variables natively)
+- `text-justify` on mobile (use `text-left md:text-justify`)
 
 ### 3. Content
 
@@ -148,6 +175,10 @@ import { siteConfig } from '@/data/content';
 ### 4. Testing Patterns
 
 **Test file location:** Mirror the `src/` structure in `__tests__/`
+
+**Coverage threshold:** Minimum **80%** across statements, branches, functions, and lines (enforced in `jest.config.ts`). Current coverage: ~84% functions, ~99% statements.
+
+**Test count:** 40 test suites, 275 tests.
 
 **Mocking patterns:**
 
@@ -176,6 +207,33 @@ jest.mock(
       return <div>ThemeToggle</div>;
     }
 );
+
+// Mock framer-motion (pass through aria/role attributes for accessibility tests)
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: ({
+      children,
+      onClick,
+      className,
+      role,
+      'aria-modal': ariaModal,
+      'aria-labelledby': ariaLabelledby,
+      ...rest
+    }) => (
+      <div
+        onClick={onClick}
+        className={className}
+        role={role}
+        aria-modal={ariaModal}
+        aria-labelledby={ariaLabelledby}
+        data-testid="motion-div"
+      >
+        {children}
+      </div>
+    ),
+  },
+  AnimatePresence: ({ children }) => <>{children}</>,
+}));
 ```
 
 **Run tests frequently:**
@@ -183,6 +241,7 @@ jest.mock(
 ```bash
 npm test                    # All tests
 npm test -- path/to/test    # Specific test
+npx jest --coverage         # Coverage report
 ```
 
 ### 5. Type Safety
@@ -200,24 +259,47 @@ interface ComponentProps {
 
 ### 6. Accessibility
 
-Modals must include:
+**Touch targets:** All buttons and interactive elements must be at least 44x44px (`min-h-[44px] min-w-[44px]`).
+
+**Modals must include:**
 
 - `role="dialog"` and `aria-modal="true"`
 - `aria-labelledby` pointing to a heading
 - Escape key handler to close
-- Focus management where appropriate
+- Backdrop click to close
+- `document.body.style.overflow = 'hidden'` when open
+
+**Safe-area insets:** Applied in `globals.css` for notched devices. `BackToTop` uses `pb-[env(safe-area-inset-bottom)]`.
+
+### 7. Experience Component Pattern
+
+The Experience section uses a **preview card + modal** pattern:
+
+- **Preview cards:** Show role, company, location, period, description text (plain `<p>` tags, no bullet markers), technologies (first 3 + overflow count), and a "View details" link
+- **Modal:** Shows full details with an **"Accomplishments"** heading (`siteConfig.ui.experience.accomplishments`) above bulleted description list, plus full tech stack
+- Cards have fixed `h-[360px]` height with translucent overlay at the bottom -- content clipping in preview is intentional
+
+### 8. Performance Patterns
+
+- **Dynamic imports:** `ClientShell.tsx` lazy-loads `CommandMenu` + `BackToTop` with `{ ssr: false }`
+- **Throttled scroll:** `useVisibility` uses `requestAnimationFrame` to throttle scroll event handlers
+- **Debounced resize:** `useScroll` debounces window resize handlers
+- **Image optimization:** All `<Image fill>` components include `sizes` prop for responsive loading
+- **Server Components by default:** Components that don't need interactivity are Server Components
 
 ## Common Pitfalls
 
 ### 1. Duplicate Utilities
 
 - `cn()` is ONLY in `lib/utils.ts` - don't create duplicates
+- `safeIsoDate()` is also in `lib/utils.ts` - use it for Safari-safe date parsing
 - Check if utility exists before creating new ones
 
 ### 2. Test Assertions
 
 - Match EXACT UI strings from `content.ts` (e.g., "Part of my work at" not "Part of work at")
 - Check `aria-label` values match component implementation
+- When testing modals, the framer-motion mock must pass through `role`, `aria-modal`, and `aria-labelledby` props
 
 ### 3. Mock Component Props
 
@@ -229,11 +311,25 @@ Modals must include:
 - Theme colors are in `globals.css` under `:root` and `:root.dark`
 - Don't hardcode colors - use CSS variables for theme consistency
 - Components use `var(--color-*)` directly in Tailwind arbitrary values
+- Safe-area CSS custom properties are defined in `globals.css`
 
 ### 5. Content Hook
 
 - `useContent()` is a thin wrapper returning `siteConfig` - kept as an API boundary
 - Client Components should use `useContent()`, not import `siteConfig` directly
+
+### 6. LSP Ghost Errors
+
+- The LSP sometimes reports false `Cannot find module '@/...'` errors
+- These are transient/stale -- `npx tsc --noEmit` and Jest both compile clean
+- Ignore these LSP errors; verify with `tsc` if unsure
+
+### 7. Mobile Responsive Rules
+
+- Never use fixed widths without responsive breakpoints (e.g., `w-[85vw] sm:w-[350px]`)
+- Never use `text-justify` on mobile (causes awkward spacing on narrow screens)
+- Large headings must scale down: `text-3xl sm:text-4xl md:text-5xl lg:text-6xl`
+- Touch targets must be at least 44x44px
 
 ## Pre-Commit Checklist
 
@@ -241,8 +337,10 @@ Before submitting changes:
 
 1. **Lint passes:** `npm run lint`
 2. **Tests pass:** `npm run test`
-3. **No TypeScript errors:** Check IDE or `npx tsc --noEmit`
-4. **Tests for new code:** Add tests for new components/hooks/utilities
+3. **Coverage >= 80%:** `npx jest --coverage` (all four metrics must be >= 80%)
+4. **No TypeScript errors:** `npx tsc --noEmit`
+5. **Build passes:** `npm run build`
+6. **Tests for new code:** Add tests for new components/hooks/utilities
 
 ## Adding New Features
 
@@ -252,7 +350,9 @@ Before submitting changes:
 2. Use `'use client'` only if needed
 3. Use `useContent()` for text content in Client Components
 4. Use CSS variables for theming (not `dark:` classes)
-5. Add test in `src/__tests__/components/`
+5. Ensure 44px minimum touch targets on interactive elements
+6. Use responsive sizing (mobile-first breakpoints)
+7. Add test in `src/__tests__/components/`
 
 ### New Hook
 
@@ -270,27 +370,40 @@ Before submitting changes:
 
 1. Create in `src/app/` following Next.js conventions
 2. Update navigation in `content.ts`
+3. Add to sitemap in `src/app/sitemap.xml/route.ts`
+
+### New Route Handler
+
+1. Create in `src/app/<route>/route.ts`
+2. Add test in `src/__tests__/app/<route>/route.test.ts`
 
 ## Key Files Reference
 
-| Purpose           | File                         |
-| ----------------- | ---------------------------- |
-| Theme colors      | `src/app/globals.css`        |
-| Class merging     | `src/lib/utils.ts` -> `cn()` |
-| Content           | `src/data/content.ts`        |
-| Content types     | `src/data/types.ts`          |
-| Navigation config | `src/lib/navigation.ts`      |
-| Component types   | `src/types/components.ts`    |
+| Purpose             | File                                   |
+| ------------------- | -------------------------------------- |
+| Theme colors        | `src/app/globals.css`                  |
+| Class merging       | `src/lib/utils.ts` -> `cn()`           |
+| Safari-safe dates   | `src/lib/utils.ts` -> `safeIsoDate()`  |
+| Content             | `src/data/content.ts`                  |
+| Content types       | `src/data/types.ts`                    |
+| Navigation config   | `src/lib/navigation.ts`                |
+| Component types     | `src/types/components.ts`              |
+| Dynamic imports     | `src/components/ClientShell.tsx`       |
+| Structured data/SEO | `src/components/StructuredData.tsx`    |
+| Scroll constants    | `src/lib/constants.ts`                 |
+| Viewport config     | `src/app/layout.tsx` (viewport export) |
 
 ## Quality Standards
 
-1. **Accessibility:** Use semantic HTML, ARIA labels, proper heading hierarchy, modal accessibility
-2. **Performance:** Prefer Server Components, optimize images with `next/image`
+1. **Accessibility:** Use semantic HTML, ARIA labels, proper heading hierarchy, modal accessibility, 44px touch targets
+2. **Performance:** Prefer Server Components, optimize images with `next/image`, use dynamic imports for heavy client components
 3. **Type Safety:** No `any` types, proper interfaces for all props
-4. **Testing:** Aim for comprehensive coverage of user interactions
+4. **Testing:** Minimum 80% coverage across all metrics; currently 40 suites, 275 tests
 5. **Theming:** All colors via CSS variables, no hardcoded light/dark values
-6. **Documentation:** Update AGENTS.md when adding new patterns
+6. **Mobile:** Responsive breakpoints, safe-area insets, no text-justify on mobile, touch-friendly sizing
+7. **SEO:** Structured data (JSON-LD), RSS feed, sitemap, robots.txt, llms.txt, Web App Manifest
+8. **Documentation:** Update AGENTS.md when adding new patterns
 
 ---
 
-_Last updated after comprehensive codebase refactoring_
+_Last updated after performance, SEO, mobile optimization, Experience card redesign, and test coverage improvements_

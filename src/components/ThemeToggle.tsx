@@ -16,29 +16,29 @@ const getServerSnapshot = () => false;
 const getClientSnapshot = () => true;
 
 export default function ThemeToggle() {
-    const { setTheme, resolvedTheme } = useTheme();
-    const siteConfig = useContent();
+  const { setTheme, resolvedTheme } = useTheme();
+  const siteConfig = useContent();
 
-    // Use useSyncExternalStore for hydration-safe mounting detection
-    const mounted = useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
+  // Use useSyncExternalStore for hydration-safe mounting detection
+  const mounted = useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
-    if (!mounted) {
-        return <div className="w-9 h-9" />; // Placeholder to avoid layout shift
-    }
+  if (!mounted) {
+    return <div className="w-11 h-11" />; // Placeholder to avoid layout shift
+  }
 
-    const isDark = resolvedTheme === 'dark';
+  const isDark = resolvedTheme === 'dark';
 
-    return (
-        <button
-            onClick={() => setTheme(isDark ? 'light' : 'dark')}
-            className="p-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-interactive-bg)] rounded-full transition-colors"
-            aria-label={siteConfig.ui.themeToggle}
-        >
-            {isDark ? (
-                <Moon size={20} className="transition-all" />
-            ) : (
-                <Sun size={20} className="transition-all" />
-            )}
-        </button>
-    );
+  return (
+    <button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-interactive-bg)] rounded-full transition-colors"
+      aria-label={siteConfig.ui.themeToggle}
+    >
+      {isDark ? (
+        <Moon size={20} className="transition-all" />
+      ) : (
+        <Sun size={20} className="transition-all" />
+      )}
+    </button>
+  );
 }

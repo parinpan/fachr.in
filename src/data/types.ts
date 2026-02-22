@@ -222,6 +222,7 @@ export type UIConfig = {
     expand: string;
     collapse: string;
     technologies: string;
+    accomplishments: string;
     more: string;
     scrollLeft: string;
     scrollRight: string;

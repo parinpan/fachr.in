@@ -121,7 +121,7 @@ export default async function BlogPost({ params }: Props) {
       <article className="max-w-3xl mx-auto">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-200 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 py-2 -my-2 text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-200 mb-8 transition-colors"
         >
           <ArrowLeft size={20} />
           {siteConfig.blog.backLink}
@@ -133,7 +133,7 @@ export default async function BlogPost({ params }: Props) {
             <span>•</span>
             <span>{post.readingTime}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-neutral-100 mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-neutral-100 mb-6 leading-tight">
             {post.title}
           </h1>
           <div className="flex flex-wrap gap-2">

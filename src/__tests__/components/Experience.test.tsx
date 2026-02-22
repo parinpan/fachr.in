@@ -28,12 +28,25 @@ jest.mock('framer-motion', () => {
         children,
         onClick,
         className,
+        role,
+        'aria-modal': ariaModal,
+        'aria-labelledby': ariaLabelledby,
       }: {
         children: React.ReactNode;
         onClick?: () => void;
         className?: string;
+        role?: string;
+        'aria-modal'?: boolean | 'true' | 'false';
+        'aria-labelledby'?: string;
       }) => (
-        <div onClick={onClick} className={className} data-testid="motion-div">
+        <div
+          onClick={onClick}
+          className={className}
+          data-testid="motion-div"
+          role={role}
+          aria-modal={ariaModal}
+          aria-labelledby={ariaLabelledby}
+        >
           {children}
         </div>
       ),
@@ -62,6 +75,9 @@ describe('Experience Carousel', () => {
       experience: {
         title: 'Experience',
         technologies: 'Technologies',
+        accomplishments: 'Accomplishments',
+        scrollLeft: 'Scroll left',
+        scrollRight: 'Scroll right',
       },
     },
     experience: [
@@ -109,16 +125,38 @@ describe('Experience Carousel', () => {
     expect(screen.getByText('+2')).toBeInTheDocument();
   });
 
-  it('opens modal correctly when "View details" is clicked', () => {
+  it('renders description text in preview cards without bullet markers', () => {
     render(<Experience />);
 
-    // The modal should not be open, therefore only the preview versions of the role exist.
-    // Wait, the roles are identical in preview and modal. Let's just click the first role card.
+    // Description text should appear in preview
+    expect(screen.getByText('Built amazing things')).toBeInTheDocument();
+    expect(screen.getByText('Led a team')).toBeInTheDocument();
+
+    // But no bullet markers (ul/li) should exist in the preview
+    // The descriptions are rendered as <p> tags, not <li> tags
+    const descriptions = screen.getByText('Built amazing things');
+    expect(descriptions.tagName).toBe('P');
+  });
+
+  it('opens modal correctly when card is clicked', () => {
+    render(<Experience />);
+
     const cardPreviews = screen.getAllByText('Senior Engineer');
-    fireEvent.click(cardPreviews[0]); // Click the first matching card
+    fireEvent.click(cardPreviews[0]);
 
     // The modal should open. We check if the Close (X) icon appears.
     expect(screen.getByTestId('icon-x')).toBeInTheDocument();
+  });
+
+  it('shows Accomplishments label in modal', () => {
+    render(<Experience />);
+
+    // Open modal
+    const cardPreviews = screen.getAllByText('Senior Engineer');
+    fireEvent.click(cardPreviews[0]);
+
+    // Accomplishments heading should be visible in modal
+    expect(screen.getByText('Accomplishments')).toBeInTheDocument();
   });
 
   it('closes modal correctly when X icon is clicked', () => {
@@ -135,5 +173,48 @@ describe('Experience Carousel', () => {
     fireEvent.click(closeButton!);
 
     expect(screen.queryByTestId('icon-x')).not.toBeInTheDocument();
+  });
+
+  it('closes modal when Escape key is pressed', () => {
+    render(<Experience />);
+
+    // Open the modal
+    const cardPreviews = screen.getAllByText('Senior Engineer');
+    fireEvent.click(cardPreviews[0]);
+
+    expect(screen.getByTestId('icon-x')).toBeInTheDocument();
+
+    // Press Escape key
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    expect(screen.queryByTestId('icon-x')).not.toBeInTheDocument();
+  });
+
+  it('closes modal when backdrop overlay is clicked', () => {
+    render(<Experience />);
+
+    // Open the modal
+    const cardPreviews = screen.getAllByText('Senior Engineer');
+    fireEvent.click(cardPreviews[0]);
+
+    expect(screen.getByTestId('icon-x')).toBeInTheDocument();
+
+    // Click the backdrop (first motion-div is the overlay)
+    const motionDivs = screen.getAllByTestId('motion-div');
+    fireEvent.click(motionDivs[0]);
+
+    expect(screen.queryByTestId('icon-x')).not.toBeInTheDocument();
+  });
+
+  it('has proper modal accessibility attributes', () => {
+    render(<Experience />);
+
+    // Open modal
+    const cardPreviews = screen.getAllByText('Senior Engineer');
+    fireEvent.click(cardPreviews[0]);
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(dialog).toHaveAttribute('aria-labelledby', 'experience-modal-title');
   });
 });

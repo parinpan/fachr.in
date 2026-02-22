@@ -104,7 +104,7 @@ export default function WorkList() {
                   </div>
                   <button
                     onClick={closeModal}
-                    className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
+                    className="absolute top-4 right-4 p-3 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
                     aria-label={siteConfig.ui.workList.closeDetails}
                   >
                     <X size={20} />

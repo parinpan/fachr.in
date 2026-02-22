@@ -33,7 +33,7 @@ export default function Navbar() {
                   key={item.path}
                   href={item.path}
                   className={cn(
-                    'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+                    'flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium transition-all duration-200',
                     isActive
                       ? 'bg-[var(--color-nav-active)] text-[var(--color-nav-active-text)] shadow-md'
                       : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-interactive-bg)] hover:text-[var(--color-text-primary)]'
@@ -52,7 +52,7 @@ export default function Navbar() {
               onClick={() =>
                 document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
               }
-              className="p-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-interactive-bg)] rounded-full transition-colors"
+              className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-interactive-bg)] rounded-full transition-colors"
               aria-label={siteConfig.ui.commandMenu.open}
             >
               <Command size={20} />

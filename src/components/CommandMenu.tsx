@@ -83,7 +83,7 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 px-2">
+    <div className="fixed inset-0 z-[9999] flex items-start pt-[15vh] sm:items-center sm:pt-0 justify-center p-4 px-2">
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200 z-0"
         onClick={() => setOpen(false)}
@@ -96,12 +96,13 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
               placeholder={siteConfig.ui.commandMenu.placeholder}
               className="w-full h-14 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none ring-0 text-lg text-gray-900 dark:text-neutral-100 placeholder:text-gray-400 dark:placeholder:text-neutral-500 bg-transparent shadow-none appearance-none"
             />
-            <div
-              className="text-xs font-medium text-gray-400 dark:text-neutral-500 border border-gray-200 dark:border-neutral-700 rounded px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700"
+            <button
+              type="button"
+              className="text-xs font-medium text-gray-400 dark:text-neutral-500 border border-gray-200 dark:border-neutral-700 rounded px-3 py-2 min-h-[36px] cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
               onClick={() => setOpen(false)}
             >
               {siteConfig.ui.commandMenu.esc}
-            </div>
+            </button>
           </div>
 
           <Command.List className="max-h-[300px] overflow-y-auto overflow-x-hidden p-2 scroll-py-2">

@@ -36,7 +36,7 @@ export default function Podcast() {
             className="group relative bg-[var(--color-surface-secondary)] rounded-2xl p-6 border border-[var(--color-border)] shadow-sm hover:shadow-md transition-all"
           >
             <div className="border-b border-[var(--color-border)] pb-6 mb-6">
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <h4 className="text-lg font-bold text-[var(--color-text-primary)]">
                   {podcast.title}
                 </h4>

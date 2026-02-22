@@ -7,7 +7,7 @@ export default function About() {
       <h3 id="about-heading" className="text-2xl font-bold mb-4 text-[var(--color-text-primary)]">
         {siteConfig.about.title}
       </h3>
-      <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed text-justify">
+      <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed text-left md:text-justify">
         {siteConfig.about.greeting}
         <Hand className="inline-block w-5 h-5 ml-2 text-[var(--color-text-muted)]" />.{' '}
         {siteConfig.about.description}{' '}

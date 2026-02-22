@@ -37,7 +37,7 @@ export default function AppearanceList() {
           <button
             onClick={() => scroll('left', SCROLL_THRESHOLDS.APPEARANCE_SCROLL_AMOUNT)}
             disabled={!canScrollLeft}
-            className="p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={siteConfig.ui.appearanceList.scrollLeft}
           >
             <ChevronLeft size={20} />
@@ -45,7 +45,7 @@ export default function AppearanceList() {
           <button
             onClick={() => scroll('right', SCROLL_THRESHOLDS.APPEARANCE_SCROLL_AMOUNT)}
             disabled={!canScrollRight}
-            className="p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={siteConfig.ui.appearanceList.scrollRight}
           >
             <ChevronRight size={20} />
@@ -67,7 +67,7 @@ export default function AppearanceList() {
               href={appearance.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex-shrink-0 w-[350px] snap-start"
+              className="group flex-shrink-0 w-[85vw] sm:w-[350px] snap-start"
               aria-label={`${actionLabel}: ${appearance.title}`}
             >
               <div className="flex flex-col h-full bg-[var(--color-surface-secondary)] border border-[var(--color-border)] rounded-2xl shadow-sm hover:shadow-md hover:border-[var(--color-border-hover)] transition-all overflow-hidden">
@@ -77,7 +77,7 @@ export default function AppearanceList() {
                     src={appearance.image}
                     alt={appearance.title}
                     fill
-                    sizes="350px"
+                    sizes="(min-width: 640px) 350px, 85vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
 

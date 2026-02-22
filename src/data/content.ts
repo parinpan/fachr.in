@@ -500,6 +500,7 @@ export const siteConfig: SiteConfig = {
       expand: 'Expand',
       collapse: 'Collapse',
       technologies: 'Technologies',
+      accomplishments: 'Accomplishments',
       more: 'more',
       scrollLeft: 'Scroll left',
       scrollRight: 'Scroll right',

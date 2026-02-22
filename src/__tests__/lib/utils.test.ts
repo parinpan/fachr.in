@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, safeIsoDate } from '@/lib/utils';
 
 describe('cn (classnames utility)', () => {
   it('merges class names correctly', () => {
@@ -28,5 +28,53 @@ describe('cn (classnames utility)', () => {
 
   it('handles objects with boolean values', () => {
     expect(cn({ foo: true, bar: false, baz: true })).toBe('foo baz');
+  });
+});
+
+describe('safeIsoDate', () => {
+  it('parses a standard date string', () => {
+    const result = safeIsoDate('2024-01-15');
+    expect(result).toContain('2024-01-15');
+    expect(() => new Date(result)).not.toThrow();
+  });
+
+  it('parses "Month YYYY" format (Safari-safe)', () => {
+    const result = safeIsoDate('November 2025');
+    const date = new Date(result);
+    expect(date.getFullYear()).toBe(2025);
+    expect(date.getMonth()).toBe(10); // November is 10 (0-indexed)
+  });
+
+  it('strips "Updated " prefix before parsing', () => {
+    const result = safeIsoDate('Updated November 2025');
+    const date = new Date(result);
+    expect(date.getFullYear()).toBe(2025);
+    expect(date.getMonth()).toBe(10);
+  });
+
+  it('returns current date ISO string for undefined input', () => {
+    const before = Date.now();
+    const result = safeIsoDate(undefined);
+    const after = Date.now();
+    const parsed = new Date(result).getTime();
+    expect(parsed).toBeGreaterThanOrEqual(before);
+    expect(parsed).toBeLessThanOrEqual(after);
+  });
+
+  it('returns current date ISO string for completely invalid string', () => {
+    const before = Date.now();
+    const result = safeIsoDate('not-a-date-at-all');
+    const after = Date.now();
+    const parsed = new Date(result).getTime();
+    expect(parsed).toBeGreaterThanOrEqual(before);
+    expect(parsed).toBeLessThanOrEqual(after);
+  });
+
+  it('returns a valid ISO string for all inputs', () => {
+    const inputs = ['2024-06-01', 'January 2024', 'Updated March 2025', undefined, 'garbage'];
+    for (const input of inputs) {
+      const result = safeIsoDate(input);
+      expect(new Date(result).toISOString()).toBe(result);
+    }
   });
 });
