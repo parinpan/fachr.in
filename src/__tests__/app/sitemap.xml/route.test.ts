@@ -56,12 +56,11 @@ describe('sitemap.xml route', () => {
     expect(text).toContain('<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>');
   });
 
-  it('includes urlset with proper namespaces', async () => {
+  it('includes urlset with proper namespace', async () => {
     const response = await GET();
     const text = await response.text();
 
     expect(text).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
-    expect(text).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
   });
 
   it('includes static pages', async () => {
@@ -74,14 +73,12 @@ describe('sitemap.xml route', () => {
     expect(text).toContain('<loc>https://example.com/appearances</loc>');
   });
 
-  it('includes Indonesian versions of static pages', async () => {
+  it('does not include non-existent i18n URLs', async () => {
     const response = await GET();
     const text = await response.text();
 
-    expect(text).toContain('<loc>https://example.com/id</loc>');
-    expect(text).toContain('<loc>https://example.com/id/blog</loc>');
-    expect(text).toContain('<loc>https://example.com/id/now</loc>');
-    expect(text).toContain('<loc>https://example.com/id/appearances</loc>');
+    expect(text).not.toContain('/id/');
+    expect(text).not.toContain('hreflang');
   });
 
   it('includes blog post URLs', async () => {
@@ -90,15 +87,6 @@ describe('sitemap.xml route', () => {
 
     expect(text).toContain('<loc>https://example.com/blog/test-post</loc>');
     expect(text).toContain('<loc>https://example.com/blog/another-post</loc>');
-  });
-
-  it('includes hreflang alternates for multilingual support', async () => {
-    const response = await GET();
-    const text = await response.text();
-
-    expect(text).toContain('xhtml:link rel="alternate" hreflang="en"');
-    expect(text).toContain('xhtml:link rel="alternate" hreflang="id"');
-    expect(text).toContain('xhtml:link rel="alternate" hreflang="x-default"');
   });
 
   it('includes changefreq for static pages', async () => {
@@ -118,15 +106,23 @@ describe('sitemap.xml route', () => {
     expect(text).toContain('<priority>0.7</priority>');
   });
 
-  it('includes lastmod dates', async () => {
+  it('includes lastmod dates for static pages as YYYY-MM-DD', async () => {
     const response = await GET();
     const text = await response.text();
 
-    expect(text).toContain('<lastmod>');
+    // Static pages use fixed YYYY-MM-DD dates, not dynamic ISO timestamps
+    expect(text).toMatch(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
+  });
+
+  it('includes lastmod dates for blog posts as ISO strings', async () => {
+    const response = await GET();
+    const text = await response.text();
+
+    // Blog posts use ISO date strings derived from post dates
+    expect(text).toContain('<lastmod>2024-02-20');
   });
 
   it('escapes special XML characters in URL', async () => {
-    // This is implicitly tested by the escapeXml function
     const response = await GET();
     const text = await response.text();
 

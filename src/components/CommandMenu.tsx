@@ -3,17 +3,49 @@
 import * as React from 'react';
 import { Command } from 'cmdk';
 import { useRouter } from 'next/navigation';
-import * as Icons from 'lucide-react';
+import {
+  Home,
+  Info,
+  Briefcase,
+  FolderGit2,
+  User,
+  Mail,
+  PenTool,
+  Clock,
+  Github,
+  Linkedin,
+  Twitter,
+  Copy,
+  Code,
+  Search,
+  Circle,
+  FileText,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 import { handleNavigationAction } from '@/lib/command-helpers';
-import type { LucideIcon } from 'lucide-react';
 
-type IconComponent = LucideIcon;
+/** Icon map for command menu items - avoids `import *` which defeats tree-shaking */
+const COMMAND_ICONS: Record<string, LucideIcon> = {
+  Home,
+  Info,
+  Briefcase,
+  FolderGit2,
+  User,
+  Mail,
+  PenTool,
+  Clock,
+  Github,
+  Linkedin,
+  Twitter,
+  Copy,
+  Code,
+  FileText,
+};
 
 const getIcon = (iconName: string): React.ReactElement => {
-  const IconMap = Icons as unknown as Record<string, IconComponent>;
-  const Icon = IconMap[iconName];
-  return Icon ? <Icon className="w-4 h-4" /> : <Icons.Circle className="w-4 h-4" />;
+  const Icon = COMMAND_ICONS[iconName];
+  return Icon ? <Icon className="w-4 h-4" /> : <Circle className="w-4 h-4" />;
 };
 
 interface CommandMenuProps {
@@ -59,7 +91,7 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
       <div className="relative w-full max-w-[640px] bg-white dark:bg-neutral-800 rounded-xl shadow-2xl border border-gray-200 dark:border-neutral-700 overflow-hidden animate-in zoom-in-95 duration-200 z-10">
         <Command label={siteConfig.ui.commandMenu.open} className="w-full" loop>
           <div className="flex items-center border-b border-gray-100 dark:border-neutral-700 px-4">
-            <Icons.Search className="w-5 h-5 text-gray-400 dark:text-neutral-500 mr-2" />
+            <Search className="w-5 h-5 text-gray-400 dark:text-neutral-500 mr-2" />
             <Command.Input
               placeholder={siteConfig.ui.commandMenu.placeholder}
               className="w-full h-14 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none ring-0 text-lg text-gray-900 dark:text-neutral-100 placeholder:text-gray-400 dark:placeholder:text-neutral-500 bg-transparent shadow-none appearance-none"
@@ -107,7 +139,7 @@ export default function CommandMenu({ posts = [] }: CommandMenuProps) {
                       onSelect={() => runCommand(() => router.push(`/blog/${post.slug}`))}
                       className="flex items-center gap-3 px-3 py-3 text-sm text-gray-800 dark:text-neutral-200 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 hover:text-gray-900 dark:hover:text-neutral-100 aria-selected:bg-gray-100 dark:aria-selected:bg-neutral-700 aria-selected:text-gray-900 dark:aria-selected:text-neutral-100 transition-colors"
                     >
-                      <Icons.FileText className="w-4 h-4" />
+                      <FileText className="w-4 h-4" />
                       <span>{post.title}</span>
                     </Command.Item>
                   ))}

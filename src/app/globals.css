@@ -44,6 +44,15 @@
   --color-badge-text: #404040;
   --color-badge-border: #d1d5db;
 
+  /* Button colors */
+  --color-button-bg: #18181b;
+  --color-button-bg-hover: #09090b;
+  --color-button-text: #ffffff;
+
+  /* Overlay colors - translucent surfaces */
+  --color-overlay-solid: rgba(255, 255, 255, 0.92);
+  --color-overlay-gradient-from: rgba(255, 255, 255, 0.85);
+
   /* Navbar colors */
   --color-navbar-bg: rgba(255, 255, 255, 0.7);
   --color-navbar-border: #f3f4f6;
@@ -88,6 +97,15 @@
   --color-badge-text: #d0d0d0;
   --color-badge-border: #353535;
 
+  /* Button colors */
+  --color-button-bg: #e5e5e5;
+  --color-button-bg-hover: #d4d4d4;
+  --color-button-text: #0a0a0a;
+
+  /* Overlay colors - translucent surfaces */
+  --color-overlay-solid: rgba(26, 26, 26, 0.92);
+  --color-overlay-gradient-from: rgba(26, 26, 26, 0.85);
+
   /* Navbar colors - Glass morphism effect */
   --color-navbar-bg: rgba(15, 15, 15, 0.8);
   --color-navbar-border: #1f1f1f;
@@ -126,6 +144,11 @@
   --color-nav-active: var(--color-nav-active);
   --color-nav-active-text: var(--color-nav-active-text);
   --color-footer-text: var(--color-footer-text);
+  --color-button-bg: var(--color-button-bg);
+  --color-button-bg-hover: var(--color-button-bg-hover);
+  --color-button-text: var(--color-button-text);
+  --color-overlay-solid: var(--color-overlay-solid);
+  --color-overlay-gradient-from: var(--color-overlay-gradient-from);
 
   /* Fonts */
   --font-sans: var(--font-jakarta);
@@ -190,75 +213,6 @@ body {
 /* Performance optimization for animations */
 .will-change-transform {
   will-change: transform;
-}
-
-/* ============================================
-   SEMANTIC COLOR UTILITY CLASSES
-   ============================================
-   Use these classes instead of hardcoded colors.
-   They automatically adapt to light/dark mode.
-   ============================================ */
-
-/* Background utilities */
-.bg-surface {
-  background-color: var(--color-surface);
-}
-
-.bg-surface-secondary {
-  background-color: var(--color-surface-secondary);
-}
-
-.bg-interactive {
-  background-color: var(--color-interactive-bg);
-}
-
-.bg-interactive-hover:hover {
-  background-color: var(--color-interactive-bg-hover);
-}
-
-/* Border utilities */
-.border-theme {
-  border-color: var(--color-border);
-}
-
-.border-theme-light {
-  border-color: var(--color-border-light);
-}
-
-.border-theme-hover:hover {
-  border-color: var(--color-border-hover);
-}
-
-/* Text utilities */
-.text-primary {
-  color: var(--color-text-primary);
-}
-
-.text-secondary {
-  color: var(--color-text-secondary);
-}
-
-.text-tertiary {
-  color: var(--color-text-tertiary);
-}
-
-.text-muted {
-  color: var(--color-text-muted);
-}
-
-.text-interactive {
-  color: var(--color-interactive);
-}
-
-.text-interactive-hover:hover {
-  color: var(--color-interactive-hover);
-}
-
-/* Badge utilities */
-.badge {
-  background-color: var(--color-badge-bg);
-  color: var(--color-badge-text);
-  border-color: var(--color-badge-border);
 }
 
 /* Scrollbar utilities */

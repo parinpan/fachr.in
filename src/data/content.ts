@@ -215,13 +215,6 @@ export const siteConfig: SiteConfig = {
     },
   ],
 
-  // Podcast Section
-  podcast: {
-    title: 'Podcasts',
-    episodeUrl:
-      'https://open.spotify.com/embed/episode/42h5loszLcsDAZnNfY01ME?utm_source=generator',
-  },
-
   // Contact Section
   contact: {
     title: 'Get In Touch',
@@ -230,25 +223,25 @@ export const siteConfig: SiteConfig = {
         name: 'Email',
         value: 'hi@fachr.in',
         href: 'mailto:hi@fachr.in',
-        type: 'email' as const,
+        type: 'email',
       },
       {
         name: 'LinkedIn',
         value: 'Fachrin Aulia Nasution',
         href: 'https://www.linkedin.com/in/fachrinfan',
-        type: 'linkedin' as const,
+        type: 'linkedin',
       },
       {
         name: 'GitHub',
         value: '@parinpan',
         href: 'https://github.com/parinpan',
-        type: 'github' as const,
+        type: 'github',
       },
       {
         name: 'X (Twitter)',
         value: '@fachrinx',
         href: 'https://x.com/fachrinx',
-        type: 'twitter' as const,
+        type: 'twitter',
       },
     ],
     calendlyUrl: 'https://calendly.com/fachrin/30min',
@@ -316,7 +309,7 @@ export const siteConfig: SiteConfig = {
       'A collection of talks, interviews, and features on software engineering and technology.',
     items: [
       {
-        type: 'video' as const,
+        type: 'video',
         title: "Upvest's Engineering Day 2025",
         image: '/images/media/upvest-thumbnail.png',
         url: 'https://www.youtube.com/watch?v=GvWWQf71hiE',
@@ -328,7 +321,7 @@ export const siteConfig: SiteConfig = {
         language: 'English',
       },
       {
-        type: 'video' as const,
+        type: 'video',
         title: 'Hands-On Training: Introduction to CAP Theorem on Distributed Database',
         image: '/images/media/cap-theorem-thumbnail.jpg',
         url: 'https://www.youtube.com/watch?v=LGl6jW7Sykg',
@@ -340,7 +333,7 @@ export const siteConfig: SiteConfig = {
         language: 'Indonesian',
       },
       {
-        type: 'talk' as const,
+        type: 'talk',
         title: "Tech Roles in Indonesia's Start-Up Ecosystem",
         image: '/images/media/startup-industry-thumbnail.jpg',
         url: 'https://www.instagram.com/p/CIAuEeNhMut/',
@@ -351,7 +344,7 @@ export const siteConfig: SiteConfig = {
         language: 'Indonesian',
       },
       {
-        type: 'talk' as const,
+        type: 'talk',
         title: 'How to Think in Functional Programming',
         image: '/images/media/facebook-devc-thumbnail.jpg',
         url: 'https://www.facebook.com/events/554379655443696',
@@ -381,6 +374,7 @@ export const siteConfig: SiteConfig = {
   blog: {
     title: 'Journal',
     description: 'A collection of thoughts on software engineering and my personal journey.',
+    backLink: 'Back to Journal',
     emptyState: {
       title: 'Writing in progress',
       description:
@@ -436,7 +430,11 @@ export const siteConfig: SiteConfig = {
     ],
     general: [
       { name: 'Copy Email', icon: 'Copy', action: 'copy_email' },
-      { name: 'View Source Code', icon: 'Code', url: 'https://github.com/parinpan/fachr.in' },
+      {
+        name: 'View Source Code',
+        icon: 'Code',
+        url: 'https://github.com/parinpan/fachr.in',
+      },
     ],
   },
 
@@ -467,6 +465,7 @@ export const siteConfig: SiteConfig = {
       },
     },
     githubRepos: 'Github Repositories',
+    podcastsTitle: 'Podcasts',
     githubActions: {
       viewAllRepos: 'View all repositories',
       viewRepoOnGithub: 'View {name} on GitHub',
@@ -502,6 +501,8 @@ export const siteConfig: SiteConfig = {
       collapse: 'Collapse',
       technologies: 'Technologies',
       more: 'more',
+      scrollLeft: 'Scroll left',
+      scrollRight: 'Scroll right',
     },
     now: {
       update: 'Update',

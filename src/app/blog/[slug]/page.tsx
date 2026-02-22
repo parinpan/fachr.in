@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import PageWrapper from '@/components/PageWrapper';
 import { siteConfig } from '@/data/content';
 import { safeIsoDate } from '@/lib/utils';
+import { formatDate } from '@/lib/formatters';
 
 interface Props {
   params: Promise<{
@@ -123,18 +124,12 @@ export default async function BlogPost({ params }: Props) {
           className="inline-flex items-center gap-2 text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-200 mb-8 transition-colors"
         >
           <ArrowLeft size={20} />
-          Back to Journal
+          {siteConfig.blog.backLink}
         </Link>
 
         <header className="mb-12">
           <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-neutral-400 mb-4">
-            <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
             <span>•</span>
             <span>{post.readingTime}</span>
           </div>

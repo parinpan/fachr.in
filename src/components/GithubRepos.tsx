@@ -29,7 +29,7 @@ export default function GithubRepos() {
     <section className="mb-12" aria-labelledby="github-repos-heading">
       <h3
         id="github-repos-heading"
-        className="text-2xl font-bold mb-6 text-gray-900 dark:text-neutral-100"
+        className="text-2xl font-bold mb-6 text-[var(--color-text-primary)]"
       >
         {siteConfig.ui.githubRepos}
       </h3>
@@ -43,26 +43,26 @@ export default function GithubRepos() {
             aria-label={siteConfig.ui.githubActions.viewRepoOnGithub.replace('{name}', repo.name)}
             className="group h-full"
           >
-            <div className="h-full p-6 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-neutral-600 transition-all duration-200 flex flex-col">
+            <div className="h-full p-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-sm hover:shadow-md hover:border-[var(--color-border-hover)] transition-all duration-200 flex flex-col">
               <div className="flex items-start justify-between mb-4">
-                <div className="p-2 bg-gray-50 dark:bg-neutral-700 rounded-lg group-hover:bg-gray-100 dark:group-hover:bg-neutral-600 transition-colors">
+                <div className="p-2 bg-[var(--color-interactive-bg)] rounded-lg group-hover:bg-[var(--color-interactive-bg-hover)] transition-colors">
                   <ExternalLink
                     size={20}
-                    className="text-gray-600 dark:text-neutral-300 group-hover:text-gray-900 dark:group-hover:text-neutral-100"
+                    className="text-[var(--color-text-tertiary)] group-hover:text-[var(--color-text-primary)]"
                   />
                 </div>
-                <div className="flex items-center gap-3 text-gray-500 dark:text-neutral-400 text-sm">
+                <div className="flex items-center gap-3 text-[var(--color-text-muted)] text-sm">
                   <IconWithText icon={Star} value={repo.stargazers_count} size={14} />
                   <IconWithText icon={GitFork} value={repo.forks_count} size={14} />
                 </div>
               </div>
-              <h4 className="font-bold text-gray-900 dark:text-neutral-100 mb-2 group-hover:text-gray-900 dark:group-hover:text-neutral-200 transition-colors">
+              <h4 className="font-bold text-[var(--color-text-primary)] mb-2 group-hover:text-[var(--color-text-secondary)] transition-colors">
                 {repo.name}
               </h4>
-              <p className="text-gray-600 dark:text-neutral-400 text-sm mb-4 line-clamp-2 flex-grow">
+              <p className="text-[var(--color-text-tertiary)] text-sm mb-4 line-clamp-2 flex-grow">
                 {repo.description}
               </p>
-              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-neutral-400 mt-auto">
+              <div className="flex items-center gap-4 text-xs text-[var(--color-text-muted)] mt-auto">
                 {repo.language && (
                   <span className="flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
@@ -79,7 +79,7 @@ export default function GithubRepos() {
           href={`https://github.com/${GITHUB_CONFIG.USERNAME}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-200 font-medium transition-colors"
+          className="inline-flex items-center gap-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] font-medium transition-colors"
         >
           {siteConfig.ui.githubActions.viewAllRepos}
           <ExternalLink size={16} />

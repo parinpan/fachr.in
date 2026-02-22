@@ -18,13 +18,3 @@ export const GITHUB_CONFIG = {
   API_URL: 'https://api.github.com',
   PER_PAGE: 100,
 } as const;
-
-/**
- * Consistent Spacing Classes
- * Standardized margin-bottom values for sections
- */
-export const SPACING = {
-  SECTION_SMALL: 'mb-8',
-  SECTION_MEDIUM: 'mb-12',
-  SECTION_LARGE: 'mb-16',
-} as const;

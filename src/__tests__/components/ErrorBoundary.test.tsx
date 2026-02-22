@@ -90,7 +90,7 @@ describe('ErrorBoundary', () => {
     );
 
     const container = screen.getByText('Something went wrong').closest('.max-w-md');
-    expect(container).toHaveClass('bg-white');
+    expect(container).toHaveClass('bg-[var(--color-surface)]');
     expect(container).toHaveClass('rounded-xl');
   });
 });

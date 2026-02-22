@@ -55,4 +55,11 @@ describe('robots.txt route', () => {
 
     expect(text).toContain('https://www.robotstxt.org/robotstxt.html');
   });
+
+  it('includes llms.txt reference for AI crawlers', async () => {
+    const response = await GET();
+    const text = await response.text();
+
+    expect(text).toContain('Llms-txt: https://example.com/llms.txt');
+  });
 });

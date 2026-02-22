@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import NotFound from '@/app/not-found';
 
-// Mock dependencies
-jest.mock('@/hooks/useContent', () => ({
-  useContent: () => ({
+// Mock content data
+jest.mock('@/data/content', () => ({
+  siteConfig: {
     ui: {
       notFound: {
         title: '404',
@@ -13,7 +13,7 @@ jest.mock('@/hooks/useContent', () => ({
         buttonText: 'Go Home',
       },
     },
-  }),
+  },
 }));
 
 describe('NotFound', () => {
@@ -62,7 +62,7 @@ describe('NotFound', () => {
 
     const mainContainer = container.firstChild;
     expect(mainContainer).toHaveClass('min-h-screen');
-    expect(mainContainer).toHaveClass('bg-black');
+    expect(mainContainer).toHaveClass('bg-[var(--color-bg)]');
   });
 
   it('has gradient background', () => {

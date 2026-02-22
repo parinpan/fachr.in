@@ -159,6 +159,7 @@ export type AppearancesSection = {
 export type BlogSection = {
   title: string;
   description: string;
+  backLink: string;
   emptyState: {
     title: string;
     description: string;
@@ -186,6 +187,7 @@ export type UIConfig = {
     };
   };
   githubRepos: string;
+  podcastsTitle: string;
   githubActions: {
     viewAllRepos: string;
     viewRepoOnGithub: string;
@@ -221,6 +223,8 @@ export type UIConfig = {
     collapse: string;
     technologies: string;
     more: string;
+    scrollLeft: string;
+    scrollRight: string;
   };
   now: {
     update: string;
@@ -240,7 +244,6 @@ export type SiteConfig = {
   about: AboutSection;
   experience: ExperienceItem[];
   works: ProjectItem[];
-  podcast: { title: string; episodeUrl: string };
   podcasts: PodcastItem[];
   appearances: AppearancesSection;
   blog: BlogSection;

@@ -1,4 +1,4 @@
-import { SCROLL_THRESHOLDS, GITHUB_CONFIG, SPACING } from '@/lib/constants';
+import { SCROLL_THRESHOLDS, GITHUB_CONFIG } from '@/lib/constants';
 
 describe('SCROLL_THRESHOLDS', () => {
   it('has correct BACK_TO_TOP value', () => {
@@ -25,19 +25,5 @@ describe('GITHUB_CONFIG', () => {
 
   it('has correct PER_PAGE', () => {
     expect(GITHUB_CONFIG.PER_PAGE).toBe(100);
-  });
-});
-
-describe('SPACING', () => {
-  it('has correct SECTION_SMALL value', () => {
-    expect(SPACING.SECTION_SMALL).toBe('mb-8');
-  });
-
-  it('has correct SECTION_MEDIUM value', () => {
-    expect(SPACING.SECTION_MEDIUM).toBe('mb-12');
-  });
-
-  it('has correct SECTION_LARGE value', () => {
-    expect(SPACING.SECTION_LARGE).toBe('mb-16');
   });
 });

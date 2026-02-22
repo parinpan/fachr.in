@@ -59,6 +59,7 @@ jest.mock('lucide-react', () => ({
   FileText: () => <svg data-testid="icon-file-text" />,
   Code: () => <svg data-testid="icon-code" />,
   Mail: () => <svg data-testid="icon-mail" />,
+  Command: () => <svg data-testid="icon-command" />,
 }));
 
 describe('Navbar', () => {

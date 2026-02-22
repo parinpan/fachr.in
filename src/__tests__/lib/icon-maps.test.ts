@@ -1,4 +1,4 @@
-import { CONTACT_ICONS, APPEARANCE_ICONS, getAppearanceIcon } from '@/lib/icon-maps';
+import { CONTACT_ICONS, APPEARANCE_ICONS } from '@/lib/icon-maps';
 import { Mail, Linkedin, Github, Twitter, Play, Mic, FileText } from 'lucide-react';
 
 describe('CONTACT_ICONS', () => {
@@ -30,19 +30,5 @@ describe('APPEARANCE_ICONS', () => {
 
   it('maps flyer to FileText icon', () => {
     expect(APPEARANCE_ICONS.flyer).toBe(FileText);
-  });
-});
-
-describe('getAppearanceIcon', () => {
-  it('returns Play icon for video type', () => {
-    expect(getAppearanceIcon('video')).toBe(Play);
-  });
-
-  it('returns Mic icon for talk type', () => {
-    expect(getAppearanceIcon('talk')).toBe(Mic);
-  });
-
-  it('returns FileText icon for flyer type', () => {
-    expect(getAppearanceIcon('flyer')).toBe(FileText);
   });
 });

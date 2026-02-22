@@ -1,26 +1,22 @@
-'use client';
-
-import { useContent } from '@/hooks/useContent';
+import { siteConfig } from '@/data/content';
 import PageWrapper from '@/components/PageWrapper';
 import type { NowSectionItem } from '@/data/types';
 
 export default function NowContent() {
-  const siteConfig = useContent();
-
   return (
     <PageWrapper>
       <div className="max-w-3xl mx-auto">
         <header className="mb-8 pt-8">
-          <div className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-gray-500 dark:text-neutral-400 uppercase bg-gray-100 dark:bg-neutral-800 rounded-full">
+          <div className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-[var(--color-text-muted)] uppercase bg-[var(--color-interactive-bg)] rounded-full">
             {siteConfig.ui.now.update}
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-neutral-100 mb-6 tracking-tight">
+          <h1 className="text-5xl md:text-6xl font-bold text-[var(--color-text-primary)] mb-6 tracking-tight">
             {siteConfig.now.title}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-500 dark:text-neutral-400 max-w-2xl leading-normal mb-4">
+          <p className="text-xl md:text-2xl text-[var(--color-text-muted)] max-w-2xl leading-normal mb-4">
             {siteConfig.now.subtitle}
           </p>
-          <div className="flex items-center gap-2 text-sm text-gray-400 dark:text-neutral-500">
+          <div className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             {siteConfig.now.updatedAt}
           </div>

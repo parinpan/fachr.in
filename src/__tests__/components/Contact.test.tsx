@@ -1,99 +1,102 @@
 import { render, screen } from '@testing-library/react';
 import Contact from '@/components/Contact';
-import { useContent } from '@/hooks/useContent';
 
-// Mock hooks
-jest.mock('@/hooks/useContent', () => ({
-    useContent: jest.fn(),
+// Mock content data
+jest.mock('@/data/content', () => ({
+  siteConfig: {
+    contact: {
+      title: 'Get In Touch',
+      links: [
+        {
+          name: 'Email',
+          value: 'hi@fachr.in',
+          href: 'mailto:hi@fachr.in',
+          type: 'email',
+        },
+        {
+          name: 'LinkedIn',
+          value: 'Fachrin Aulia Nasution',
+          href: 'https://www.linkedin.com/in/fachrinfan',
+          type: 'linkedin',
+        },
+      ],
+      calendlyUrl: 'https://calendly.com/fachrin/30min',
+      collaboration: {
+        title: 'Interested in collaboration?',
+        text: 'I work on distributed systems.',
+        cta: 'Schedule a call',
+      },
+    },
+  },
 }));
 
 // Mock icon-maps
 jest.mock('@/lib/icon-maps', () => ({
-    CONTACT_ICONS: {
-        email: function MockMail() { return <svg data-testid="icon-mail" />; },
-        linkedin: function MockLinkedin() { return <svg data-testid="icon-linkedin" />; },
-        github: function MockGithub() { return <svg data-testid="icon-github" />; },
-        twitter: function MockTwitter() { return <svg data-testid="icon-twitter" />; },
+  CONTACT_ICONS: {
+    email: function MockMail() {
+      return <svg data-testid="icon-mail" />;
     },
+    linkedin: function MockLinkedin() {
+      return <svg data-testid="icon-linkedin" />;
+    },
+    github: function MockGithub() {
+      return <svg data-testid="icon-github" />;
+    },
+    twitter: function MockTwitter() {
+      return <svg data-testid="icon-twitter" />;
+    },
+  },
 }));
 
 // Mock icons
 jest.mock('lucide-react', () => ({
-    Phone: function MockPhone() { return <svg data-testid="icon-phone" />; },
+  Phone: function MockPhone() {
+    return <svg data-testid="icon-phone" />;
+  },
 }));
 
 describe('Contact', () => {
-    const mockSiteConfig = {
-        contact: {
-            title: 'Get In Touch',
-            links: [
-                {
-                    name: 'Email',
-                    value: 'hi@fachr.in',
-                    href: 'mailto:hi@fachr.in',
-                    type: 'email',
-                },
-                {
-                    name: 'LinkedIn',
-                    value: 'Fachrin Aulia Nasution',
-                    href: 'https://www.linkedin.com/in/fachrinfan',
-                    type: 'linkedin',
-                },
-            ],
-            calendlyUrl: 'https://calendly.com/fachrin/30min',
-            collaboration: {
-                title: 'Interested in collaboration?',
-                text: 'I work on distributed systems.',
-                cta: 'Schedule a call',
-            },
-        },
-    };
+  it('renders contact section with title', () => {
+    render(<Contact />);
 
-    beforeEach(() => {
-        (useContent as jest.Mock).mockReturnValue(mockSiteConfig);
-    });
+    expect(screen.getByText('Get In Touch')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Get In Touch' })).toBeInTheDocument();
+  });
 
-    it('renders contact section with title', () => {
-        render(<Contact />);
+  it('renders contact links', () => {
+    render(<Contact />);
 
-        expect(screen.getByText('Get In Touch')).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: 'Get In Touch' })).toBeInTheDocument();
-    });
+    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByText('hi@fachr.in')).toBeInTheDocument();
+    expect(screen.getByText('LinkedIn')).toBeInTheDocument();
+    expect(screen.getByText('Fachrin Aulia Nasution')).toBeInTheDocument();
+  });
 
-    it('renders contact links', () => {
-        render(<Contact />);
+  it('renders collaboration section', () => {
+    render(<Contact />);
 
-        expect(screen.getByText('Email')).toBeInTheDocument();
-        expect(screen.getByText('hi@fachr.in')).toBeInTheDocument();
-        expect(screen.getByText('LinkedIn')).toBeInTheDocument();
-        expect(screen.getByText('Fachrin Aulia Nasution')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Interested in collaboration?')).toBeInTheDocument();
+    expect(screen.getByText('I work on distributed systems.')).toBeInTheDocument();
+    expect(screen.getByText('Schedule a call')).toBeInTheDocument();
+  });
 
-    it('renders collaboration section', () => {
-        render(<Contact />);
+  it('has correct link attributes', () => {
+    render(<Contact />);
 
-        expect(screen.getByText('Interested in collaboration?')).toBeInTheDocument();
-        expect(screen.getByText('I work on distributed systems.')).toBeInTheDocument();
-        expect(screen.getByText('Schedule a call')).toBeInTheDocument();
-    });
+    const emailLink = screen.getByText('hi@fachr.in').closest('a');
+    expect(emailLink).toHaveAttribute('href', 'mailto:hi@fachr.in');
 
-    it('has correct link attributes', () => {
-        render(<Contact />);
+    const linkedinLink = screen.getByText('Fachrin Aulia Nasution').closest('a');
+    expect(linkedinLink).toHaveAttribute('href', 'https://www.linkedin.com/in/fachrinfan');
+    expect(linkedinLink).toHaveAttribute('target', '_blank');
+    expect(linkedinLink).toHaveAttribute('rel', 'noopener noreferrer');
+  });
 
-        const emailLink = screen.getByText('hi@fachr.in').closest('a');
-        expect(emailLink).toHaveAttribute('href', 'mailto:hi@fachr.in');
+  it('renders calendly link with correct attributes', () => {
+    render(<Contact />);
 
-        const linkedinLink = screen.getByText('Fachrin Aulia Nasution').closest('a');
-        expect(linkedinLink).toHaveAttribute('href', 'https://www.linkedin.com/in/fachrinfan');
-        expect(linkedinLink).toHaveAttribute('target', '_blank');
-        expect(linkedinLink).toHaveAttribute('rel', 'noopener noreferrer');
-    });
-
-    it('renders calendly link with correct attributes', () => {
-        render(<Contact />);
-
-        const scheduleLink = screen.getByText('Schedule a call').closest('a');
-        expect(scheduleLink).toHaveAttribute('href', 'https://calendly.com/fachrin/30min');
-        expect(scheduleLink).toHaveAttribute('target', '_blank');
-    });
+    const scheduleLink = screen.getByText('Schedule a call').closest('a');
+    expect(scheduleLink).toHaveAttribute('href', 'https://calendly.com/fachrin/30min');
+    expect(scheduleLink).toHaveAttribute('target', '_blank');
+  });
 });

@@ -5,6 +5,10 @@ import { safeIsoDate } from '@/lib/utils';
  * Enhanced Structured Data (JSON-LD) Component (Server Component)
  * Provides comprehensive schema.org markup for SEO optimization.
  * Rendered on server to avoid client-side date parsing issues (Safari).
+ *
+ * Note: Page-specific schemas (Blog, BlogPosting, Appearances ItemList,
+ * per-page BreadcrumbList) are defined in their respective page components
+ * to avoid duplication.
  */
 export default function StructuredData() {
   // Person Schema - Professional Profile
@@ -61,7 +65,7 @@ export default function StructuredData() {
     ],
   };
 
-  // WebSite Schema
+  // WebSite Schema (no SearchAction — site has no search functionality)
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -73,31 +77,6 @@ export default function StructuredData() {
     author: {
       '@id': 'https://fachr.in/#person',
     },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://fachr.in/blog?q={search_term_string}',
-      },
-      'query-input': 'required name=search_term_string',
-    },
-  };
-
-  // BreadcrumbList Schema
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fachr.in' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://fachr.in/blog' },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: 'Appearances',
-        item: 'https://fachr.in/appearances',
-      },
-      { '@type': 'ListItem', position: 4, name: 'Now', item: 'https://fachr.in/now' },
-    ],
   };
 
   // Profile Page Schema
@@ -112,76 +91,23 @@ export default function StructuredData() {
     description: siteConfig.seo.description,
   };
 
-  // Appearances List Schema
-  const appearancesSchema =
-    siteConfig.appearances?.items?.length > 0
-      ? {
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          name: 'Talks & Appearances',
-          description: siteConfig.appearances.description,
-          url: 'https://fachr.in/appearances',
-          numberOfItems: siteConfig.appearances.items.length,
-          itemListElement: siteConfig.appearances.items.map((item, index) => {
-            const baseItem = {
-              '@type': item.type === 'video' ? 'VideoObject' : 'Event',
-              name: item.title,
-              description: item.description,
-              url: item.url,
-              image: item.image.startsWith('http') ? item.image : `https://fachr.in${item.image}`,
-              author: { '@id': 'https://fachr.in/#person' },
-            };
-
-            if (item.type === 'video') {
-              return {
-                '@type': 'ListItem',
-                position: index + 1,
-                item: {
-                  ...baseItem,
-                  '@type': 'VideoObject',
-                  thumbnailUrl: baseItem.image,
-                  uploadDate: safeIsoDate(item.date),
-                  inLanguage: item.language ?? 'en',
-                },
-              };
-            }
-
-            return {
-              '@type': 'ListItem',
-              position: index + 1,
-              item: {
-                ...baseItem,
-                '@type': 'Event',
-                startDate: safeIsoDate(item.date),
-                eventStatus: 'https://schema.org/EventScheduled',
-                eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-                location: { '@type': 'VirtualLocation', url: item.url },
-              },
-            };
-          }),
-        }
-      : null;
-
-  // Blog Schema
-  const blogSchema = {
+  // Podcast Episode Schema
+  const podcastSchemas = siteConfig.podcasts.map((podcast) => ({
     '@context': 'https://schema.org',
-    '@type': 'Blog',
-    '@id': 'https://fachr.in/blog#blog',
-    name: `${siteConfig.personal.name}'s Journal`,
-    description: siteConfig.blog.description,
-    url: 'https://fachr.in/blog',
+    '@type': 'PodcastEpisode',
+    name: podcast.title,
+    description: podcast.description,
+    url: podcast.episodeUrl,
+    datePublished: safeIsoDate(podcast.date),
+    inLanguage: podcast.language ?? 'en',
     author: { '@id': 'https://fachr.in/#person' },
-    inLanguage: 'en-US',
-  };
+    associatedMedia: {
+      '@type': 'MediaObject',
+      contentUrl: podcast.episodeUrl,
+    },
+  }));
 
-  const graphs: unknown[] = [
-    personSchema,
-    websiteSchema,
-    breadcrumbSchema,
-    profilePageSchema,
-    blogSchema,
-  ];
-  if (appearancesSchema) graphs.push(appearancesSchema);
+  const graphs: unknown[] = [personSchema, websiteSchema, profilePageSchema, ...podcastSchemas];
 
   const structuredData = {
     '@context': 'https://schema.org',

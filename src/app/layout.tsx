@@ -3,12 +3,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import StructuredData from '@/components/StructuredData';
-import CommandMenu from '@/components/CommandMenu';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Clarity from '@/components/Clarity';
-import BackToTop from '@/components/BackToTop';
-
+import Providers from '@/components/Providers';
+import ClientShell from '@/components/ClientShell';
 import { siteConfig } from '@/data/content';
+import { getAllPosts } from '@/lib/mdx';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   creator: siteConfig.personal.name,
   alternates: {
     canonical: 'https://fachr.in',
+    types: {
+      'application/rss+xml': 'https://fachr.in/feed.xml',
+    },
   },
   openGraph: {
     type: 'website',
@@ -55,6 +58,7 @@ export const metadata: Metadata = {
     shortcut: siteConfig.hero.image,
     apple: siteConfig.hero.image,
   },
+  manifest: '/manifest.webmanifest',
   robots: {
     index: true,
     follow: true,
@@ -68,14 +72,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { getAllPosts } from '@/lib/mdx';
-
-// ...
-
-import Providers from '@/components/Providers';
-
-// ...
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -87,7 +83,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={jakarta.variable}>
       <body className="font-sans antialiased font-medium">
         <Providers>
-          <CommandMenu posts={posts} />
+          <ClientShell posts={posts} />
           <ErrorBoundary>{children}</ErrorBoundary>
           <StructuredData />
           {process.env.NODE_ENV === 'production' && siteConfig.analytics.googleAnalyticsId && (
@@ -96,7 +92,6 @@ export default function RootLayout({
           {process.env.NODE_ENV === 'production' && siteConfig.analytics.clarityId && (
             <Clarity clarityId={siteConfig.analytics.clarityId} />
           )}
-          <BackToTop />
         </Providers>
       </body>
     </html>

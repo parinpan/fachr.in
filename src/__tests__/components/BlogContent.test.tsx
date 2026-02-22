@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import BlogContent from '@/components/BlogContent';
 
-// Mock dependencies
-jest.mock('@/hooks/useContent', () => ({
-  useContent: () => ({
+// Mock content data
+jest.mock('@/data/content', () => ({
+  siteConfig: {
     blog: {
       title: 'Blog',
       description: 'My thoughts and writings',
@@ -12,7 +12,7 @@ jest.mock('@/hooks/useContent', () => ({
         description: 'Check back later for new content',
       },
     },
-  }),
+  },
 }));
 
 jest.mock('@/lib/formatters', () => ({

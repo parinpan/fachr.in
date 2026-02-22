@@ -4,8 +4,8 @@ import Podcast from '@/components/Podcast';
 // Mock dependencies
 jest.mock('@/hooks/useContent', () => ({
   useContent: () => ({
-    podcast: {
-      title: 'Podcast Section',
+    ui: {
+      podcastsTitle: 'Podcast Section',
     },
     podcasts: [
       {

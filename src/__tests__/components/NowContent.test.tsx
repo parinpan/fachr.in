@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import NowContent from '@/components/NowContent';
 
-// Mock dependencies
-jest.mock('@/hooks/useContent', () => ({
-  useContent: () => ({
+// Mock content data
+jest.mock('@/data/content', () => ({
+  siteConfig: {
     ui: {
       now: {
         update: 'Latest Update',
@@ -28,7 +28,7 @@ jest.mock('@/hooks/useContent', () => ({
         },
       ],
     },
-  }),
+  },
 }));
 
 // Mock child components
