@@ -61,9 +61,9 @@ export const metadata: Metadata = {
     images: [siteConfig.seo.ogImage],
   },
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: siteConfig.hero.image,
+    shortcut: siteConfig.hero.image,
+    apple: siteConfig.hero.image,
   },
   manifest: '/manifest.webmanifest',
   robots: {
