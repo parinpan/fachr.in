@@ -8,6 +8,7 @@ export const siteConfig: SiteConfig = {
     email: 'hi@fachr.in',
     location: 'Berlin, Germany',
     profileImage: '/images/fachrin-cartoon.png',
+    resume: 'https://resume.fachr.in',
   },
 
   // Hero Section - Current Positions & Past Roles

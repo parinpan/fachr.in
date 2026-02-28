@@ -63,10 +63,14 @@ jest.mock('lucide-react', () => ({
   Calendar: () => <svg data-testid="icon-calendar" />,
   Building2: () => <svg data-testid="icon-building" />,
   X: () => <span data-testid="icon-x">Close</span>,
+  FileText: () => <svg data-testid="icon-file-text" />,
 }));
 
 describe('Experience Carousel', () => {
   const mockSiteConfig = {
+    personal: {
+      resume: 'https://resume.fachr.in',
+    },
     ui: {
       appearanceList: {
         scrollLeft: 'Scroll left',

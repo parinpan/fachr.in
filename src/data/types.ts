@@ -18,6 +18,7 @@ export type PersonalInfo = {
   email: string;
   location: string;
   profileImage: string;
+  resume?: string;
 };
 
 export type Badge = {

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRef, useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, MapPin, Calendar, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Calendar, X, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useContent } from '@/hooks/useContent';
 import { useScroll } from '@/hooks/useScroll';
@@ -36,6 +36,18 @@ export default function Experience() {
         <h3 id="experience-heading" className="text-2xl font-bold text-[var(--color-text-primary)]">
           {siteConfig.ui.experience.title}
         </h3>
+        {siteConfig.personal.resume && (
+          <a
+            href={siteConfig.personal.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-interactive)] transition-colors"
+            aria-label="View resume"
+          >
+            <FileText size={16} />
+            <span className="hidden sm:inline">Resume</span>
+          </a>
+        )}
         <div className="flex gap-2">
           <button
             onClick={() => scroll('left', SCROLL_THRESHOLDS.EXPERIENCE_SCROLL_AMOUNT)}
