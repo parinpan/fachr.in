@@ -1,0 +1,235 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+@variant dark (.dark &);
+
+/* ============================================
+   THEME CONFIGURATION - Centralized Colors
+   ============================================
+   All theme colors are defined here.
+   To change colors, update the values below.
+   ============================================ */
+
+:root {
+  /* Base colors */
+  --color-bg: #ffffff;
+  --color-fg: #0a0a0a;
+
+  /* Surface colors */
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f9fafb;
+
+  /* Border colors */
+  --color-border: #e5e7eb;
+  --color-border-light: #f3f4f6;
+  --color-border-hover: #d1d5db;
+
+  /* Text colors */
+  --color-text-primary: #111111;
+  --color-text-secondary: #404040;
+  --color-text-tertiary: #6b7280;
+  --color-text-muted: #9ca3af;
+
+  /* Interactive colors */
+  --color-interactive: #0a0a0a;
+  --color-interactive-hover: #000000;
+  --color-interactive-bg: #f3f4f6;
+  --color-interactive-bg-hover: #e5e7eb;
+
+  /* Focus colors */
+  --color-focus: #737373;
+
+  /* Badge colors */
+  --color-badge-bg: #f3f4f6;
+  --color-badge-text: #404040;
+  --color-badge-border: #d1d5db;
+
+  /* Button colors */
+  --color-button-bg: #18181b;
+  --color-button-bg-hover: #09090b;
+  --color-button-text: #ffffff;
+
+  /* Overlay colors - translucent surfaces */
+  --color-overlay-solid: rgba(255, 255, 255, 0.92);
+  --color-overlay-gradient-from: rgba(255, 255, 255, 0.85);
+
+  /* Navbar colors */
+  --color-navbar-bg: rgba(255, 255, 255, 0.7);
+  --color-navbar-border: #f3f4f6;
+  --color-nav-active: #0a0a0a;
+  --color-nav-active-text: #ffffff;
+
+  /* Footer colors */
+  --color-footer-text: #6b7280;
+}
+
+:root.dark {
+  /* Base colors - Rich dark with subtle warmth */
+  --color-bg: #0f0f0f;
+  --color-fg: #f5f5f5;
+
+  /* Surface colors - Elevated cards with depth */
+  --color-surface: #1a1a1a;
+  --color-surface-secondary: rgba(26, 26, 26, 0.6);
+
+  /* Border colors - Subtle but defined */
+  --color-border: #2d2d2d;
+  --color-border-light: #1f1f1f;
+  --color-border-hover: #3a3a3a;
+
+  /* Text colors - High contrast, easy to read */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #d4d4d4;
+  --color-text-tertiary: #d4d4d4;
+  --color-text-muted: #a3a3a3;
+
+  /* Interactive colors - Subtle highlights */
+  --color-interactive: #f5f5f5;
+  --color-interactive-hover: #ffffff;
+  --color-interactive-bg: #2a2a2a;
+  --color-interactive-bg-hover: #353535;
+
+  /* Focus colors - Visible but not harsh */
+  --color-focus: #888888;
+
+  /* Badge colors - Elevated appearance */
+  --color-badge-bg: #252525;
+  --color-badge-text: #d0d0d0;
+  --color-badge-border: #353535;
+
+  /* Button colors */
+  --color-button-bg: #e5e5e5;
+  --color-button-bg-hover: #d4d4d4;
+  --color-button-text: #0a0a0a;
+
+  /* Overlay colors - translucent surfaces */
+  --color-overlay-solid: rgba(26, 26, 26, 0.92);
+  --color-overlay-gradient-from: rgba(26, 26, 26, 0.85);
+
+  /* Navbar colors - Glass morphism effect */
+  --color-navbar-bg: rgba(15, 15, 15, 0.8);
+  --color-navbar-border: #1f1f1f;
+  --color-nav-active: #2a2a2a;
+  --color-nav-active-text: #f0f0f0;
+
+  /* Footer colors */
+  --color-footer-text: #9a9a9a;
+}
+
+@theme inline {
+  /* Base colors */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-fg);
+
+  /* Semantic color utilities - Use these in components */
+  --color-surface: var(--color-surface);
+  --color-surface-secondary: var(--color-surface-secondary);
+  --color-border: var(--color-border);
+  --color-border-light: var(--color-border-light);
+  --color-border-hover: var(--color-border-hover);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-muted: var(--color-text-muted);
+  --color-interactive: var(--color-interactive);
+  --color-interactive-hover: var(--color-interactive-hover);
+  --color-interactive-bg: var(--color-interactive-bg);
+  --color-interactive-bg-hover: var(--color-interactive-bg-hover);
+  --color-focus: var(--color-focus);
+  --color-badge-bg: var(--color-badge-bg);
+  --color-badge-text: var(--color-badge-text);
+  --color-badge-border: var(--color-badge-border);
+  --color-navbar-bg: var(--color-navbar-bg);
+  --color-navbar-border: var(--color-navbar-border);
+  --color-nav-active: var(--color-nav-active);
+  --color-nav-active-text: var(--color-nav-active-text);
+  --color-footer-text: var(--color-footer-text);
+  --color-button-bg: var(--color-button-bg);
+  --color-button-bg-hover: var(--color-button-bg-hover);
+  --color-button-text: var(--color-button-text);
+  --color-overlay-solid: var(--color-overlay-solid);
+  --color-overlay-gradient-from: var(--color-overlay-gradient-from);
+
+  /* Fonts */
+  --font-sans: var(--font-jakarta);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+/* Accessibility - Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Accessibility - Focus visible styles */
+/* Accessibility - Focus visible styles */
+*:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+[cmdk-input]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[cmdk-group-heading] {
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white;
+  }
+
+  nav,
+  footer,
+  button {
+    display: none !important;
+  }
+
+  a[href]:after {
+    content: ' (' attr(href) ')';
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+}
+
+/* Performance optimization for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Safe area inset support for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Scrollbar utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
